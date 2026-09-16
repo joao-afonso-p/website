@@ -1,0 +1,53 @@
+---
+import Container from '../../components/Container.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSideQuests } from '../../lib/content';
+
+/** Same listing language as /builds, /work and /notes. */
+const sideQuests = await getSideQuests();
+
+const joined = (parts: Array<string | undefined>): string | undefined => {
+  const text = parts.filter((part): part is string => Boolean(part)).join(' · ');
+  return text === '' ? undefined : text;
+};
+---
+
+<BaseLayout
+  title="Side Quests"
+  description="Work that wasn’t quite a job and wasn’t quite a weekend project: freelance, startup attempts, collaborations and long-running external projects."
+>
+  <Container>
+    <PageIntro
+      eyebrow="Side quests"
+      title="Work that wasn’t quite a job and wasn’t quite a weekend project."
+      lead="Freelance, startup attempts, collaborations, long-running external projects, advisory and contributor work."
+      count={sideQuests.length}
+    />
+
+    {/* Structural only: the row components render h3, so the page needs an
+        h2 between them and the h1. No visible label is wanted here. */}
+    <h2 class="sr-only">All side quests</h2>
+
+    {sideQuests.length > 0 ? (
+      <div>
+        {sideQuests.map((entry, index) => (
+          <ProjectRow
+            number={String(index + 1).padStart(2, '0')}
+            title={entry.data.title}
+            description={entry.data.description ?? entry.data.oneLiner}
+            status={entry.data.status}
+            year={entry.data.period ? undefined : entry.data.year}
+            tags={entry.data.tags}
+            meta={joined([entry.data.org, entry.data.period])}
+            href={`/side-quests/${entry.id}`}
+          />
+        ))}
+      </div>
+    ) : (
+      <EmptyState message="These are the hardest ones to write honestly, so they go up one at a time and only once the account of them is accurate." />
+    )}
+  </Container>
+</BaseLayout>

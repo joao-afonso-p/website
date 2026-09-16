@@ -1,0 +1,51 @@
+---
+import Container from '../../components/Container.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getBuilds } from '../../lib/content';
+
+/**
+ * The builds index. One of four listing pages that share the same shape:
+ * PageIntro, then the editorial index table as direct siblings, then nothing.
+ * No filters, no tag cloud, no cards.
+ */
+const builds = await getBuilds();
+---
+
+<BaseLayout
+  title="Builds"
+  description="Things I have personally built, generally because of a real problem or real curiosity."
+>
+  <Container>
+    <PageIntro
+      eyebrow="Builds"
+      title="Things I built."
+      lead="Things I have personally built — generally because of a real problem, or real curiosity."
+      count={builds.length}
+    />
+
+    {/* Structural only: the row components render h3, so the page needs an
+        h2 between them and the h1. No visible label is wanted here. */}
+    <h2 class="sr-only">All builds</h2>
+
+    {builds.length > 0 ? (
+      <div>
+        {builds.map((entry, index) => (
+          <ProjectRow
+            number={String(index + 1).padStart(2, '0')}
+            title={entry.data.title}
+            description={entry.data.description ?? entry.data.oneLiner}
+            status={entry.data.status}
+            year={entry.data.year}
+            tags={entry.data.tags}
+            href={`/builds/${entry.id}`}
+          />
+        ))}
+      </div>
+    ) : (
+      <EmptyState message="Builds are written up one at a time, and appear here once the write-up is finished rather than when the code is." />
+    )}
+  </Container>
+</BaseLayout>

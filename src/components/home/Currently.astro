@@ -1,0 +1,44 @@
+---
+import { currently } from '../../config/site';
+import Container from '../Container.astro';
+
+/**
+ * The cheapest thing on the site to change: one quiet mono row, driven
+ * entirely by `currently` in `src/config/site.ts`.
+ *
+ * The label is uppercase mono (`.meta`); the items keep the sentence case they
+ * were authored in, at `text-small`, because three uppercased phrases at meta
+ * scale read as a shouted status bar rather than a footnote. No icons, no dot,
+ * no "status: online".
+ *
+ * The `·` separators appear only from `lg` up, which is the first width where
+ * all three items fit on a single line. Below that the row would wrap and
+ * leave a separator dangling at the end of a line, so the items simply stack.
+ */
+interface Props {}
+
+const items = currently;
+---
+
+{items.length > 0 && (
+  <section class="mt-10 md:mt-12">
+    <Container>
+      <div class="flex flex-col gap-2 border-t border-rule pt-4 md:flex-row md:items-baseline md:gap-8">
+        <h2 class="meta text-muted shrink-0 whitespace-nowrap md:w-28">Currently</h2>
+
+        <ul class="text-small text-ink-soft space-y-1 font-mono lg:flex lg:flex-wrap lg:items-baseline lg:gap-x-2 lg:space-y-0">
+          {items.map((item, i) => (
+            <li>
+              {item}
+              {i < items.length - 1 && (
+                <span class="text-rule-strong hidden pl-2 lg:inline" aria-hidden="true">
+                  &#183;
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Container>
+  </section>
+)}

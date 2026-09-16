@@ -1,0 +1,81 @@
+---
+import { alfredoNav, nav, site } from '../config/site';
+import { isActive, isExact, url } from '../lib/paths';
+import Container from './Container.astro';
+
+/** No props: the header is driven entirely by `src/config/site.ts`. */
+interface Props {}
+
+/**
+ * Deliberately not sticky, and deliberately free of JavaScript.
+ *
+ * Mobile (<768px): wordmark row, hairline, then the nav as a wrapping
+ * uppercase-mono list. No hamburger — five short labels fit on two lines and
+ * a permanently visible nav beats a button that hides it.
+ * Desktop: wordmark left, nav right, one hairline under the whole row.
+ */
+const here = Astro.url.pathname;
+const isHome = isActive('/', here);
+---
+
+<header>
+  <Container>
+    <div class="flex flex-col border-b border-rule md:flex-row md:items-baseline md:justify-between md:gap-10">
+      <p class="py-5 md:py-7">
+        <a
+          href={url('/')}
+          class="text-h3 text-ink hover:text-accent transition-colors"
+          aria-current={isHome ? 'page' : undefined}
+        >
+          {site.wordmark}
+        </a>
+      </p>
+
+      <nav aria-label="Primary" class="border-t border-rule pb-5 pt-4 md:border-t-0 md:py-7">
+        <ul class="flex flex-wrap items-baseline gap-x-5 gap-y-2 md:gap-x-7">
+          {nav.map((item) => {
+            const active = isActive(item.href, here);
+            // `isActive` is true for the whole section (e.g. /builds while on
+            // /builds/contas) — right for styling, wrong for `aria-current`,
+            // which must only claim "page" on the page itself.
+            const current = isExact(item.href, here);
+            return (
+              <li>
+                <a
+                  href={url(item.href)}
+                  aria-current={current ? 'page' : active ? 'true' : undefined}
+                  class:list={[
+                    'meta decoration-1 underline-offset-4 transition-colors hover:text-ink',
+                    active ? 'text-ink underline' : 'text-muted',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
+
+          <li class="meta text-rule-strong select-none" aria-hidden="true">
+            /
+          </li>
+
+          <li>
+            <a
+              href={url(alfredoNav.href)}
+              aria-current={isActive(alfredoNav.href, here) ? 'page' : undefined}
+              class:list={[
+                'meta text-accent decoration-1 underline-offset-4 transition-colors hover:text-accent-hover',
+                isActive(alfredoNav.href, here) && 'underline',
+              ]}
+            >
+              {alfredoNav.label}{' '}
+              <span class="arrow-up" aria-hidden="true">
+                &#8599;
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </Container>
+</header>

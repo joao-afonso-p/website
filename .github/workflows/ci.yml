@@ -1,0 +1,57 @@
+name: CI
+
+# Pull-request gate. Runs the same checks as a local `pnpm check && pnpm build`
+# so a broken type, a malformed frontmatter file or an unformatted commit is
+# caught before it reaches `main` (and therefore before it reaches Pages).
+#
+# Deliberately does not deploy and does not need Pages permissions.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Check and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Version comes from the `packageManager` field in package.json, so the
+      # pnpm version is pinned in exactly one place.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Formatting
+        run: pnpm format:check
+
+      - name: Types and content schemas
+        run: pnpm check
+
+      # Builds against the production origin so canonical URLs, the sitemap and
+      # robots.txt are exercised exactly as they will be published.
+      - name: Build
+        run: pnpm build
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://joao-afonso-p.github.io' }}
+          BASE_PATH: ${{ vars.BASE_PATH || '/' }}

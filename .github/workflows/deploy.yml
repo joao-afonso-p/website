@@ -1,0 +1,84 @@
+name: Deploy
+
+# Builds the Astro site and publishes it to GitHub Pages.
+#
+# The deployment target is NOT hardcoded here. It is read from two optional
+# repository variables (Settings -> Secrets and variables -> Actions -> Variables),
+# with fallbacks that match the defaults in astro.config.mjs:
+#
+#   SITE_URL   default https://joao-afonso-p.github.io
+#   BASE_PATH  default /
+#
+# So the same workflow serves:
+#   - the user site      -> no variables set
+#   - a project repo     -> BASE_PATH=/repo-name
+#   - a custom domain    -> SITE_URL=https://joaoafonso.com (+ public/CNAME)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege for OIDC-based Pages deployments.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; never cancel a run that is already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_URL: ${{ vars.SITE_URL || 'https://joao-afonso-p.github.io' }}
+  BASE_PATH: ${{ vars.BASE_PATH || '/' }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # pnpm must be on PATH before setup-node so that `cache: pnpm` resolves
+      # the store directory.
+      # Version comes from the `packageManager` field in package.json, so the
+      # pnpm version is pinned in exactly one place.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

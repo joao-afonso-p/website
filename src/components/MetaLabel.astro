@@ -1,0 +1,21 @@
+---
+/** Uppercase mono metadata label — the site's smallest typographic unit. */
+interface Props {
+  class?: string;
+  as?: string;
+}
+
+/**
+ * NOTE: the explicit `as Props` is load-bearing. @astrojs/compiler 2.13.1 does
+ * not detect an `interface Props` on a component with a prop literally named
+ * `as`, so without the annotation this component silently loses prop
+ * type-checking. Annotating here keeps the public API intact.
+ */
+const { as = 'span', class: className } = Astro.props as Props;
+
+const Tag = as as keyof HTMLElementTagNameMap;
+---
+
+<Tag class:list={['meta', className]}>
+  <slot />
+</Tag>

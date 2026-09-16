@@ -1,0 +1,67 @@
+---
+import { Font } from 'astro:assets';
+import Seo from '../components/Seo.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { site } from '../config/site';
+import '../styles/global.css';
+
+/** The only layout. Every page renders through it. */
+interface Props {
+  /** Omit on the homepage to get the bare `João Afonso — <tagline>` title. */
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  publishedDate?: Date;
+  updatedDate?: Date;
+  /** Extra classes for `<main>`. */
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  type = 'website',
+  noindex = false,
+  publishedDate,
+  updatedDate,
+  class: className,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <Seo
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      type={type}
+      noindex={noindex}
+      publishedDate={publishedDate}
+      updatedDate={updatedDate}
+    />
+    <Font cssVariable="--font-schibsted-grotesk" preload />
+    <Font cssVariable="--font-ibm-plex-mono" />
+  </head>
+
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="meta sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:border focus:border-rule focus:bg-paper-raised focus:px-3 focus:py-2 focus:text-ink"
+    >
+      Skip to content
+    </a>
+
+    <SiteHeader />
+
+    <main id="main" class:list={['flex-1', className]}>
+      <slot />
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>

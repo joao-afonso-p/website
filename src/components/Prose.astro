@@ -1,0 +1,12 @@
+---
+/** Long-form body wrapper. All typographic rules live in `.prose` in global.css. */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['prose', className]}>
+  <slot />
+</div>

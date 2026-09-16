@@ -1,0 +1,50 @@
+---
+import Container from '../Container.astro';
+
+/**
+ * The homepage masthead, and the only place the site states its premise.
+ *
+ * Structure is borrowed from a magazine cover rather than a portfolio header:
+ * a small mono nameplate (the page's `h1` — the header wordmark above it is a
+ * running head, not a heading), the statement at display scale, then a hairline
+ * carrying the two standfirst lines.
+ *
+ * The statement's line breaks are set by hand instead of being left to the
+ * browser: at display scale a bad wrap is the difference between a masthead and
+ * an accident. Three spans of 13–14 characters hold the same shape at every
+ * breakpoint — a near-square block of type — because `--text-display` clamps
+ * between 48px and 132px, and the measure grows at roughly the same rate.
+ *
+ * The standfirst stays stacked until `lg`: at 768px a twelve-column split
+ * leaves each half too narrow for `text-lead` and orphans "by habit." on its
+ * own line. Its second line is broken by hand too, in three shapes — three
+ * short lines below 768px, balanced automatically in the full-width band at
+ * 768–1023px, and two lines in the half-width column from 1024px up — because
+ * every automatic option left a two-word widow at one width or another.
+ */
+interface Props {}
+---
+
+<section class="pt-14 md:pt-20 lg:pt-24">
+  <Container>
+    <h1 class="meta text-ink">João Afonso</h1>
+
+    <p class="text-display text-ink mt-10 md:mt-14">
+      <span class="block">I build things</span>
+      <span class="block">to see if they</span>
+      <span class="block">should exist.</span>
+    </p>
+
+    <div class="mt-12 grid gap-6 border-t border-rule pt-6 md:mt-16 md:pt-8 lg:grid-cols-12 lg:gap-x-6">
+      <p class="text-lead text-ink text-balance lg:col-span-5 lg:col-start-1">
+        AI engineer by trade. Builder by habit.
+      </p>
+      <p class="text-body text-muted md:text-balance lg:col-span-6 lg:col-start-7 lg:text-pretty">
+        A record of products, experiments,
+        <br class="md:hidden" /> side quests
+        <br class="hidden lg:inline" /> and things I’ve learned
+        <br class="md:hidden" /> along the way.
+      </p>
+    </div>
+  </Container>
+</section>

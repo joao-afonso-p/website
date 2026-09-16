@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="João Afonso">
+  <title>João Afonso</title>
+  <!--
+    A quiet typographic mark drawn as paths, not <text>, so it renders
+    identically everywhere instead of falling back to a system font.
+    Paper ground, a JA monogram in ink, one navy hairline beneath it —
+    the same rule language the pages use.
+    Palette: paper #f4f3ef, ink #161616, accent #1f3a5f.
+  -->
+  <rect width="64" height="64" fill="#f4f3ef" />
+  <g fill="#161616">
+    <!-- J -->
+    <path d="M22 14h6v22a8 8 0 0 1-8 8h-4v-6h3a3 3 0 0 0 3-3V14Z" />
+    <!-- A -->
+    <path d="M38 14h6l8 30h-6l-1.4-6h-7.2L36 44h-6l8-30Zm.6 18h4.8L41 22.4 38.6 32Z" />
+  </g>
+  <rect x="16" y="50" width="32" height="3" fill="#1f3a5f" />
+</svg>

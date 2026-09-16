@@ -1,0 +1,48 @@
+---
+import { url } from '../../lib/paths';
+import Container from '../Container.astro';
+
+/**
+ * The page's change of gear.
+ *
+ * Alfredo is not a project in the index, so it must not read as one more row
+ * or one more card. The break is made with three things only: a pair of
+ * full-bleed rules at `--color-rule-strong` (the one place on the site where a
+ * rule escapes the page measure — every other divider stops at the container,
+ * so an edge-to-edge line reads as a new spread), display-scale type on a
+ * single word, and roughly twice the vertical air of any other section.
+ *
+ * Deliberately no `bg-paper-sunk` band: that tint is the row-hover state
+ * everywhere else on the site, and a whole band of it reads as a highlighted
+ * slab — a CTA — which is exactly the register this section has to avoid.
+ */
+interface Props {}
+---
+
+<section class="mt-section-lg border-y border-rule-strong" aria-labelledby="alfredo">
+  <Container>
+    <div class="py-20 md:py-24 lg:py-32">
+      <p class="meta text-ink">The long project</p>
+
+      <h2 id="alfredo" class="text-display text-ink mt-8 uppercase md:mt-10">
+        Alfredo
+      </h2>
+
+      <p class="text-lead text-ink-soft mt-8 max-w-text md:mt-10">
+        Building a personal operating system around my actual life.
+      </p>
+
+      <p class="mt-8 md:mt-10">
+        <a
+          href={url('/alfredo')}
+          class="text-h3 text-accent hover:text-accent-hover inline-flex items-baseline gap-3 decoration-1 underline-offset-4 transition-colors hover:underline"
+        >
+          Explore Alfredo{' '}
+          <span class="arrow" aria-hidden="true">
+            &#8594;
+          </span>
+        </a>
+      </p>
+    </div>
+  </Container>
+</section>

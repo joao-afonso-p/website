@@ -1,0 +1,30 @@
+version: 2
+
+# Low-noise updates. Everything is grouped so a week produces at most two PRs,
+# and both ecosystems are checked monthly rather than weekly — this is a static
+# site with no runtime dependencies and no security surface to speak of.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: deps
+    groups:
+      astro:
+        patterns: ['astro', '@astrojs/*']
+      tailwind:
+        patterns: ['tailwindcss', '@tailwindcss/*']
+      tooling:
+        patterns: ['prettier', 'prettier-plugin-*', 'typescript']

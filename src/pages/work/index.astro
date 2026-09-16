@@ -1,0 +1,58 @@
+---
+import Container from '../../components/Container.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getWorkEntries } from '../../lib/content';
+
+/**
+ * The work index. Company reads as the row title because that is what the eye
+ * scans for; role and period sit in the mono metadata column beside it.
+ * `current: true` is the only thing that earns a status marker here.
+ */
+const roles = await getWorkEntries();
+
+const joined = (parts: Array<string | undefined>): string | undefined => {
+  const text = parts.filter((part): part is string => Boolean(part)).join(' · ');
+  return text === '' ? undefined : text;
+};
+---
+
+<BaseLayout
+  title="Work"
+  description="Formal professional experience, written out properly — the parts that do not fit on a one-page résumé."
+>
+  <Container>
+    <PageIntro
+      eyebrow="Work"
+      title="The expanded résumé."
+      lead="Formal professional experience, written out properly — the parts that do not fit on a single page."
+      note="Not a reproduction of a LinkedIn profile."
+      count={roles.length}
+    />
+
+    {/* Structural only: the row components render h3, so the page needs an
+        h2 between them and the h1. No visible label is wanted here. */}
+    <h2 class="sr-only">All roles</h2>
+
+    {roles.length > 0 ? (
+      <div>
+        {roles.map((entry, index) => (
+          <ProjectRow
+            number={String(index + 1).padStart(2, '0')}
+            title={entry.data.title ?? entry.data.company}
+            description={entry.data.description ?? entry.data.oneLiner}
+            status={entry.data.current ? 'live' : undefined}
+            statusLabel={entry.data.current ? 'Current' : undefined}
+            tags={entry.data.tags}
+            meta={joined([entry.data.role, entry.data.period])}
+            href={`/work/${entry.id}`}
+          />
+        ))}
+      </div>
+    ) : (
+      <EmptyState message="Each role gets written out in full, or not at all — so they land here one at a time. The compressed version is the résumé." />
+    )}
+  </Container>
+</BaseLayout>

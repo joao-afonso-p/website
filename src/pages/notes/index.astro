@@ -1,0 +1,48 @@
+---
+import Container from '../../components/Container.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import NoteRow from '../../components/NoteRow.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getNotes } from '../../lib/content';
+
+/** Same listing language as the three project indexes, dated rows instead. */
+const notes = await getNotes();
+---
+
+<BaseLayout
+  title="Notes"
+  description="Short pieces on product and engineering work: lessons, experiments and reflections."
+>
+  <Container>
+    <PageIntro
+      eyebrow="Notes"
+      title="Short things worth writing down."
+      lead="Lessons from product and engineering work, experiments and reflections."
+      note="An individual piece may be labelled a field note."
+      count={notes.length}
+    />
+
+    {/* Structural only: the row components render h3, so the page needs an
+        h2 between them and the h1. No visible label is wanted here. */}
+    <h2 class="sr-only">All notes</h2>
+
+    {notes.length > 0 ? (
+      <div>
+        {notes.map((entry) => (
+          <NoteRow
+            title={entry.data.title}
+            date={entry.data.date}
+            description={entry.data.description}
+            tags={entry.data.tags}
+            series={entry.data.series}
+            status={entry.data.status}
+            href={`/notes/${entry.id}`}
+          />
+        ))}
+      </div>
+    ) : (
+      <EmptyState message="Notes go up when there is something worth keeping, not on a schedule. The first ones will appear here." />
+    )}
+  </Container>
+</BaseLayout>

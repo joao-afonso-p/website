@@ -1,0 +1,122 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+import Container from '../../components/Container.astro';
+import EntryMeta from '../../components/EntryMeta.astro';
+import Prose from '../../components/Prose.astro';
+import StatusIndicator from '../../components/StatusIndicator.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getWorkEntries, pageDescription } from '../../lib/content';
+import { url } from '../../lib/paths';
+
+/**
+ * A role — the expanded version of one résumé line.
+ *
+ * The heading is the company (or the `title` display override), and role,
+ * period and location sit in the mono block above it. `current: true` is the
+ * only fact that earns a status marker, mapped to the `live` swatch.
+ */
+export async function getStaticPaths() {
+  const roles = await getWorkEntries();
+
+  return roles.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: roles[index - 1] ?? undefined,
+      next: roles[index + 1] ?? undefined,
+    },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, prev, next } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const { data } = entry;
+const heading = data.title ?? data.company;
+const lead = data.description ?? data.oneLiner;
+const metaDescription = pageDescription(
+  [data.description, data.oneLiner],
+  `${data.role} at ${data.company}.`,
+);
+
+const list = (values: string[] | undefined): string | undefined =>
+  values && values.length > 0 ? values.join(' · ') : undefined;
+---
+
+<BaseLayout title={data.title ?? `${data.role} — ${data.company}`} description={metaDescription}>
+  <Container>
+    {/* The reading measure is left-aligned inside the page frame, so
+        every page on the site shares one left edge. */}
+    <article class="max-w-text">
+      <header class="pt-14 pb-12 md:pt-section md:pb-16">
+        <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
+          <p class="meta">Work</p>
+          <StatusIndicator
+            status={data.current ? 'live' : undefined}
+            label={data.current ? 'Current' : undefined}
+            class="ml-auto shrink-0"
+          />
+        </div>
+
+        <EntryMeta
+          class="mt-8 md:mt-10"
+          items={[
+            { label: 'Role', value: data.role },
+            { label: 'Company', value: heading === data.company ? undefined : data.company },
+            { label: 'Period', value: data.period },
+            { label: 'Location', value: data.location },
+            { label: 'Stack', value: list(data.stack) },
+            { label: 'Tags', value: list(data.tags) },
+          ]}
+          links={[{ label: 'Website', href: data.url }]}
+        />
+
+        <h1 class="text-h1 text-ink mt-10 md:mt-12">{heading}</h1>
+        <p class="text-lead text-ink-soft mt-6">{lead}</p>
+      </header>
+
+      <Prose>
+        <Content />
+      </Prose>
+
+      <footer class="mt-20 border-t border-rule pt-6 md:mt-24">
+        <a
+          href={url('/work')}
+          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
+        >
+          <span aria-hidden="true">&#8592;</span> All work
+        </a>
+
+        {(prev || next) && (
+          <nav
+            aria-label="Other roles"
+            class="mt-10 grid gap-8 border-t border-rule pt-8 md:grid-cols-2 md:gap-12"
+          >
+            {prev ? (
+              <a href={url(`/work/${prev.id}`)} class="group block">
+                <span class="meta text-muted">Previous</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {prev.data.title ?? prev.data.company}
+                </span>
+              </a>
+            ) : (
+              <div class="hidden md:block" />
+            )}
+
+            {next && (
+              <a href={url(`/work/${next.id}`)} class="group block md:text-right">
+                <span class="meta text-muted">Next</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {next.data.title ?? next.data.company}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
+      </footer>
+    </article>
+  </Container>
+</BaseLayout>

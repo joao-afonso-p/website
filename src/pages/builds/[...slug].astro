@@ -1,0 +1,164 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import Container from '../../components/Container.astro';
+import EntryMeta from '../../components/EntryMeta.astro';
+import Prose from '../../components/Prose.astro';
+import StatusIndicator from '../../components/StatusIndicator.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  formatDate,
+  getBuilds,
+  isPublished,
+  pageDescription,
+  type NoteEntry,
+} from '../../lib/content';
+import { site } from '../../config/site';
+import { url } from '../../lib/paths';
+
+/**
+ * A build.
+ *
+ * Deliberately under-designed: real content arrives later and each page will be
+ * designed properly then. What this template guarantees is a foundation that
+ * cannot break — every frontmatter field is optional, and today all four builds
+ * carry nothing but a title and a placeholder one-liner. The metadata block,
+ * the status marker, the cover and the related-notes list each vanish silently.
+ *
+ * Paths and prev/next come from `getBuilds()`, so the reading order here is the
+ * same order as /builds and drafts stay out of the built site.
+ */
+export async function getStaticPaths() {
+  const builds = await getBuilds();
+
+  return builds.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: builds[index - 1] ?? undefined,
+      next: builds[index + 1] ?? undefined,
+    },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, prev, next } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const { data } = entry;
+const lead = data.description ?? data.oneLiner;
+const metaDescription = pageDescription(
+  [data.description, data.oneLiner],
+  `${data.title} — a build by ${site.name}.`,
+);
+
+const list = (values: string[] | undefined): string | undefined =>
+  values && values.length > 0 ? values.join(' · ') : undefined;
+
+/** References resolve to entries; a draft target is dropped in production. */
+const resolvedNotes = await Promise.all((data.relatedNotes ?? []).map((ref) => getEntry(ref)));
+const relatedNotes: NoteEntry[] = resolvedNotes.flatMap((note) =>
+  note && isPublished(note) ? [note] : [],
+);
+---
+
+<BaseLayout title={data.title} description={metaDescription}>
+  <Container>
+    {/* The reading measure is left-aligned inside the page frame, so
+        every page on the site shares one left edge. */}
+    <article class="max-w-text">
+      <header class="pt-14 pb-12 md:pt-section md:pb-16">
+        <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
+          <p class="meta">Build</p>
+          <StatusIndicator status={data.status} class="ml-auto shrink-0" />
+        </div>
+
+        <EntryMeta
+          class="mt-8 md:mt-10"
+          items={[
+            { label: 'Year', value: data.year === undefined ? undefined : String(data.year) },
+            { label: 'Stack', value: list(data.stack) },
+            { label: 'Tags', value: list(data.tags) },
+            { label: 'Updated', value: data.updated ? formatDate(data.updated) : undefined },
+          ]}
+          links={[
+            { label: 'Live', href: data.url },
+            { label: 'Source', href: data.repo },
+          ]}
+        />
+
+        <h1 class="text-h1 text-ink mt-10 md:mt-12">{data.title}</h1>
+        <p class="text-lead text-ink-soft mt-6">{lead}</p>
+      </header>
+
+      {data.cover && (
+        <Image
+          src={data.cover}
+          alt={data.coverAlt ?? ''}
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 768px) 44rem, 100vw"
+          loading="eager"
+          decoding="async"
+          class="mb-14 w-full border border-rule"
+        />
+      )}
+
+      <Prose>
+        <Content />
+      </Prose>
+
+      {relatedNotes.length > 0 && (
+        <aside class="mt-16 border-t border-rule pt-6 md:mt-20">
+          <p class="meta">Related notes</p>
+          <ul class="mt-4 space-y-3">
+            {relatedNotes.map((note) => (
+              <li>
+                <a href={url(`/notes/${note.id}`)} class="link text-body">
+                  {note.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+      <footer class="mt-20 border-t border-rule pt-6 md:mt-24">
+        <a
+          href={url('/builds')}
+          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
+        >
+          <span aria-hidden="true">&#8592;</span> All builds
+        </a>
+
+        {(prev || next) && (
+          <nav
+            aria-label="Other builds"
+            class="mt-10 grid gap-8 border-t border-rule pt-8 md:grid-cols-2 md:gap-12"
+          >
+            {prev ? (
+              <a href={url(`/builds/${prev.id}`)} class="group block">
+                <span class="meta text-muted">Previous</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {prev.data.title}
+                </span>
+              </a>
+            ) : (
+              <div class="hidden md:block" />
+            )}
+
+            {next && (
+              <a href={url(`/builds/${next.id}`)} class="group block md:text-right">
+                <span class="meta text-muted">Next</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {next.data.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
+      </footer>
+    </article>
+  </Container>
+</BaseLayout>

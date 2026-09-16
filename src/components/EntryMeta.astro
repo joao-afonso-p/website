@@ -1,0 +1,83 @@
+---
+/**
+ * The mono specification block that sits above the title on every detail page.
+ *
+ * Detail templates are deliberately under-designed until real content arrives,
+ * so this is the one piece of shared furniture between them: a wrapping row of
+ * label/value pairs plus any external links.
+ *
+ * Every field on every collection is optional, which today means most entries
+ * have almost nothing to show. Empty values are dropped, and when nothing at
+ * all survives the component renders nothing — the page then reads as an
+ * eyebrow, a title and a body, which is intentional rather than broken.
+ */
+interface MetaItem {
+  label: string;
+  /** Dropped entirely when empty. */
+  value?: string | undefined;
+  /** When set, the value renders as <time datetime="YYYY-MM-DD">. */
+  datetime?: string | undefined;
+}
+
+interface MetaLink {
+  label: string;
+  /** Absolute external URL, straight from frontmatter. */
+  href?: string | undefined;
+}
+
+interface Props {
+  items?: MetaItem[];
+  links?: MetaLink[];
+  class?: string;
+}
+
+const { items = [], links = [], class: className } = Astro.props;
+
+type ResolvedItem = { label: string; value: string; datetime?: string | undefined };
+type ResolvedLink = { label: string; href: string; text: string };
+
+/** Frontmatter `url` / `repo` are free-form strings, so never parse them. */
+const readable = (href: string): string => href.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+
+const shownItems: ResolvedItem[] = items.flatMap((item) =>
+  item.value ? [{ label: item.label, value: item.value, datetime: item.datetime }] : [],
+);
+
+const shownLinks: ResolvedLink[] = links.flatMap((link) =>
+  link.href ? [{ label: link.label, href: link.href, text: readable(link.href) }] : [],
+);
+
+const hasAnything = shownItems.length > 0 || shownLinks.length > 0;
+---
+
+{hasAnything && (
+  <dl class:list={['flex flex-wrap gap-x-10 gap-y-6 md:gap-x-14', className]}>
+    {shownItems.map((item) => (
+      <div>
+        <dt class="meta text-muted">{item.label}</dt>
+        <dd class="font-mono text-small text-ink mt-2">
+          {item.datetime ? <time datetime={item.datetime}>{item.value}</time> : item.value}
+        </dd>
+      </div>
+    ))}
+
+    {shownLinks.map((link) => (
+      <div class="min-w-0">
+        <dt class="meta text-muted">{link.label}</dt>
+        <dd class="mt-2">
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link font-mono text-small break-all"
+          >
+            {link.text}{' '}
+            <span class="arrow-up" aria-hidden="true">
+              &#8599;
+            </span>
+          </a>
+        </dd>
+      </div>
+    ))}
+  </dl>
+)}

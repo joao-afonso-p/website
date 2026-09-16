@@ -1,0 +1,30 @@
+---
+import Container from '../components/Container.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../lib/paths';
+
+/** Quiet and typographic. No joke, no illustration, one way out. */
+---
+
+<BaseLayout title="Page not found" description="That page does not exist." noindex>
+  <Container>
+    <div class="max-w-text py-section md:py-section-lg">
+      <p class="meta border-b border-rule pb-4">Error 404</p>
+
+      <h1 class="text-h1 text-ink mt-8 md:mt-10">This page doesn’t exist.</h1>
+
+      <p class="text-lead text-ink-soft mt-6">
+        The address may have changed, or it may never have been here.
+      </p>
+
+      <p class="mt-10 md:mt-12">
+        <a
+          href={url('/')}
+          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
+        >
+          <span aria-hidden="true">&#8592;</span> Back to the homepage
+        </a>
+      </p>
+    </div>
+  </Container>
+</BaseLayout>

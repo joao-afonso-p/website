@@ -1,0 +1,34 @@
+---
+import type { EntryStatus } from '../content.config';
+
+/**
+ * A 5px square plus a mono label. Never a circle, never a glow, never a pill.
+ * An unknown or absent status renders nothing at all.
+ */
+interface Props {
+  status?: EntryStatus;
+  /** Overrides the default uppercased status word. */
+  label?: string;
+  class?: string;
+}
+
+const { status, label, class: className } = Astro.props;
+
+const SWATCH: Record<EntryStatus, string> = {
+  live: 'bg-status-live',
+  building: 'bg-status-building',
+  experiment: 'bg-status-experiment',
+  paused: 'bg-status-paused',
+  archived: 'bg-status-archived',
+};
+
+const swatch = status ? SWATCH[status] : undefined;
+const text = label ?? status?.toUpperCase();
+---
+
+{swatch && text && (
+  <span class:list={['meta inline-flex items-center gap-2 whitespace-nowrap', className]}>
+    <span class:list={['size-dot shrink-0', swatch]} aria-hidden="true"></span>
+    <span>{text}</span>
+  </span>
+)}

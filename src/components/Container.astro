@@ -1,0 +1,23 @@
+---
+/** The site's only horizontal measure. Every page section sits inside one. */
+interface Props {
+  width?: 'page' | 'wide' | 'text' | 'prose';
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+
+const { width = 'page', as = 'div', class: className } = Astro.props;
+
+const MEASURE: Record<NonNullable<Props['width']>, string> = {
+  page: 'max-w-page',
+  wide: 'max-w-wide',
+  text: 'max-w-text',
+  prose: 'max-w-prose',
+};
+
+const Tag = as;
+---
+
+<Tag class:list={['mx-auto w-full px-6 md:px-10', MEASURE[width], className]}>
+  <slot />
+</Tag>

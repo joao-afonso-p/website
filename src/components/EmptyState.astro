@@ -1,0 +1,17 @@
+---
+/**
+ * The deliberate "not yet" state. Framed by hairlines, stated plainly —
+ * never apologetic, never "under construction".
+ */
+interface Props {
+  label?: string;
+  message: string;
+}
+
+const { label = 'Coming later', message } = Astro.props;
+---
+
+<div class="border-y border-rule py-10 md:py-12">
+  <p class="meta">{label}</p>
+  <p class="text-body text-muted mt-3 max-w-text">{message}</p>
+</div>

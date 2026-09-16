@@ -1,0 +1,149 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import { getEntry, render } from 'astro:content';
+import Container from '../../components/Container.astro';
+import EntryMeta from '../../components/EntryMeta.astro';
+import Prose from '../../components/Prose.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  formatDate,
+  getNotes,
+  isPublished,
+  pageDescription,
+  type BuildEntry,
+} from '../../lib/content';
+import { site } from '../../config/site';
+import { url } from '../../lib/paths';
+
+/**
+ * A note.
+ *
+ * `status` on notes is free-form (`FIELD NOTE`, `WORKING NOTE`), so it is set
+ * as plain mono text opposite the eyebrow rather than through StatusIndicator,
+ * which only speaks the build/side-quest status enum.
+ */
+export async function getStaticPaths() {
+  const notes = await getNotes();
+
+  return notes.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: notes[index - 1] ?? undefined,
+      next: notes[index + 1] ?? undefined,
+    },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, prev, next } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const { data } = entry;
+
+const list = (values: string[] | undefined): string | undefined =>
+  values && values.length > 0 ? values.join(' · ') : undefined;
+
+/** The build this note came out of, when the reference exists and is published. */
+const referenced = data.relatedBuild ? await getEntry(data.relatedBuild) : undefined;
+const relatedBuild: BuildEntry | undefined =
+  referenced && isPublished(referenced) ? referenced : undefined;
+
+/** `prev` is the newer note: the list is sorted newest first. */
+const newer = prev;
+const older = next;
+---
+
+<BaseLayout
+  title={data.title}
+  description={pageDescription([data.description], `${data.title} — a field note by ${site.name}.`)}
+  type="article"
+  publishedDate={data.date}
+  updatedDate={data.updated}
+>
+  <Container>
+    {/* The reading measure is left-aligned inside the page frame, so
+        every page on the site shares one left edge. */}
+    <article class="max-w-text">
+      <header class="pt-14 pb-12 md:pt-section md:pb-16">
+        <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
+          <p class="meta">Note</p>
+          {data.status && <p class="meta text-muted ml-auto shrink-0">{data.status}</p>}
+        </div>
+
+        <EntryMeta
+          class="mt-8 md:mt-10"
+          items={[
+            {
+              label: 'Published',
+              value: formatDate(data.date),
+              datetime: data.date.toISOString().slice(0, 10),
+            },
+            {
+              label: 'Updated',
+              value: data.updated ? formatDate(data.updated) : undefined,
+              datetime: data.updated?.toISOString().slice(0, 10),
+            },
+            { label: 'Series', value: data.series },
+            { label: 'Tags', value: list(data.tags) },
+          ]}
+        />
+
+        <h1 class="text-h1 text-ink mt-10 md:mt-12">{data.title}</h1>
+        {data.description && <p class="text-lead text-ink-soft mt-6">{data.description}</p>}
+      </header>
+
+      <Prose>
+        <Content />
+      </Prose>
+
+      {relatedBuild && (
+        <aside class="mt-16 border-t border-rule pt-6 md:mt-20">
+          <p class="meta">Came out of</p>
+          <p class="mt-4">
+            <a href={url(`/builds/${relatedBuild.id}`)} class="link text-body">
+              {relatedBuild.data.title}
+            </a>
+          </p>
+        </aside>
+      )}
+
+      <footer class="mt-20 border-t border-rule pt-6 md:mt-24">
+        <a
+          href={url('/notes')}
+          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
+        >
+          <span aria-hidden="true">&#8592;</span> All notes
+        </a>
+
+        {(newer || older) && (
+          <nav
+            aria-label="Other notes"
+            class="mt-10 grid gap-8 border-t border-rule pt-8 md:grid-cols-2 md:gap-12"
+          >
+            {newer ? (
+              <a href={url(`/notes/${newer.id}`)} class="group block">
+                <span class="meta text-muted">Newer</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {newer.data.title}
+                </span>
+              </a>
+            ) : (
+              <div class="hidden md:block" />
+            )}
+
+            {older && (
+              <a href={url(`/notes/${older.id}`)} class="group block md:text-right">
+                <span class="meta text-muted">Older</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {older.data.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
+      </footer>
+    </article>
+  </Container>
+</BaseLayout>

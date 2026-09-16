@@ -1,0 +1,120 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+import Container from '../../components/Container.astro';
+import EntryMeta from '../../components/EntryMeta.astro';
+import Prose from '../../components/Prose.astro';
+import StatusIndicator from '../../components/StatusIndicator.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSideQuests, pageDescription } from '../../lib/content';
+import { site } from '../../config/site';
+import { url } from '../../lib/paths';
+
+/**
+ * A side quest. Same under-designed foundation as /builds/[slug]: an eyebrow
+ * row, an optional mono metadata block, the title, the body at reading measure
+ * and a quiet footer. Every metadata field is optional and simply disappears.
+ */
+export async function getStaticPaths() {
+  const sideQuests = await getSideQuests();
+
+  return sideQuests.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: sideQuests[index - 1] ?? undefined,
+      next: sideQuests[index + 1] ?? undefined,
+    },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, prev, next } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const { data } = entry;
+const lead = data.description ?? data.oneLiner;
+const metaDescription = pageDescription(
+  [data.description, data.oneLiner],
+  `${data.title} — a side quest of ${site.name}.`,
+);
+
+const list = (values: string[] | undefined): string | undefined =>
+  values && values.length > 0 ? values.join(' · ') : undefined;
+
+/** `period` is the human string; `year` only stands in when there is no period. */
+const period = data.period ?? (data.year === undefined ? undefined : String(data.year));
+---
+
+<BaseLayout title={data.title} description={metaDescription}>
+  <Container>
+    {/* The reading measure is left-aligned inside the page frame, so
+        every page on the site shares one left edge. */}
+    <article class="max-w-text">
+      <header class="pt-14 pb-12 md:pt-section md:pb-16">
+        <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
+          <p class="meta">Side quest</p>
+          <StatusIndicator status={data.status} class="ml-auto shrink-0" />
+        </div>
+
+        <EntryMeta
+          class="mt-8 md:mt-10"
+          items={[
+            { label: 'Organisation', value: data.org },
+            { label: 'Role', value: data.role },
+            { label: 'Period', value: period },
+            { label: 'Tags', value: list(data.tags) },
+          ]}
+          links={[
+            { label: 'Link', href: data.url },
+            { label: 'Source', href: data.repo },
+          ]}
+        />
+
+        <h1 class="text-h1 text-ink mt-10 md:mt-12">{data.title}</h1>
+        <p class="text-lead text-ink-soft mt-6">{lead}</p>
+      </header>
+
+      <Prose>
+        <Content />
+      </Prose>
+
+      <footer class="mt-20 border-t border-rule pt-6 md:mt-24">
+        <a
+          href={url('/side-quests')}
+          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
+        >
+          <span aria-hidden="true">&#8592;</span> All side quests
+        </a>
+
+        {(prev || next) && (
+          <nav
+            aria-label="Other side quests"
+            class="mt-10 grid gap-8 border-t border-rule pt-8 md:grid-cols-2 md:gap-12"
+          >
+            {prev ? (
+              <a href={url(`/side-quests/${prev.id}`)} class="group block">
+                <span class="meta text-muted">Previous</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {prev.data.title}
+                </span>
+              </a>
+            ) : (
+              <div class="hidden md:block" />
+            )}
+
+            {next && (
+              <a href={url(`/side-quests/${next.id}`)} class="group block md:text-right">
+                <span class="meta text-muted">Next</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {next.data.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
+      </footer>
+    </article>
+  </Container>
+</BaseLayout>
