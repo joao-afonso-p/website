@@ -1,19 +1,13 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
 import { Image } from 'astro:assets';
-import { getEntry, render } from 'astro:content';
+import { render } from 'astro:content';
 import Container from '../../components/Container.astro';
 import EntryMeta from '../../components/EntryMeta.astro';
 import Prose from '../../components/Prose.astro';
 import StatusIndicator from '../../components/StatusIndicator.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import {
-  formatDate,
-  getBuilds,
-  isPublished,
-  pageDescription,
-  type NoteEntry,
-} from '../../lib/content';
+import { formatDate, getBuilds, pageDescription } from '../../lib/content';
 import { site } from '../../config/site';
 import { url } from '../../lib/paths';
 
@@ -24,7 +18,7 @@ import { url } from '../../lib/paths';
  * designed properly then. What this template guarantees is a foundation that
  * cannot break — every frontmatter field is optional, and today all four builds
  * carry nothing but a title and a placeholder one-liner. The metadata block,
- * the status marker, the cover and the related-notes list each vanish silently.
+ * the status marker and the cover each vanish silently.
  *
  * Paths and prev/next come from `getBuilds()`, so the reading order here is the
  * same order as /builds and drafts stay out of the built site.
@@ -56,12 +50,6 @@ const metaDescription = pageDescription(
 
 const list = (values: string[] | undefined): string | undefined =>
   values && values.length > 0 ? values.join(' · ') : undefined;
-
-/** References resolve to entries; a draft target is dropped in production. */
-const resolvedNotes = await Promise.all((data.relatedNotes ?? []).map((ref) => getEntry(ref)));
-const relatedNotes: NoteEntry[] = resolvedNotes.flatMap((note) =>
-  note && isPublished(note) ? [note] : [],
-);
 ---
 
 <BaseLayout title={data.title} description={metaDescription}>
@@ -108,21 +96,6 @@ const relatedNotes: NoteEntry[] = resolvedNotes.flatMap((note) =>
       <Prose>
         <Content />
       </Prose>
-
-      {relatedNotes.length > 0 && (
-        <aside class="mt-16 border-t border-rule pt-6 md:mt-20">
-          <p class="meta">Related notes</p>
-          <ul class="mt-4 space-y-3">
-            {relatedNotes.map((note) => (
-              <li>
-                <a href={url(`/notes/${note.id}`)} class="link text-body">
-                  {note.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
 
       <footer class="mt-20 border-t border-rule pt-6 md:mt-24">
         <a

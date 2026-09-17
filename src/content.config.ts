@@ -1,4 +1,4 @@
-import { defineCollection, reference } from 'astro:content';
+import { defineCollection } from 'astro:content';
 // `z` re-exported from 'astro:content'/'astro:schema' is deprecated and goes
 // away in Astro 8; 'astro/zod' is the supported import.
 import { z } from 'astro/zod';
@@ -56,9 +56,8 @@ const tagList = z.array(z.string()).default([]);
 /**
  * Builds — the products and tools that are the spine of the site.
  *
- * `featured` + `order` exist so the homepage's Selected Builds table can be
- * curated by hand instead of inferred from dates. `relatedNotes` lets a build
- * point at the writing that came out of it without duplicating either side.
+ * `order` curates the sequence on `/builds` by hand instead of inferring it
+ * from dates. `featured` is kept for future use; nothing reads it today.
  */
 const builds = defineCollection({
   loader: glob({ base: './src/content/builds', pattern: '**/*.{md,mdx}' }),
@@ -78,7 +77,6 @@ const builds = defineCollection({
       draft: z.boolean().default(false),
       cover: image().optional(),
       coverAlt: z.string().optional(),
-      relatedNotes: z.array(reference('notes')).optional(),
       updated: looseDate.optional(),
     }),
 });
@@ -135,26 +133,4 @@ const work = defineCollection({
   }),
 });
 
-/**
- * Notes — writing. `date` is the only required date on the site because notes
- * are the one collection that is genuinely chronological. `status` is free-form
- * on purpose (e.g. `FIELD NOTE`, `WORKING NOTE`) so a label can be invented
- * without touching this file. `series` groups a multi-part thread.
- */
-const notes = defineCollection({
-  loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
-  schema: z.object({
-    title: z.string(),
-    date: looseDate,
-    description: z.string().optional(),
-    updated: looseDate.optional(),
-    tags: tagList,
-    series: z.string().optional(),
-    status: z.string().optional(),
-    relatedBuild: reference('builds').optional(),
-    featured: z.boolean().default(false),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { builds, sideQuests, work, notes };
+export const collections = { builds, sideQuests, work };

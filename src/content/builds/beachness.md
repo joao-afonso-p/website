@@ -19,7 +19,6 @@ draft: false
 #   repo: https://github.com/...
 #   updated: YYYY-MM-DD
 #   cover: ./beachness-cover.png   +   coverAlt: '...'
-#   relatedNotes: [ note-slug ]
 ---
 
 TODO: two or three sentences introducing Beachness — what it is and who it is for.

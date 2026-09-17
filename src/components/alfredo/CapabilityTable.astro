@@ -34,8 +34,9 @@ const defaultOpen =
     const active = capability.number === defaultOpen;
     const panelId = `alfredo-capability-${capability.number}`;
     const hasDetail = Boolean(
-      capability.label || capability.whatItDoes || capability.whatILearned || capability.noteHref,
+      capability.label || capability.whatItDoes || capability.whatILearned || capability.linkHref,
     );
+    const external = capability.linkHref?.startsWith('http') ?? false;
 
     return (
       <article
@@ -75,9 +76,14 @@ const defaultOpen =
               </p>
             )}
 
-            {capability.noteHref && (
-              <a class="alfredo-link" href={url(capability.noteHref)}>
-                Read note <span aria-hidden="true">&#8599;</span>
+            {capability.linkHref && (
+              <a
+                class="alfredo-link"
+                href={external ? capability.linkHref : url(capability.linkHref)}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+              >
+                {capability.linkLabel ?? 'Read note'} <span aria-hidden="true">&#8599;</span>
               </a>
             )}
           </div>

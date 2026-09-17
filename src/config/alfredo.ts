@@ -21,8 +21,13 @@ export interface AlfredoCapability {
   label?: string;
   whatItDoes?: string;
   whatILearned?: string;
-  /** App-relative path to the note about this capability, e.g. `/notes/slug`. */
-  noteHref?: string;
+  /**
+   * Optional write-up link: an app-relative path (e.g. `/builds/tide`) or an
+   * absolute external URL, which opens in a new tab.
+   */
+  linkHref?: string;
+  /** Link text. Defaults to `Read note`. */
+  linkLabel?: string;
 }
 
 export const alfredoCapabilities: AlfredoCapability[] = [
@@ -64,7 +69,7 @@ export const alfredoCapabilities: AlfredoCapability[] = [
       'Lets me schedule an exact Telegram message to an opted-in contact, after I approve the recipient, wording and time.',
     whatILearned:
       'External communication needs consent, clear authorship and no automatic retry when delivery is uncertain.',
-    // TODO: point at the real note once it is written, e.g. '/notes/scheduled-messages'.
+    // TODO: add `linkHref` once there is a write-up to point at.
   },
   // TODO: replace with the real capability.
   {

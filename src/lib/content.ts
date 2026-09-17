@@ -16,7 +16,6 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 export type BuildEntry = CollectionEntry<'builds'>;
 export type SideQuestEntry = CollectionEntry<'sideQuests'>;
 export type WorkEntry = CollectionEntry<'work'>;
-export type NoteEntry = CollectionEntry<'notes'>;
 
 /** The shape every comparator and filter below actually needs. */
 type SortableEntry = { id: string };
@@ -131,16 +130,6 @@ export async function getWorkEntries(): Promise<WorkEntry[]> {
       byText(a.data.company, b.data.company) ||
       byId(a, b),
   );
-}
-
-/** Published notes, newest first. Pass `limit` for homepage-style previews. */
-export async function getNotes(limit?: number): Promise<NoteEntry[]> {
-  const notes = await getCollection('notes', isPublished);
-  const newestFirst = notes.sort(
-    (a, b) =>
-      byDateDesc(a.data.date, b.data.date) || byText(a.data.title, b.data.title) || byId(a, b),
-  );
-  return typeof limit === 'number' ? newestFirst.slice(0, Math.max(0, limit)) : newestFirst;
 }
 
 /**

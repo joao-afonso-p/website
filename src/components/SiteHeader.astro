@@ -55,7 +55,11 @@ const isHome = isActive('/', here);
             );
           })}
 
-          <li class="meta text-rule-strong select-none" aria-hidden="true">
+          {/* The separator only earns its place when the nav is a single row.
+              Once the list wraps, "Meet Alfredo" drops to its own line and a
+              visible `/` would be left dangling at the end of the line above,
+              so it is hidden until the row stops wrapping. */}
+          <li class="meta text-rule-strong hidden select-none md:block" aria-hidden="true">
             /
           </li>
 

@@ -12,7 +12,7 @@ export const site = {
   wordmark: 'João Afonso',
   /** Default meta description. */
   description:
-    'The résumé is the compressed version. This is a working record of the products, experiments, side quests and notes of an AI engineer who builds things to see if they should exist.',
+    'The résumé is the compressed version. This is a working record of the products, experiments and side quests of an AI engineer who builds things to see if they should exist.',
   /** Default social share text. */
   tagline: 'I build things to see if they should exist.',
   locale: 'en',
@@ -33,12 +33,10 @@ export const nav = [
   { label: 'Work', href: '/work' },
   { label: 'Builds', href: '/builds' },
   { label: 'Side Quests', href: '/side-quests' },
-  { label: 'Notes', href: '/notes' },
-  { label: 'About', href: '/about' },
 ] as const;
 
 /** Visually separated from the primary nav — Alfredo is its own thing. */
-export const alfredoNav = { label: 'Alfredo', href: '/alfredo' } as const;
+export const alfredoNav = { label: 'Meet Alfredo', href: '/alfredo' } as const;
 
 /**
  * Footer links. Add entries as they become real — an empty value is simply

@@ -1,7 +1,7 @@
 # joaoafonso — personal website
 
 A personal site built as a working record rather than a portfolio: products, experiments, side
-quests and notes, each with the reasoning left in. The design is deliberately restrained —
+quests, each with the reasoning left in. The design is deliberately restrained —
 editorial magazine meets technical notebook: warm paper ground, near-black ink, one navy accent,
 hairline rules, typographic hierarchy instead of cards, and effectively no JavaScript shipped to
 the browser — `/alfredo` inlines ~350 bytes for its accordion, and every other page ships none.
@@ -53,8 +53,6 @@ trailing slash.
 /work                /work/[...slug]
 /builds              /builds/[...slug]
 /side-quests         /side-quests/[...slug]
-/notes               /notes/[...slug]
-/about
 /alfredo
 /404
 /robots.txt          generated from Astro.site (src/pages/robots.txt.ts)
@@ -73,16 +71,15 @@ src/
     builds/               shipped products and tools
     side-quests/          smaller or older detours, collaborations, non-product work
     work/                 employment history, one file per role
-    notes/                writing
     README.md             detailed authoring reference (frontmatter tables, examples)
   lib/
     content.ts            typed data access: getBuilds, getFeaturedBuilds, getSideQuests,
-                          getWorkEntries, getNotes, isPublished, formatDate, formatYear
+                          getWorkEntries, isPublished, formatDate, formatYear, pageDescription
     paths.ts              url() / absoluteUrl() / canonicalUrl() / appPath() / isActive() /
                           isExact() — base-path- and trailing-slash-aware href helpers
   layouts/BaseLayout.astro
-  components/             Seo, Container, SiteHeader, SiteFooter, SectionHeader, ProjectRow,
-                          NoteRow, StatusIndicator, PageIntro, EntryMeta, EmptyState, Prose,
+  components/             Seo, Container, SiteHeader, SiteFooter, ProjectRow,
+                          StatusIndicator, PageIntro, EntryMeta, EmptyState, Prose,
                           home/*, alfredo/*
   pages/                  routes
   styles/global.css       design tokens (@theme) and the .meta / .rule / .link / .arrow / .prose
@@ -110,23 +107,22 @@ Fields marked `?` are optional. Omit an optional field entirely rather than leav
 
 ### `builds` — shipped products and tools
 
-| Field          | Type                            | Notes                                     |
-| -------------- | ------------------------------- | ----------------------------------------- |
-| `title`        | string                          | required                                  |
-| `oneLiner`     | string                          | required; the line shown in listings      |
-| `description`  | string?                         | longer summary                            |
-| `year`         | number?                         | used for sorting when `order` is absent   |
-| `status`       | status?                         | see the status values below               |
-| `tags`         | string[]                        | required, may be empty                    |
-| `stack`        | string[]?                       |                                           |
-| `url`, `repo`  | string?                         | live site / source                        |
-| `featured`     | boolean, default `false`        | `true` puts it in Selected Builds on `/`  |
-| `order`        | number?                         | manual sort key, ascending                |
-| `draft`        | boolean, default `false`        | see the draft workflow                    |
-| `cover`        | image?                          | relative path, processed by Astro         |
-| `coverAlt`     | string?                         | required in practice whenever `cover` set |
-| `relatedNotes` | reference to `notes` entries[]? | must match existing note filenames        |
-| `updated`      | date?                           |                                           |
+| Field         | Type                     | Notes                                     |
+| ------------- | ------------------------ | ----------------------------------------- |
+| `title`       | string                   | required                                  |
+| `oneLiner`    | string                   | required; the line shown in listings      |
+| `description` | string?                  | longer summary                            |
+| `year`        | number?                  | used for sorting when `order` is absent   |
+| `status`      | status?                  | see the status values below               |
+| `tags`        | string[]                 | required, may be empty                    |
+| `stack`       | string[]?                |                                           |
+| `url`, `repo` | string?                  | live site / source                        |
+| `featured`    | boolean, default `false` | `true` puts it in Selected Builds on `/`  |
+| `order`       | number?                  | manual sort key, ascending                |
+| `draft`       | boolean, default `false` | see the draft workflow                    |
+| `cover`       | image?                   | relative path, processed by Astro         |
+| `coverAlt`    | string?                  | required in practice whenever `cover` set |
+| `updated`     | date?                    |                                           |
 
 ### `sideQuests` — `src/content/side-quests/`
 
@@ -163,21 +159,6 @@ Fields marked `?` are optional. Omit an optional field entirely rather than leav
 | `url`          | string?                  |                                   |
 | `order`        | number?                  |                                   |
 | `draft`        | boolean, default `false` |                                   |
-
-### `notes` — writing
-
-| Field          | Type                           | Notes                                      |
-| -------------- | ------------------------------ | ------------------------------------------ |
-| `title`        | string                         | required                                   |
-| `date`         | date                           | required; `YYYY-MM-DD`; sorts newest first |
-| `description`  | string?                        | also used as the meta description          |
-| `updated`      | date?                          |                                            |
-| `tags`         | string[]                       | required, may be empty                     |
-| `series`       | string?                        | groups related notes                       |
-| `status`       | string?                        | free text label, e.g. `FIELD NOTE`         |
-| `relatedBuild` | reference to a `builds` entry? | must match an existing build filename      |
-| `featured`     | boolean, default `false`       |                                            |
-| `draft`        | boolean, default `false`       |                                            |
 
 ### Status values
 
@@ -241,7 +222,7 @@ it can grow without a schema change. The conventional sections:
 
 Same as a Build, in `src/content/side-quests/<slug>.md`. Use `org`, `role` and `period` when the
 work was for someone else or belongs to a specific stretch of time. There is no `cover` or
-`relatedNotes` here — side quests are intentionally lighter.
+side quests are intentionally lighter.
 
 ### Add a Work entry
 
@@ -252,31 +233,6 @@ work was for someone else or belongs to a specific stretch of time. There is no 
    machine-readable dates.
 4. Use the body for the real substance, including
    `## Things that don't fit in my résumé`.
-
-### Publish a Note
-
-1. Create `src/content/notes/<slug>.md` with at least `title`, `date` and `tags`:
-
-   ```markdown
-   ---
-   title: A short, specific title
-   date: 2026-03-12
-   description: One line that works as both a listing summary and a meta description.
-   tags: ['notes']
-   status: FIELD NOTE
-   draft: true
-   ---
-
-   Body text.
-   ```
-
-2. Link it to a build with `relatedBuild: <build-slug>` — the slug must match a file in
-   `src/content/builds/`, otherwise `pnpm check` fails.
-3. Delete `draft: true` to publish. Notes sort newest first by `date`; if you backdate a note it
-   will slot in accordingly.
-4. If you edit a published note substantively, add `updated: YYYY-MM-DD`.
-
----
 
 ## Draft workflow
 

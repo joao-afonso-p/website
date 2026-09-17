@@ -6,7 +6,7 @@ import ProjectRow from '../../components/ProjectRow.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getSideQuests } from '../../lib/content';
 
-/** Same listing language as /builds, /work and /notes. */
+/** Same listing language as /builds and /work. */
 const sideQuests = await getSideQuests();
 
 const joined = (parts: Array<string | undefined>): string | undefined => {
