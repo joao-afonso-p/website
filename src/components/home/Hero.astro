@@ -9,6 +9,10 @@ import Container from '../Container.astro';
  * running head, not a heading), the statement at display scale, then a hairline
  * carrying the two standfirst lines.
  *
+ * The accent carries two jobs and no more: the nameplate, and the full stop
+ * that ends the statement. One blue glyph at display scale is the whole of the
+ * page's colour — enough to register, too little to decorate.
+ *
  * The statement's line breaks are set by hand instead of being left to the
  * browser: at display scale a bad wrap is the difference between a masthead and
  * an accident. Three spans of 13–14 characters hold the same shape at every
@@ -27,12 +31,14 @@ interface Props {}
 
 <section class="pt-14 md:pt-20 lg:pt-24">
   <Container>
-    <h1 class="meta text-ink">João Afonso</h1>
+    <h1 class="meta text-accent">João Afonso</h1>
 
     <p class="text-display text-ink mt-10 md:mt-14">
       <span class="block">I build things</span>
       <span class="block">to see if they</span>
-      <span class="block">should exist.</span>
+      <span class="block">
+        should exist<span class="text-accent">.</span>
+      </span>
     </p>
 
     <div class="mt-12 grid gap-6 border-t border-rule pt-6 md:mt-16 md:pt-8 lg:grid-cols-12 lg:gap-x-6">

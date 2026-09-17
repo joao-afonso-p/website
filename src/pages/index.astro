@@ -1,181 +1,27 @@
 ---
-import Container from '../components/Container.astro';
-import EmptyState from '../components/EmptyState.astro';
-import NoteRow from '../components/NoteRow.astro';
-import ProjectRow from '../components/ProjectRow.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import Alfredo from '../components/home/Alfredo.astro';
 import Currently from '../components/home/Currently.astro';
 import Hero from '../components/home/Hero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getFeaturedBuilds, getNotes, getSideQuests, getWorkEntries } from '../lib/content';
 
 /**
- * The homepage.
+ * The homepage: a masthead and one line about now. Nothing else.
  *
- * No `title` prop: BaseLayout emits the bare branded title, and no
- * `description` either — `site.description` is already the best sentence
- * available about what this site is.
+ * It states the premise and gets out of the way — the work itself lives behind
+ * the nav, so previewing it here would only say the same thing twice. Currently
+ * sits tight under the hero (`mt-10`) because it belongs to the masthead rather
+ * than being a section of its own.
  *
- * Vertical rhythm is the whole design. Reading down the page:
- *   hero          pt-14 / lg:pt-24   opening
- *   currently     mt-10              tight — it belongs to the masthead
- *   builds        mt-section  (6rem) generous — the first real section
- *   alfredo       mt-section-lg (9rem) + full-bleed rules — the break
- *   side quests   mt-section  (6rem) back to the index
- *   work          mt-20              quieter — the previews are one group
- *   notes         mt-20              quieter
- *   footer        mt-section         from BaseLayout
+ * No `title` prop: BaseLayout emits the bare branded title. No `description`
+ * either — `site.description` is already the best sentence available about what
+ * this site is.
  *
- * Three of the four collections are empty in a production build (only `builds`
- * has published entries), so the `EmptyState` branch below is the real
- * first-deploy page, not a fallback. Both branches are laid out to look
- * deliberate.
+ * `BaseLayout` is a `min-h-dvh` flex column with `flex-1` on `<main>`, so on a
+ * page this short the footer settles at the bottom of the viewport instead of
+ * floating halfway up it.
  */
-const builds = await getFeaturedBuilds(4);
-const sideQuests = (await getSideQuests()).slice(0, 3);
-const work = (await getWorkEntries()).slice(0, 3);
-const notes = await getNotes(3);
-
-/** `01`, `02`, … — the index numerals down the left edge of every table. */
-const no = (i: number): string => String(i + 1).padStart(2, '0');
-
-/**
- * The STATUS column is labelled only when something occupies it. No build has
- * a confirmed status yet, and a header over four empty cells reads as a bug.
- */
-const showStatusColumn = builds.some((build) => build.data.status !== undefined);
 ---
 
 <BaseLayout>
   <Hero />
   <Currently />
-
-  <section class="mt-section" aria-labelledby="selected-builds">
-    <Container>
-      <SectionHeader
-        id="selected-builds"
-        index="01"
-        title="Selected builds"
-        href="/builds"
-        linkLabel="All builds"
-      />
-
-      <div class="mt-8 md:mt-10">
-        {builds.length > 0 ? (
-          <>
-            {/* Column header: decorative, so hidden from assistive tech — the
-                rows below carry real headings. Mobile drops it, because the
-                rows reorganise into a stack there and have no columns. */}
-            <div class="hidden grid-cols-12 gap-x-6 pb-3 md:grid" aria-hidden="true">
-              <span class="meta text-muted col-span-1 col-start-1">No.</span>
-              <span class="meta text-muted col-span-5 col-start-2">Project</span>
-              {showStatusColumn && (
-                <span class="meta text-muted col-span-2 col-start-10">Status</span>
-              )}
-            </div>
-
-            {builds.map((build, i) => (
-              <ProjectRow
-                number={no(i)}
-                title={build.data.title}
-                description={build.data.description ?? build.data.oneLiner}
-                status={build.data.status}
-                year={build.data.year}
-                tags={build.data.tags}
-                href={`/builds/${build.id}`}
-              />
-            ))}
-          </>
-        ) : (
-          <EmptyState message="Products and tools, in the order I’d show them." />
-        )}
-      </div>
-    </Container>
-  </section>
-
-  <Alfredo />
-
-  <section class="mt-section" aria-labelledby="side-quests">
-    <Container>
-      <SectionHeader
-        id="side-quests"
-        index="02"
-        title="Side quests"
-        href="/side-quests"
-        linkLabel="All side quests"
-      />
-
-      <div class="mt-8 md:mt-10">
-        {sideQuests.length > 0 ? (
-          sideQuests.map((quest, i) => (
-            <ProjectRow
-              number={no(i)}
-              title={quest.data.title}
-              description={quest.data.description ?? quest.data.oneLiner}
-              status={quest.data.status}
-              year={quest.data.year}
-              tags={quest.data.tags}
-              meta={quest.data.period}
-              href={`/side-quests/${quest.id}`}
-            />
-          ))
-        ) : (
-          <EmptyState message="Work that wasn’t quite a job and wasn’t quite a weekend project." />
-        )}
-      </div>
-    </Container>
-  </section>
-
-  <section class="mt-20" aria-labelledby="work">
-    <Container>
-      <SectionHeader id="work" index="03" title="Work" href="/work" linkLabel="Full record" />
-
-      <div class="mt-8 md:mt-10">
-        {work.length > 0 ? (
-          work.map((role, i) => (
-            <ProjectRow
-              number={no(i)}
-              title={role.data.title ?? role.data.company}
-              description={role.data.description ?? role.data.oneLiner}
-              meta={[role.data.role, role.data.period].filter(Boolean).join(' · ')}
-              href={`/work/${role.id}`}
-            />
-          ))
-        ) : (
-          <EmptyState message="The résumé-shaped record: where I’ve worked, and what the job actually was." />
-        )}
-      </div>
-    </Container>
-  </section>
-
-  <section class="mt-20" aria-labelledby="notes">
-    <Container>
-      <SectionHeader
-        id="notes"
-        index="04"
-        title="Latest notes"
-        href="/notes"
-        linkLabel="All notes"
-      />
-
-      <div class="mt-8 md:mt-10">
-        {notes.length > 0 ? (
-          notes.map((note) => (
-            <NoteRow
-              title={note.data.title}
-              date={note.data.date}
-              description={note.data.description}
-              tags={note.data.tags}
-              series={note.data.series}
-              status={note.data.status}
-              href={`/notes/${note.id}`}
-            />
-          ))
-        ) : (
-          <EmptyState message="Short pieces written while building something, not conclusions about the world." />
-        )}
-      </div>
-    </Container>
-  </section>
 </BaseLayout>

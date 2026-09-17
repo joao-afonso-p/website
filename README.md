@@ -49,7 +49,7 @@ links must go through `url()` from `src/lib/paths.ts`, which applies both the ba
 trailing slash.
 
 ```
-/                    homepage
+/                    homepage — masthead and "Currently", nothing else
 /work                /work/[...slug]
 /builds              /builds/[...slug]
 /side-quests         /side-quests/[...slug]
@@ -78,11 +78,12 @@ src/
   lib/
     content.ts            typed data access: getBuilds, getFeaturedBuilds, getSideQuests,
                           getWorkEntries, getNotes, isPublished, formatDate, formatYear
-    paths.ts              url() / absoluteUrl() / isActive() — base-path-aware href helpers
+    paths.ts              url() / absoluteUrl() / canonicalUrl() / appPath() / isActive() /
+                          isExact() — base-path- and trailing-slash-aware href helpers
   layouts/BaseLayout.astro
   components/             Seo, Container, SiteHeader, SiteFooter, SectionHeader, ProjectRow,
-                          FeaturedProject, StatusIndicator, MetaLabel, NoteRow, PageIntro,
-                          EmptyState, Prose, home/*
+                          NoteRow, StatusIndicator, PageIntro, EntryMeta, EmptyState, Prose,
+                          home/*, alfredo/*
   pages/                  routes
   styles/global.css       design tokens (@theme) and the .meta / .rule / .link / .arrow / .prose
                           component classes
@@ -231,8 +232,9 @@ it can grow without a schema change. The conventional sections:
    ```
 
 3. `pnpm dev` and open `/builds/<slug>`. Drafts are visible in dev.
-4. To put it in **Selected Builds** on the homepage, set `featured: true` and give it an `order`
-   (`1`–`4`). The homepage shows four; `order` decides which and in what sequence.
+4. `order` decides where it sits on `/builds` (ascending, then by year, then title). `featured` is
+   carried in the schema for future use — the homepage is deliberately just a masthead, so nothing
+   reads it today.
 5. Remove `draft: true` when it is ready, then `pnpm check && pnpm build` and push.
 
 ### Add a Side Quest
