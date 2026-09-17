@@ -3,7 +3,8 @@
 A personal site built as a working record rather than a portfolio: products, experiments, side
 quests and notes, each with the reasoning left in. The design is deliberately restrained —
 editorial magazine meets technical notebook: warm paper ground, near-black ink, one navy accent,
-hairline rules, typographic hierarchy instead of cards, and no JavaScript shipped to the browser.
+hairline rules, typographic hierarchy instead of cards, and effectively no JavaScript shipped to
+the browser — `/alfredo` inlines ~350 bytes for its accordion, and every other page ships none.
 Every colour, size and measure comes from the design tokens in `src/styles/global.css`; there are
 no gradients, shadows, glows or rounded cards, and border radius never exceeds 2px.
 
@@ -66,6 +67,7 @@ public/                   copied verbatim: favicon.svg, og-default.png, .nojekyl
                           CNAME (only if you add a custom domain)
 src/
   config/site.ts          name, description, tagline, nav, social links, the "Currently" list
+  config/alfredo.ts       the Alfredo capability record — the whole content model for /alfredo
   content.config.ts       collection schemas (zod) — the single source of truth for frontmatter
   content/
     builds/               shipped products and tools
@@ -406,3 +408,12 @@ One caveat: crawlers only honour `robots.txt` at the origin root, so on a sub-pa
   site does not currently use.
 - Metadata text uses `--color-muted`. `--color-faint` is lighter than WCAG AA allows for 11px text
   and is reserved for non-informational marks only.
+- `/alfredo` is a deliberate exception to the design system: it has its own surface
+  (`--color-alfredo-*` in `global.css`), its own 1160px measure and a tighter type scale, because
+  Alfredo is its own sub-project. The site's typefaces and index-table language carry over. It is
+  also the only page that ships JavaScript — a native-button accordion needs it to keep
+  `aria-expanded` truthful.
+- One known contrast gap: `--color-alfredo-muted` (`#72777c`) is **4.36:1** on the Alfredo
+  background and **3.66:1** on the active-row wash, where WCAG AA wants 4.5:1. It was supplied as
+  an exact spec so it has been kept verbatim. `#6e7378` clears AA on the background; `#62676c`
+  clears it on both. Changing the one token in `global.css` fixes every use.

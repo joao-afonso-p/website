@@ -1,86 +1,132 @@
 ---
-import Container from '../components/Container.astro';
-import SectionHeader from '../components/SectionHeader.astro';
+import CapabilityTable from '../components/alfredo/CapabilityTable.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { url } from '../lib/paths';
 
 /**
- * The gateway to the long project.
+ * The long project.
  *
- * It has to read as the same design universe while clearly being its own thing,
- * and it earns that with exactly one structural move: the masthead is a
- * full-bleed `bg-paper-sunk` band and the wordmark is set at `text-display` —
- * the only place outside the homepage hero that reaches for that size. No new
- * colours, no new fonts, no new components.
+ * Alfredo gets its own surface: a cooler, lighter paper, a brighter blue, its
+ * own 1160px measure and a tighter type scale than the rest of the site. The
+ * site's typefaces and its editorial index-table language carry over, so the
+ * page still reads as part of the same universe while being unmistakably its
+ * own thing. The full-bleed background is what makes the narrower measure read
+ * as deliberate rather than misaligned.
  *
- * Everything factual is a `TODO:`. This page will later link to, or grow into,
- * a dedicated Alfredo site, so it stays structurally simple on purpose.
+ * Content lives in `src/config/alfredo.ts`.
  */
-const sections = [
-  {
-    id: 'what',
-    index: '01',
-    title: 'What it is',
-    body: 'TODO: describe Alfredo plainly — what it actually is today, in two or three sentences, with no promises about what it will become.',
-  },
-  {
-    id: 'why',
-    index: '02',
-    title: 'Why it exists',
-    body: 'TODO: the real reason this project started, and why a personal operating system is the shape the answer took.',
-  },
-  {
-    id: 'where',
-    index: '03',
-    title: 'Where it lives',
-    body: 'TODO: link to the dedicated Alfredo site once it exists. Until then, this page is the whole of it.',
-  },
-] as const;
 ---
 
 <BaseLayout
   title="Alfredo"
-  description="The long project: building a personal operating system around my actual life."
+  description="A record of what Alfredo knows: a personal operating system, one capability at a time."
 >
-  <section class="bg-paper-sunk border-b border-rule" aria-labelledby="alfredo">
-    <Container>
-      <div class="pt-14 pb-16 md:pt-section md:pb-24">
-        <p class="meta border-b border-rule-strong pb-4">The long project</p>
+  <div class="alfredo-surface">
+    <div class="alfredo-page">
+      <header class="alfredo-hero">
+        <div>
+          <p class="alfredo-kicker">A personal operating system · One capability at a time</p>
 
-        <h1 id="alfredo" class="text-display text-ink mt-10 md:mt-14">
-          Alfredo
-        </h1>
+          <h1>A record of what Alfredo knows.</h1>
+        </div>
 
-        <p class="text-lead text-ink-soft mt-10 max-w-text md:mt-14">
-          Building a personal operating system around my actual life.
-        </p>
-      </div>
-    </Container>
-  </section>
+        <div class="alfredo-introduction">
+          <strong>Meet Alfredo.</strong>
+          An AI agent I’m building to understand the context of my life, remember what matters, and
+          help at the right moment—without taking control away from me.
+        </div>
+      </header>
 
-  <Container>
-    <div class="pt-14 md:pt-20">
-      {sections.map((section) => (
-        <section aria-labelledby={section.id} class="pb-14 md:pb-20">
-          <SectionHeader id={section.id} index={section.index} title={section.title} />
+      <CapabilityTable />
 
-          <div class="mt-8 md:mt-10 md:grid md:grid-cols-12 md:gap-x-6">
-            <div class="md:col-span-7 md:col-start-2">
-              <p class="meta text-muted">To write</p>
-              <p class="text-body text-muted mt-3 max-w-prose">{section.body}</p>
-            </div>
-          </div>
-        </section>
-      ))}
-
-      <div class="border-t border-rule pt-6">
-        <a
-          href={url('/')}
-          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
-        >
+      <div class="alfredo-back">
+        <a href={url('/')}>
           <span aria-hidden="true">&#8592;</span> Back to the rest of the site
         </a>
       </div>
     </div>
-  </Container>
+  </div>
 </BaseLayout>
+
+<style>
+  /* Full-bleed so Alfredo's paper, not the site's, is the page surface. */
+  .alfredo-surface {
+    background: var(--color-alfredo-bg);
+    color: var(--color-alfredo-text);
+  }
+
+  .alfredo-page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 22px 30px 44px;
+  }
+
+  .alfredo-hero {
+    display: grid;
+    grid-template-columns: 2.3fr 1fr;
+    gap: 60px;
+    align-items: end;
+    padding: 60px 0 58px;
+  }
+
+  .alfredo-kicker {
+    margin: 0 0 22px;
+    color: var(--color-alfredo-blue);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .alfredo-hero h1 {
+    max-width: 820px;
+    margin: 0;
+    font-size: clamp(46px, 8vw, 92px);
+    font-weight: 400;
+    line-height: 0.94;
+    letter-spacing: -0.07em;
+  }
+
+  .alfredo-introduction {
+    max-width: 270px;
+    color: var(--color-alfredo-muted);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .alfredo-introduction strong {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--color-alfredo-text);
+    font-weight: 500;
+  }
+
+  .alfredo-back {
+    padding-top: 28px;
+  }
+
+  .alfredo-back a {
+    color: var(--color-alfredo-blue);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .alfredo-back a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 700px) {
+    .alfredo-page {
+      padding: 18px 14px 34px;
+    }
+
+    .alfredo-hero {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 45px 0 40px;
+    }
+  }
+</style>

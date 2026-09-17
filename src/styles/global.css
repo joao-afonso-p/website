@@ -39,6 +39,19 @@
   --color-status-paused: #6a6a63;
   --color-status-archived: #7a7a71; /* swatch only; 3.9 / 3.6 clears the 3:1 floor */
 
+  /* ---- Alfredo sub-project surface ---------------------------------------
+     Alfredo is its own thing and deliberately does NOT reuse the palette
+     above: a cooler, lighter paper and a brighter blue. These values are an
+     exact supplied spec — do not merge them into the site tokens or nudge
+     them towards them. Ratios below are `on --color-alfredo-bg / on
+     --color-alfredo-blue-wash` (the active-row background).            */
+  --color-alfredo-bg: #fbfbf8;
+  --color-alfredo-text: #111315; /* 18.0 / 15.1 */
+  --color-alfredo-muted: #72777c; /* 4.4 / 3.7 — below AA; see README */
+  --color-alfredo-line: #cfd2d2; /* hairlines only, never text */
+  --color-alfredo-blue: #285b8a; /* 6.9 / 5.8 */
+  --color-alfredo-blue-wash: #dce9f2;
+
   /* ---- Typography ------------------------------------------------------
      Schibsted Grotesk: a Nordic editorial grotesque, set tight and large.
      IBM Plex Mono: metadata, labels, numerals, status.
