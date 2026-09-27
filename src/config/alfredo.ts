@@ -252,7 +252,7 @@ export const alfredoCapabilities: AlfredoCapability[] = [
       'Connects calendars, tasks, reminders and context without pretending they are all the same thing.',
     exists: [
       'Google Calendar as the source of truth for commitments, across five accounts, because I decided that one calendar was not enough in my life',
-      'Todoist as the source of truth for concrete next actions, currently read-only',
+      'Todoist as the source of truth for concrete next actions and to create clear tasks',
       'Reminders left in the system that can actually remind me, rather than hiding them inside a calendar',
       'Obsidian holding the context and open loops that are neither an event nor a task',
       'Every write tied to the exact account I approved and shown in full before it happens',

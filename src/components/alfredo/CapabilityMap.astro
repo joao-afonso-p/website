@@ -212,15 +212,6 @@ const nodes = alfredoCapabilities.map((capability, index) => {
         >
           <span class="node-marker" aria-hidden="true"></span>
 
-          {/* The small-screen twin of the travelling point in the SVG: it runs
-              out from the spine along this branch. Hidden on wide screens,
-              where the SVG draws its own. */}
-          <span
-            class="node-flow"
-            aria-hidden="true"
-            style={`--flow-delay:${node.flowDelay}`}
-          ></span>
-
           <button
             class="node-button"
             type="button"
@@ -247,6 +238,11 @@ const nodes = alfredoCapabilities.map((capability, index) => {
         </div>
       ))}
     </div>
+
+    {/* Small screens only: the layer the travelling points run in. They are
+        placed by the script, which walks each one down the spine and out
+        along a branch; wide screens use the SVG's own points instead. */}
+    <span class="map-flow" aria-hidden="true" data-map-flow></span>
 
     {nodes.map((node) => (
       <CapabilityPanel capability={node.capability} side={node.side} />
@@ -434,71 +430,83 @@ const nodes = alfredoCapabilities.map((capability, index) => {
     left: 50%;
   }
 
-  /* ---- The travelling point ----------------------------------------------
-     Always running, on every connection, live or not. The brief this page
-     started from said live should feel calm and only work-in-progress should
-     move; that has been overruled, so the movement is instead kept slow and
-     small enough that nine of them still read as one quiet system. */
-  .node-flow {
+  /* ---- The flowing spine --------------------------------------------------
+     Small screens only. The spine is dashed, and the dashes run downward, away
+     from Alfredo, at `--flow-speed` pixels a second. The travelling points the
+     script sends down it move at exactly the same speed, so they read as
+     riding the flow rather than overtaking it.
+
+     The spine is drawn in pieces (the stub under Alfredo, then one segment per
+     row), so each piece is given its own distance from the top of the spine as
+     `--spine-top`. Offsetting the pattern by that is what makes the dashes line
+     up across the joins as one continuous line. Without the script every
+     offset is zero, and the joins are merely a little less exact. */
+  @media (max-width: 1023px) {
+    .alfredo-map {
+      --flow-speed: 30;
+      --dash: 8px;
+    }
+
+    .map-spine,
+    .node::after {
+      width: 1px;
+      border-left: 0;
+      background-color: transparent;
+      background-image: linear-gradient(to bottom, var(--color-rule-strong) 50%, transparent 50%);
+      background-size: 1px var(--dash);
+      background-repeat: repeat-y;
+      background-position: 0 calc(-1 * var(--spine-top, 0px));
+    }
+  }
+
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    .map-spine,
+    .node::after {
+      animation: alfredo-dash calc(8s / var(--flow-speed)) linear infinite;
+    }
+  }
+
+  /* One period of the pattern per cycle, so the loop is seamless. */
+  @keyframes alfredo-dash {
+    from {
+      background-position: 0 calc(-1 * var(--spine-top, 0px));
+    }
+    to {
+      background-position: 0 calc(var(--dash) - var(--spine-top, 0px));
+    }
+  }
+
+  /* ---- The travelling points ----------------------------------------------
+     Each one enters at the top of the spine, falls with the dashes and, at
+     every branch it meets, randomly either takes it or carries on down. The
+     script owns the route; this owns the look, and whether there is any motion
+     at all: under reduced motion, or on the constellation, the layer is simply
+     not displayed and the script sends nothing. */
+  .map-flow {
+    display: none;
+  }
+
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    .map-flow {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+  }
+
+  .map-flow :global(.map-flow-dot) {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 4px;
     height: 4px;
     margin: -2px 0 0 -2px;
     border-radius: 50%;
     background-color: var(--color-rule-strong);
     opacity: 0;
-  }
-
-  .node[data-tone='accent'] .node-flow {
-    background-color: var(--color-accent);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .node[data-branch='left'] .node-flow {
-      animation: alfredo-flow-left 7s linear var(--flow-delay, 0s) infinite;
-    }
-
-    .node[data-branch='right'] .node-flow {
-      animation: alfredo-flow-right 7s linear var(--flow-delay, 0s) infinite;
-    }
-  }
-
-  @keyframes alfredo-flow-left {
-    0% {
-      transform: translateX(0);
-      opacity: 0;
-    }
-    12% {
-      opacity: 0.75;
-    }
-    62% {
-      opacity: 0.75;
-    }
-    74%,
-    100% {
-      transform: translateX(calc(-1 * var(--branch)));
-      opacity: 0;
-    }
-  }
-
-  @keyframes alfredo-flow-right {
-    0% {
-      transform: translateX(0);
-      opacity: 0;
-    }
-    12% {
-      opacity: 0.75;
-    }
-    62% {
-      opacity: 0.75;
-    }
-    74%,
-    100% {
-      transform: translateX(var(--branch));
-      opacity: 0;
-    }
   }
 
   .node[data-tone='accent']::before {
@@ -534,9 +542,13 @@ const nodes = alfredoCapabilities.map((capability, index) => {
      that is simply already drawn. Nothing here can leave a capability sitting
      on the page with no line attaching it to Alfredo. */
   @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    /* Restates the dash flow alongside the drop, because this shorthand would
+       otherwise replace it. */
     .alfredo-map[data-animate] .node[data-seen]::after {
       transform-origin: top center;
-      animation: alfredo-spine 420ms var(--ease-editorial) both;
+      animation:
+        alfredo-spine 420ms var(--ease-editorial) both,
+        alfredo-dash calc(8s / var(--flow-speed)) linear infinite;
     }
 
     .alfredo-map[data-animate] .node[data-seen]::before {
@@ -851,12 +863,12 @@ const nodes = alfredoCapabilities.map((capability, index) => {
       font-size: clamp(7.5px, 0.708cqw, 8.5px);
     }
 
-    /* The spine, the plus and the small-screen travelling point all belong to
-       the branching layout. The instruction line stays: it is the only thing
-       above the map now, and a pointer needs telling as much as a finger. */
+    /* The spine and the plus belong to the branching layout, as do the
+       small-screen travelling points, whose layer is never shown here. The
+       instruction line stays: it is the only thing above the map now, and a
+       pointer needs telling as much as a finger. */
     .map-spine,
-    .node-more,
-    .node-flow {
+    .node-more {
       display: none;
     }
 
@@ -1222,5 +1234,161 @@ const nodes = alfredoCapabilities.map((capability, index) => {
       }
       watcher.disconnect();
     }, 2500);
+
+    const flow = map.querySelector<HTMLElement>('[data-map-flow]');
+    const spine = map.querySelector<HTMLElement>('.map-spine');
+    const rows = map.querySelector<HTMLElement>('.map-nodes');
+    if (flow && spine && rows && nodes.length > 0) runFlow(map, flow, spine, rows, nodes);
+  }
+
+  /**
+   * Small screens: points riding the spine. Each one enters at the top, falls
+   * at the dashes' own speed and, at every branch it reaches, either takes it
+   * or carries on down. Whether any of this shows is the stylesheet's call:
+   * the layer is only displayed below 1024px with motion allowed, and the
+   * layer's own display is checked before every send, so there is no breakpoint
+   * read here to go stale.
+   */
+  function runFlow(
+    map: HTMLElement,
+    flow: HTMLElement,
+    spine: HTMLElement,
+    rows: HTMLElement,
+    nodes: HTMLElement[],
+  ) {
+    /** A handful at a time is plenty; more reads as traffic. */
+    const MAX_POINTS = 6;
+
+    const flowing = () => getComputedStyle(flow).display !== 'none';
+    const speed = () => parseFloat(getComputedStyle(map).getPropertyValue('--flow-speed')) || 30;
+    const colour = (name: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+    /**
+     * Tells each row's segment of the spine how far it starts below the top,
+     * so the dash pattern runs on unbroken across the joins.
+     */
+    function alignDashes() {
+      const top = spine.getBoundingClientRect().top;
+      for (const node of nodes) {
+        const offset = Math.round((node.getBoundingClientRect().top - top) * 100) / 100;
+        node.style.setProperty('--spine-top', `${offset}px`);
+      }
+    }
+
+    interface Point {
+      x: number;
+      y: number;
+    }
+
+    /**
+     * A route from the top of the spine to one branch's end. At the i-th of n
+     * branches the point turns off with probability 1 / (n - i), which makes
+     * every row equally likely to be where it leaves while still deciding at
+     * each junction in turn. The last branch always takes it, because the spine
+     * stops there.
+     */
+    function route(): { points: Point[]; node: HTMLElement } | null {
+      const origin = flow.getBoundingClientRect();
+      const first = nodes[0].getBoundingClientRect();
+      // The segments are drawn from each row's centre line, so that is where
+      // the point runs, not the half-pixel-off stub under Alfredo.
+      const x = first.left + first.width / 2 + 0.5 - origin.left;
+      const points: Point[] = [{ x, y: spine.getBoundingClientRect().top - origin.top }];
+
+      for (let index = 0; index < nodes.length; index++) {
+        const node = nodes[index];
+        const box = node.getBoundingClientRect();
+        const y = box.top + box.height / 2 - origin.top;
+        points.push({ x, y });
+
+        if (Math.random() * (nodes.length - index) < 1) {
+          // The same reach the branch's own connector is drawn at.
+          const stagger = parseFloat(node.style.getPropertyValue('--stagger')) || 0;
+          const reach = 20 + stagger / 2;
+          const side = node.dataset.branch === 'left' ? -1 : 1;
+          points.push({ x: x + side * reach, y });
+          return { points, node };
+        }
+      }
+
+      return null;
+    }
+
+    function send() {
+      if (flow.childElementCount >= MAX_POINTS) return;
+      const trip = route();
+      if (!trip) return;
+
+      const { points, node } = trip;
+      const stops: number[] = [0];
+      for (let index = 1; index < points.length; index++) {
+        const from = points[index - 1];
+        const to = points[index];
+        stops.push(stops[index - 1] + Math.hypot(to.x - from.x, to.y - from.y));
+      }
+
+      const length = stops[stops.length - 1];
+      if (length <= 0) return;
+
+      const at = (distance: number) => distance / length;
+      const turn = at(stops[stops.length - 2]);
+      const base = colour('--color-rule-strong');
+
+      // Position, visibility and colour are keyed independently: it fades in
+      // over its first few pixels, holds down the spine, and fades out along
+      // the branch it took, picking up the branch's accent if it has one.
+      const keyframes: Keyframe[] = [
+        ...points.map((point, index) => ({
+          offset: at(stops[index]),
+          transform: `translate(${point.x}px, ${point.y}px)`,
+        })),
+        { offset: 0, opacity: 0 },
+        { offset: Math.min(at(12), turn), opacity: 0.75 },
+        { offset: turn, opacity: 0.75 },
+        { offset: 1, opacity: 0 },
+        { offset: 0, backgroundColor: base },
+        { offset: turn, backgroundColor: base },
+        {
+          offset: 1,
+          backgroundColor: node.dataset.tone === 'accent' ? colour('--color-accent') : base,
+        },
+      ];
+      keyframes.sort((a, b) => (a.offset as number) - (b.offset as number));
+
+      const point = document.createElement('span');
+      point.className = 'map-flow-dot';
+      flow.append(point);
+
+      const animation = point.animate(keyframes, {
+        duration: (length / speed()) * 1000,
+        easing: 'linear',
+        fill: 'both',
+      });
+      animation.onfinish = () => point.remove();
+      animation.oncancel = () => point.remove();
+    }
+
+    let visible = false;
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    }).observe(map);
+
+    // Routes are measured when a point sets off, so any change of layout
+    // retires the points in flight rather than leaving them on stale lines.
+    new ResizeObserver(() => {
+      alignDashes();
+      for (const animation of flow.getAnimations({ subtree: true })) animation.cancel();
+    }).observe(rows);
+
+    alignDashes();
+
+    // Irregular on purpose: a fixed interval would march them in step.
+    function tick() {
+      if (visible && !document.hidden && flowing()) send();
+      window.setTimeout(tick, 1800 + Math.random() * 1800);
+    }
+
+    window.setTimeout(tick, 400);
   }
 </script>
