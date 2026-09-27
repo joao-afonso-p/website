@@ -8,9 +8,9 @@ import tailwindcss from '@tailwindcss/vite';
  * Deployment target is configured in exactly one place.
  *
  * - Default: the custom domain (https://joaoafonsopereira.com, base "/"),
- *   served by the joao-afonso-p.github.io user-site repo.
- * - Plain user site: set SITE_URL=https://joao-afonso-p.github.io.
- * - Project repo: set BASE_PATH=/repo-name.
+ *   served by the joao-afonso-p/website project repo.
+ * - Without the custom domain: set SITE_URL=https://joao-afonso-p.github.io
+ *   and BASE_PATH=/website.
  *
  * Nothing else in the codebase hardcodes the deployed origin.
  */

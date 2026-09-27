@@ -10,9 +10,9 @@ name: Deploy
 #   BASE_PATH  default /
 #
 # So the same workflow serves:
-#   - the custom domain  -> no variables set
-#   - the plain user site -> SITE_URL=https://joao-afonso-p.github.io
-#   - a project repo     -> BASE_PATH=/repo-name
+#   - the custom domain      -> no variables set
+#   - no custom domain       -> SITE_URL=https://joao-afonso-p.github.io
+#                               and BASE_PATH=/website
 #
 # The custom domain itself is set in Settings -> Pages, not in a CNAME file:
 # Pages ignores CNAME files for workflow-based deployments.

@@ -251,8 +251,7 @@ Use `pnpm build && pnpm preview` to see exactly what the public site will contai
 ## Deploying
 
 The site lives at <https://joaoafonsopereira.com>, published from the
-[`joao-afonso-p/joao-afonso-p.github.io`](https://github.com/joao-afonso-p/joao-afonso-p.github.io)
-repository.
+[`joao-afonso-p/website`](https://github.com/joao-afonso-p/website) repository.
 
 `.github/workflows/deploy.yml` checks, builds and publishes on every push to `main`, and can also be
 run manually from the Actions tab (`workflow_dispatch`). `.github/workflows/ci.yml` runs the same
@@ -267,8 +266,12 @@ These live in the repository settings, not in any file:
   Workflow-based deployments ignore a `public/CNAME` file, so there is none; the domain is only
   stored here.
 
-Because this is the user-site repo, the custom domain also covers every project site under the
-account: `joao-afonso-p.github.io/<repo>/` redirects to `joaoafonsopereira.com/<repo>/`.
+This is deliberately a project repo, not the `joao-afonso-p.github.io` user-site repo. A custom
+domain on the user site would also apply to every other project site on the account, so
+`joao-afonso-p.github.io/app-contas/` and `/beachiness/` would redirect to the new domain. Those
+apps keep data in browser storage, which is tied to the origin, so moving them would strand it.
+On a project repo the domain applies to this repo alone. Its own github.io address,
+`joao-afonso-p.github.io/website/`, redirects to the domain.
 
 `public/.nojekyll` is committed so GitHub Pages serves the built output as-is instead of running it
 through Jekyll, which would otherwise drop Astro's `_astro/` asset directory.
@@ -304,23 +307,22 @@ are unset. So changing where the site lives means setting a variable, not editin
 
 Repository variables live under **Settings → Secrets and variables → Actions → Variables**.
 
-| Target                                 | `SITE_URL`                        | `BASE_PATH` | Also needed                    |
-| -------------------------------------- | --------------------------------- | ----------- | ------------------------------ |
-| Custom domain (current)                | unset                             | unset       | Pages custom domain, DNS       |
-| Plain user site                        | `https://joao-afonso-p.github.io` | unset       | Remove the Pages custom domain |
-| Project repo `github.com/user/website` | `https://joao-afonso-p.github.io` | `/website`  | -                              |
+| Target                  | `SITE_URL`                        | `BASE_PATH` | Also needed                    |
+| ----------------------- | --------------------------------- | ----------- | ------------------------------ |
+| Custom domain (current) | unset                             | unset       | Pages custom domain, DNS       |
+| No custom domain        | `https://joao-afonso-p.github.io` | `/website`  | Remove the Pages custom domain |
 
 To test another origin locally: `SITE_URL=https://example.com pnpm build && pnpm preview`.
 
-### Deploying to a project repo instead
+### Serving from a sub-path
 
-If the site ever moves to a normal repository (`github.com/joao-afonso-p/<repo>`), it is served from
-a sub-path. Set the repository variable `BASE_PATH` = `/<repo>` (leading slash, no trailing slash)
-and leave `SITE_URL` alone. Because every internal href goes through `url()` and every asset through
-Astro's base handling, nothing else changes. Locally: `BASE_PATH=/<repo> pnpm build && pnpm preview`.
+Without the custom domain, this repo is served from `joao-afonso-p.github.io/website/`. Set
+`BASE_PATH` = `/website` (leading slash, no trailing slash) along with `SITE_URL`. Because every
+internal href goes through `url()` and every asset through Astro's base handling, nothing else
+changes. Locally: `BASE_PATH=/website pnpm build && pnpm preview`.
 
 One caveat: crawlers only honour `robots.txt` at the origin root, so on a sub-path deployment
-`/<repo>/robots.txt` is advisory. The sitemap stays discoverable through the `<link>` tag in
+`/website/robots.txt` is advisory. The sitemap stays discoverable through the `<link>` tag in
 `<head>`.
 
 ---
