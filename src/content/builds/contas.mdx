@@ -1,0 +1,202 @@
+---
+title: 'Contas'
+headline: 'The spreadsheet that ran my finances eventually became an app.'
+oneLiner: 'A personal finance system built around how I actually manage money.'
+description: 'A personal finance system built around planning first, tracking second.'
+role: 'Independent project · Product, engineering & design'
+year: 2026
+since: 'Since Jul 2026'
+status: live
+url: 'https://joaoafonsopereira.com/app-contas/'
+cta: 'Open Contas'
+featured: true
+order: 3
+cover: './contas/overview.png'
+coverAlt: 'The Contas overview screen, showing account balances, monthly flow and progress against goals.'
+tags: []
+draft: false
+#
+# Screenshots live in src/content/builds/contas/ and are imported below.
+#
+# None of them are pictures of my own finances. Contas is local-first and needs
+# no account, so each one was captured from a clean install of the live app
+# seeded with invented data: fictional income, buckets, goals, merchants and
+# bank descriptors, internally consistent but not mine. The UI, layout and chart
+# shapes are the real product; every number and name in them is made up. No
+# unsanitised screenshot was ever committed.
+---
+
+import Figure from '../../components/case/Figure.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import PullQuote from '../../components/case/PullQuote.astro';
+import overview from './contas/overview.png';
+import planning from './contas/planning.png';
+import goals from './contas/goals.png';
+import projections from './contas/projections.png';
+import statementImport from './contas/statement-import.png';
+import sync from './contas/sync.png';
+
+## Why I built it
+
+I had been managing my finances in the same spreadsheet for years.
+
+Over time, it became increasingly annoying to maintain: adding a category, removing an old one or changing the structure meant checking formulas across multiple sheets and hoping nothing had quietly broken.
+
+It worked because **I knew how it worked**.
+
+The trigger came when my sister bought a house and asked me for a copy. That was when I realised the spreadsheet wasn't really a tool I could hand to someone else... it was a system that depended on me knowing its internals.
+
+So instead of simplifying the spreadsheet one more time, **I replaced it**.
+
+## The spreadsheet became a product
+
+Contas starts with onboarding, where the user defines:
+
+- income sources;
+- recurring expenses;
+- savings buckets;
+- investment vehicles;
+- spending categories;
+- goals.
+
+From there, it becomes the place where the month actually happens:
+
+- plan incoming money;
+- decide what stays in the current account;
+- distribute savings;
+- track movements;
+- analyse spending;
+- monitor budgets;
+- project future months.
+
+The biggest shift was taking years of logic out of spreadsheet cells and turning it into an actual product model.
+
+<Figure
+  src={overview}
+  alt="The Contas overview: four totals across the top for money saved, money in the bank, money placed in investment vehicles and the month's savings rate, then a grid of savings buckets, then a line chart tracking total and emergency-fund balances from May to September."
+  caption="A financial overview built around balances, allocation and progress over time."
+/>
+
+## Planning first, tracking second
+
+Most personal finance tools are very good at telling you where your money went, but I cared more about deciding where it should go next.
+
+Each month starts as a plan. Income is allocated across:
+
+- recurring expenses;
+- savings;
+- temporary goals;
+- investment vehicles;
+- money kept liquid.
+
+Then reality happens! Transactions and movements update the actual balances, but the plan stays there as the reference. That made Contas much more useful to me than the spreadsheet it replaced.
+
+<Figure
+  prominent
+  src={planning}
+  alt="The monthly planning screen for September, marked as applied and fully allocated: income split across two salaries and rental income, then nine expense lines, with the remainder left in the current account."
+  caption="Each month starts as a plan before it becomes a record."
+/>
+
+### Temporary goals
+
+Not every savings bucket needs to exist forever, so Contas also supports temporary goals with targets and deadlines. I can reserve money for something specific without turning every trip, purchase or short-term objective into a permanent category.
+
+<Figure
+  src={goals}
+  alt="Three savings goals side by side, each with a target date, a progress bar and the amount still to save per month. One of them has been reached."
+  caption="Temporary goals sit alongside long-term savings and update the monthly allocation."
+/>
+
+## Projections that include real life
+
+The projection starts simple: **the current monthly plan becomes the baseline for the future**. From there, any month or cell can be changed manually. That means I can ask the questions I actually care about:
+
+- Can I afford this trip?
+- What happens if I buy a car in six months?
+- How much do I need to save each month for a specific goal?
+- What if an insurance payment lands in that month?
+- Will any savings bucket go negative?
+
+Expected expenses can be added directly into future months, so the projection includes the things I already know are going to happen.
+
+And when reality catches up, those assumptions don't disappear. The projection re-anchors itself around the new real balances while keeping the manual changes I made for the future.
+
+<Figure
+  prominent
+  src={projections}
+  alt="An eighteen-month projection table. Most rows repeat the current plan across every month, but several cells have been edited by hand: a larger leisure figure in December, an annual insurance payment in January, childcare stepping down in March and a one-off transport cost in April."
+  caption="Future months can be edited directly, then re-anchored to the current reality without losing manual assumptions."
+/>
+
+## Local first. Shared only when needed.
+
+By default, Contas stores everything locally, so no account is required. You can open the app, configure it and use it entirely on one device.
+
+For people close to me who need synchronization, I can enable a shared workspace backed by Firestore. A random secret code identifies that workspace and can be used on another device, or by someone else in the household, to access the same financial space.
+
+I deliberately skipped the full authentication system because the problem didn't need one.
+
+<Figure
+  src={sync}
+  alt="The synchronization panel in settings, showing the app in local mode with the data held only on this device, alongside the two optional actions: create a shared space, or join one with an existing code."
+  caption="Local by default, with an optional shared workspace for multi-device or household use."
+/>
+
+## AI where it actually removes work
+
+I didn't want to turn Contas into an "AI financial advisor", but there was actually a really boring process that AI could solve: **bank statements**.
+
+A user can provide a bank statement as PDF, CSV or Excel, and Contas:
+
+1. extracts the transactions;
+2. structures the movements;
+3. looks at relevant recent transactions;
+4. suggests categories;
+5. lets the user validate everything;
+6. only then imports the transactions.
+
+The categorization can improve from recent history without pretending the system knows more than it does.
+
+The feature is completely optional and uses the user's own OpenAI API key, which also means I don't have to pay for everyone else's bank statements. Convenient!
+
+<Figure
+  prominent
+  src={statementImport}
+  alt="The statement import dialog open over the spending list, offering a PDF or Excel file to extract from. Behind it, already-imported transactions show their raw bank descriptors with a category assigned to each, and a warning counts the ones still uncategorised."
+  caption="AI is used where it saves real manual work: extracting and categorizing bank statements."
+/>
+
+## From useful to indispensable
+
+The spreadsheet survived for about a month alongside the new app, mostly so I could keep checking that I hadn't broken my finances.
+
+Then, at some point, **I just stopped opening it**.
+
+Contas is now the system I use with my wife for our entire financial planning, which is probably the strongest signal I could get from a personal project: I built something to replace an existing workflow, and eventually forgot about the thing it replaced.
+
+A small number of family members use it too, including the sister that accidentally started all of this!
+
+## What I learned
+
+<Numbered number="01" title="Build around the workflow, not the old tool">
+The spreadsheet had years of logic in it, but that didn't mean its structure deserved to survive. Rebuilding the workflow as software forced me to separate the actual financial model from the way it happened to be represented in cells.
+
+</Numbered>
+
+<Numbered number="02" title="Complexity has to earn its place">
+A full account system would have been easy to justify because, well, apps have logins. But most users didn't need one. Local-first was simpler, faster and more private. Synchronization only became worth adding when multi-device and household use actually required it.
+
+</Numbered>
+
+<Numbered number="03" title="AI is leverage, not decoration">
+The only AI feature ended up being at one of the least glamorous parts of the product: turning messy bank statements into structured, categorized transactions. AI is most useful when it removes repetitive work, not when it's added just to make the product sound smarter.
+
+</Numbered>
+
+## Built with
+
+<p class="case-meta">
+  React · TypeScript · Vite · Tailwind CSS · Firebase / Firestore · IndexedDB · Recharts · PDF.js ·
+  XLSX · GitHub Pages
+</p>

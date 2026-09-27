@@ -6,13 +6,16 @@ name: Deploy
 # repository variables (Settings -> Secrets and variables -> Actions -> Variables),
 # with fallbacks that match the defaults in astro.config.mjs:
 #
-#   SITE_URL   default https://joao-afonso-p.github.io
+#   SITE_URL   default https://joaoafonsopereira.com
 #   BASE_PATH  default /
 #
 # So the same workflow serves:
-#   - the user site      -> no variables set
+#   - the custom domain  -> no variables set
+#   - the plain user site -> SITE_URL=https://joao-afonso-p.github.io
 #   - a project repo     -> BASE_PATH=/repo-name
-#   - a custom domain    -> SITE_URL=https://joaoafonso.com (+ public/CNAME)
+#
+# The custom domain itself is set in Settings -> Pages, not in a CNAME file:
+# Pages ignores CNAME files for workflow-based deployments.
 
 on:
   push:
@@ -31,7 +34,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_URL: ${{ vars.SITE_URL || 'https://joao-afonso-p.github.io' }}
+  SITE_URL: ${{ vars.SITE_URL || 'https://joaoafonsopereira.com' }}
   BASE_PATH: ${{ vars.BASE_PATH || '/' }}
 
 jobs:
@@ -62,6 +65,14 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # Same gate as ci.yml, so a direct push to main cannot publish a site
+      # that fails formatting, types or content schemas.
+      - name: Formatting
+        run: pnpm format:check
+
+      - name: Types and content schemas
+        run: pnpm check
 
       - name: Build
         run: pnpm build

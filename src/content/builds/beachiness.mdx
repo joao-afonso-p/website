@@ -1,0 +1,137 @@
+---
+title: 'Beachiness'
+headline: 'Is it actually a beach day?'
+oneLiner: 'A tiny tool that ranks nearby beaches by whether they are actually worth going to.'
+description: 'A tiny tool that ranks nearby beaches by the conditions that actually make it worth going.'
+role: 'Independent project · Product & engineering'
+year: 2026
+since: 'Since Jun 2026'
+status: live
+url: 'https://joaoafonsopereira.com/beachiness/'
+cta: 'Open Beachiness'
+featured: true
+order: 1
+cover: './beachiness/ranking.png'
+coverAlt: 'The Beachiness ranking screen, listing nearby beaches scored out of 100 for the conditions on the day.'
+tags: []
+draft: false
+#
+# Screenshots live in src/content/builds/beachiness/ and are imported below.
+#
+# All three were captured from the live app: a real search around Trofa, and
+# the real ranking and detail panel it returned. Nothing was redacted or
+# retouched, and no device frame or browser chrome was added.
+#
+# These are ~400px-wide portrait captures, so they go through PhoneFigure
+# rather than Figure, which would stretch a phone screen across the page.
+# `search.png` is a short screen rather than a tall one, so it uses the
+# `detail` variant: 25rem, its exact capture width, rendered 1:1.
+#
+# This page is deliberately the shortest of the four builds. The project is
+# small, and that is the point of it.
+---
+
+import PhoneFigure from '../../components/case/PhoneFigure.astro';
+import MetaLine from '../../components/case/MetaLine.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import PullQuote from '../../components/case/PullQuote.astro';
+import search from './beachiness/search.png';
+import ranking from './beachiness/ranking.png';
+import detail from './beachiness/detail.png';
+
+## Why I built it
+
+I live in the north of Portugal, where ‘sunny’ does not always mean ‘good beach day’... you can leave an inland area with blue skies and arrive at the coast to find cloud, wind and a completely different temperature.
+
+Weather apps had all the data, but I still had to translate it into the only question I actually cared about:
+
+{/* Quotes stay on one line: see the note in contas.mdx. */}
+
+<PullQuote>Should I go to the beach, and which one?</PullQuote>
+
+So I built the answer I wanted.
+
+<PhoneFigure
+  detail
+  src={search}
+  alt="Beachiness search screen with a place field set to Trofa, a 50 km radius slider, and day and period selectors above a Find beaches action."
+  caption="Pick a place, radius, day and time period, or just use the current location."
+/>
+
+## One question, several signals
+
+Beachiness only asks for a few things: where you are, how far you want to go, when you want to go, and roughly what part of the day you care about. Then it checks nearby beaches and turns a pile of weather signals into one ranked list.
+
+The score combines variables like temperature, cloud cover, wind, wave height, rain risk and UV, and it ranks the beaches and explains why each one scored the way it did.
+
+<PhoneFigure
+  prominent
+  src={ranking}
+  alt="Beachiness showing a map of the coast north of Porto with five numbered beach pins, above a ranked list of the top five beaches carrying a score and temperature, wind, wave and UV readings."
+  caption="Nearby beaches are ranked for the selected period instead of simply sorted by distance."
+/>
+
+## The score is deliberately boring
+
+There is no AI in the scoring, on purpose.
+
+Each condition gets a weight, the scores are combined, and the result becomes a 0–100 Beachiness score.
+
+The current weighting gives the most importance to temperature, followed by cloud cover and wind, with waves, rain and UV contributing to the rest.
+
+<MetaLine
+  lines={[
+    'Temperature · 30%',
+    'Cloud cover · 20%',
+    'Wind · 20%',
+    'Waves · 15%',
+    'Rain · 10%',
+    'UV · 5%',
+  ]}
+/>
+
+The useful part was not finding the fanciest model. It was making the decision predictable, explainable and easy to trust.
+
+## From score to decision
+
+A number is not the decision. So Beachiness also explains why a beach ranks well, what to watch out for, and the conditions behind the score.
+
+So instead of opening several forecasts and trying to combine them mentally, I get one ranked list and can still inspect the underlying conditions.
+
+<PhoneFigure
+  prominent
+  src={detail}
+  alt="Beachiness beach detail panel for Praia de Vila Chã showing a score of 91, the reasons it ranks well, a watch-out note about high UV, and tiles for average temperature, apparent temperature, wind, gusts, cloud cover, rain risk, waves and UV."
+  caption="The score stays inspectable: the app shows both the reasoning and the underlying conditions."
+/>
+
+## Small tool, finished problem
+
+Beachiness was built for me. I was not trying to create a travel platform or a weather business. I just wanted to remove one recurring decision from summer weekends.
+
+It is still live, and when I want to choose between nearby beaches, it does exactly what I built it to do.
+
+## What I learned
+
+<Numbered number="01" title="Compress the decision, not the data">
+The individual weather metrics were already available.
+
+The weather data already existed. The useful part was turning it into the decision I actually wanted to make.
+
+</Numbered>
+
+<Numbered number="02" title="Not every problem needs AI">
+A transparent scoring function was simpler, cheaper and easier to trust than a model would have been.
+The least exciting technical choice was the better product choice.
+
+</Numbered>
+
+## Built with
+
+<MetaLine
+  lines={[
+    'React · TypeScript · Vite · Leaflet · OpenStreetMap · Open-Meteo · GitHub Pages',
+    'Beaches and place lookup · OpenStreetMap Overpass & Nominatim',
+    'Weather and waves · Open-Meteo Forecast & Marine',
+  ]}
+/>

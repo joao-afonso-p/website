@@ -1,0 +1,527 @@
+---
+import type { WorkEntry } from '../../lib/content';
+import { hostLabel, startYear } from '../../lib/work';
+
+/**
+ * One role on the `/work` timeline, rendered as a chapter of a single page
+ * rather than as a row that links somewhere else.
+ *
+ * Desktop (>=768px) is a two-column grid: a rail on the left holding the year
+ * marker and the facts (period, place, the shift the chapter stands for), and
+ * the chapter itself on the right, hung from a hairline spine. The rail is
+ * sticky, so in the long chapters the year stays in view while you read.
+ * Mobile collapses to one column with the spine down the left edge and the
+ * rail set as a compact mono block above the company name.
+ *
+ * The timeline runs oldest first, so reading down the page runs forward in
+ * time. Chapters used to be separated by a `bridge`, a short mono transition
+ * plus a sentence on why the next move happened; that has been removed, from
+ * the markup, the styles and the frontmatter schema alike.
+ *
+ * Everything but the company, the role and the headline sits inside a native
+ * `<details>`, closed by default, so five roles can be scanned in a screen or
+ * two and read in full on request.
+ *
+ * DOM order is chapter, rail, so a screen reader reaches the company heading
+ * before the dates; the grid puts the rail back on the left. The rail holds
+ * no links for exactly that reason: a reordered block with nothing focusable
+ * in it cannot scramble the tab order.
+ *
+ * The spine is a dashed hairline that runs from the first marker to the last,
+ * drifting slowly downward as an invitation to keep reading. Each chapter
+ * but the last draws its own stretch, from its marker to the next one, so
+ * the joins sit under the markers; entries are direct siblings with no
+ * margin between them, so the stretches meet exactly. The marker lives in
+ * the rail, so it stays level with the year. The markers are decoration and are hidden from assistive
+ * technology; every fact they hint at is also real text in the rail.
+ */
+interface Props {
+  entry: WorkEntry;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+
+const year = startYear(entry);
+const roleLine = data.laterRole ? `${data.role}, later ${data.laterRole}` : data.role;
+---
+
+<li
+  class:list={['chapter', data.featured && 'chapter-featured', data.current && 'chapter-current']}
+  id={entry.id}
+  aria-labelledby={`${entry.id}-company`}
+>
+  <div class="chapter-main">
+    <header>
+      <h2 class="chapter-company" id={`${entry.id}-company`}>
+        {data.company}
+      </h2>
+
+      <p class="chapter-role">{roleLine}</p>
+
+      <p class="chapter-headline">{data.headline}</p>
+    </header>
+
+    {/* Closed by default, every chapter including the current one.
+
+        What stays visible is the company, the role and the one-line headline:
+        enough to scan five roles in a screen or two. Everything else sits
+        behind the disclosure, the intro and the site link included, because
+        leaving those outside it was still enough per
+        chapter to leave the page eleven screens tall on a phone.
+
+        A native `<details>` rather than a scripted panel: it works with no
+        JavaScript, stays in the document for search, and is keyboard and
+        screen-reader correct for free. */}
+    <details class="chapter-more">
+      <summary class="chapter-toggle">
+        <span class="chapter-toggle-text">
+          <span class="chapter-toggle-closed">Read the full chapter</span>
+          <span class="chapter-toggle-open">Hide the full chapter</span>
+        </span>
+        <span class="chapter-toggle-glyph" aria-hidden="true">
+          +
+        </span>
+      </summary>
+
+      {data.intro && <p class="chapter-intro">{data.intro}</p>}
+
+      {data.url && (
+        <p class="chapter-link">
+          <a href={data.url} target="_blank" rel="noopener noreferrer" class="group">
+            {data.urlLabel ?? hostLabel(data.url)}
+            <span class="sr-only"> ({data.company} website, opens in a new tab)</span>
+            <span class="arrow-up" aria-hidden="true">
+              &#8599;
+            </span>
+          </a>
+        </p>
+      )}
+
+      <div class="prose chapter-body">
+        <slot />
+      </div>
+
+      {/* The summary is a long scroll back up by the time a chapter ends, so
+          the same control is repeated at the foot. It lives inside the
+          disclosure, so it only exists while the chapter is open. Closing a
+          `<details>` from elsewhere takes script, so it ships `hidden` and the
+          script below reveals it: without JavaScript there is no dead button. */}
+      <button type="button" class="chapter-toggle chapter-close" data-chapter-close hidden>
+        <span>Hide the full chapter</span>
+        <span class="chapter-toggle-glyph" aria-hidden="true">
+          +
+        </span>
+      </button>
+    </details>
+  </div>
+
+  <div class="chapter-rail">
+    <span class="chapter-dot" aria-hidden="true"></span>
+
+    <p class="chapter-year">
+      <time datetime={year}>{year}</time>
+    </p>
+
+    <dl class="chapter-facts">
+      {data.location && (
+        <div>
+          <dt class="sr-only">Location</dt>
+          <dd>{data.location}</dd>
+        </div>
+      )}
+
+      <div class="chapter-stage">
+        <dt class="sr-only">Stage</dt>
+        <dd>{data.stage}</dd>
+      </div>
+    </dl>
+  </div>
+</li>
+
+<script>
+  // Close the chapter from its foot, then bring its heading back into view:
+  // collapsing a long chapter would otherwise leave the reader somewhere in
+  // the next one. Focus moves to the summary so the keyboard lands where the
+  // chapter can be reopened.
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-chapter-close]')) {
+    const details = button.closest('details');
+    const summary = details?.querySelector('summary');
+    const chapter = button.closest('.chapter');
+    if (!details || !summary || !chapter) continue;
+
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      details.open = false;
+      summary.focus({ preventScroll: true });
+      if (chapter.getBoundingClientRect().top < 0) {
+        chapter.scrollIntoView({ block: 'start' });
+      }
+    });
+  }
+</script>
+
+<style>
+  /* ---- Frame ------------------------------------------------------------
+     Mobile: one column, spine at the left edge of the whole entry. */
+  .chapter {
+    --rail: 0rem;
+    --spine-gap: 1.5rem;
+    --dot: 9px;
+    --dot-top: 0.45rem;
+    /* Where the spine's centre sits relative to the rail's left edge, which is
+       also the entry's: the entry's own edge on mobile, the chapter column's
+       edge above that. */
+    --spine-x: 0.5px;
+    /* One dash plus its gap. The drift moves exactly this far per cycle, so
+       the loop has no visible seam. */
+    --dash-period: 10px;
+
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* ---- Spine ------------------------------------------------------------
+     From this chapter's marker to the next one's. Both ends are the centre of
+     a marker, and the markers are painted over it, so no join shows. A tiled
+     gradient rather than `border-style: dashed`: the dash can be sized, and
+     moving the tile by exactly one period loops seamlessly. The rail is sticky
+     on desktop, so an open chapter's marker slides down its own stretch as
+     the chapter scrolls by. */
+  .chapter:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--dot-top) + var(--dot) / 2);
+    bottom: calc(-1 * (var(--dot-top) + var(--dot) / 2));
+    left: calc(var(--rail) + var(--spine-x) - 0.5px);
+    width: 1px;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-rule-strong) 0 40%,
+      transparent 40% 100%
+    );
+    background-size: 1px var(--dash-period);
+    background-repeat: repeat-y;
+    animation: spine-drift 1.2s linear infinite;
+    pointer-events: none;
+  }
+
+  /* The global reduced-motion rule already stops this; it is repeated here so
+     the spine never depends on that rule staying as it is. */
+  @media (prefers-reduced-motion: reduce) {
+    .chapter:not(:last-child)::before {
+      animation: none;
+    }
+  }
+
+  @keyframes spine-drift {
+    to {
+      background-position-y: var(--dash-period);
+    }
+  }
+
+  .chapter-rail {
+    position: relative;
+    grid-row: 1;
+    padding-left: var(--spine-gap);
+    padding-top: 0.25rem;
+  }
+
+  .chapter-main {
+    grid-row: 2;
+    padding-left: var(--spine-gap);
+    padding-bottom: 4.5rem;
+  }
+
+  /* The marker sits on the spine, level with the year. */
+  .chapter-dot {
+    position: absolute;
+    top: var(--dot-top);
+    left: calc(var(--rail) + var(--spine-x) - var(--dot) / 2);
+    width: var(--dot);
+    height: var(--dot);
+    border: 1px solid var(--color-ink);
+    border-radius: 50%;
+    background-color: var(--color-paper);
+  }
+
+  /* The central chapter: a filled marker. */
+  .chapter-featured .chapter-dot {
+    --dot: 11px;
+    --dot-top: 0.35rem;
+    background-color: var(--color-ink);
+  }
+
+  /* The present: the only accent on the spine. */
+  .chapter-current .chapter-dot {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
+  }
+
+  @media (min-width: 768px) {
+    .chapter {
+      --rail: 9rem;
+      --spine-gap: 2.5rem;
+      --dot-top: 0.9rem;
+
+      grid-template-columns: var(--rail) minmax(0, 1fr);
+    }
+
+    .chapter-rail {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+      position: sticky;
+      /* Clears the single-row sticky header (88px) with room to spare. */
+      top: 7.5rem;
+      padding-left: 0;
+      padding-right: 1rem;
+      padding-top: 0.2rem;
+      /* A sticky rail is pushed up by the end of its own chapter. The padding
+         keeps its last line clear of the chapter below as they meet. */
+      padding-bottom: 3rem;
+    }
+
+    .chapter-main,
+    .chapter-main {
+      grid-row: 1;
+      padding-bottom: 6rem;
+    }
+
+    .chapter-featured .chapter-dot {
+      --dot-top: 0.8rem;
+    }
+
+    .chapter-featured .chapter-main {
+      padding-bottom: 7.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .chapter {
+      --rail: 11rem;
+      --spine-gap: 3.5rem;
+    }
+  }
+
+  /* ---- Rail ------------------------------------------------------------ */
+  .chapter-year {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chapter-facts {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .chapter-facts dd {
+    margin: 0;
+  }
+
+  .chapter-facts > div + div {
+    margin-top: 0.35rem;
+  }
+
+  .chapter-stage {
+    color: var(--color-accent);
+  }
+
+  .chapter-facts > .chapter-stage {
+    margin-top: 0.9rem;
+  }
+
+  /* Mobile: the rail reads as one wrapping mono line above the company. */
+  @media (max-width: 767.98px) {
+    .chapter-rail {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem 1rem;
+    }
+
+    .chapter-facts {
+      display: contents;
+    }
+
+    .chapter-facts > div + div,
+    .chapter-facts > .chapter-stage {
+      margin-top: 0;
+    }
+  }
+
+  /* ---- Chapter head ---------------------------------------------------- */
+  .chapter-company {
+    margin: 1.25rem 0 0;
+    color: var(--color-ink);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .chapter-company {
+      margin-top: 0;
+    }
+  }
+
+  .chapter-role {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .chapter-headline {
+    margin: 1.75rem 0 0;
+    max-width: var(--container-text);
+    color: var(--color-ink);
+    font-size: var(--text-lead);
+    line-height: 1.3;
+    letter-spacing: var(--text-lead--letter-spacing);
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  .chapter-intro {
+    margin: 1rem 0 0;
+    max-width: var(--container-prose);
+    color: var(--color-ink-soft);
+  }
+
+  .chapter-link {
+    margin: 1.25rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .chapter-link a {
+    color: var(--color-accent);
+    transition: color var(--default-transition-duration) var(--ease-editorial);
+  }
+
+  .chapter-link a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .chapter-link .arrow-up {
+    margin-left: 0.3em;
+  }
+
+  /* ---- Body -------------------------------------------------------------
+     The MDX body is ordinary `.prose`; only the section headings are lifted a
+     step, because inside a chapter they are the structure of a long story
+     rather than a label on a short one. */
+  /* ---- Disclosure -------------------------------------------------------
+     A mono control on the same rail as every other label on the site, not a
+     button: the site has none. The native marker goes, the state is carried
+     by the word and by a plus that turns into a cross, and the whole thing is
+     driven by `[open]` so it needs no script. Only the repeat at the foot of
+     the chapter does. */
+  .chapter-more {
+    margin-top: 1.5rem;
+  }
+
+  /* The intro is the first thing inside the disclosure now, so it opens from
+     the control rather than continuing the headline above it. */
+  .chapter-more[open] .chapter-intro {
+    margin-top: 1.75rem;
+  }
+
+  .chapter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: var(--text-meta--line-height);
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    cursor: pointer;
+    list-style: none;
+    transition: color 180ms var(--ease-editorial);
+  }
+
+  .chapter-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .chapter-toggle:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .chapter-toggle-glyph {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 220ms var(--ease-editorial);
+  }
+
+  .chapter-more[open] .chapter-toggle-glyph {
+    transform: rotate(45deg);
+  }
+
+  .chapter-toggle-open {
+    display: none;
+  }
+
+  .chapter-more[open] .chapter-toggle-open {
+    display: inline;
+  }
+
+  .chapter-more[open] .chapter-toggle-closed {
+    display: none;
+  }
+
+  .chapter-body {
+    margin-top: 2.5rem;
+  }
+
+  /* Styled by `.chapter-toggle`, and always in its open state: it can only be
+     seen while the chapter is. */
+  .chapter-close {
+    margin-top: 2.5rem;
+    border: 0;
+    background: none;
+  }
+
+  .chapter-close .chapter-toggle-glyph {
+    transform: rotate(45deg);
+  }
+
+  .chapter-body :global(h3) {
+    margin-top: 3.25rem;
+    margin-bottom: -0.35em;
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+  }
+
+  .chapter-body > :global(:first-child) {
+    margin-top: 0;
+  }
+
+  /* ---- Bridge -----------------------------------------------------------
+     A short tick across the spine instead of a dot: this is a passage between
+     chapters, not a chapter. */
+</style>

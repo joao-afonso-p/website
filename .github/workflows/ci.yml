@@ -53,5 +53,5 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://joao-afonso-p.github.io' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://joaoafonsopereira.com' }}
           BASE_PATH: ${{ vars.BASE_PATH || '/' }}

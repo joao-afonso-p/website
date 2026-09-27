@@ -7,13 +7,14 @@ import tailwindcss from '@tailwindcss/vite';
 /**
  * Deployment target is configured in exactly one place.
  *
- * - Default: the GitHub Pages user site (https://joao-afonso-p.github.io, base "/").
+ * - Default: the custom domain (https://joaoafonsopereira.com, base "/"),
+ *   served by the joao-afonso-p.github.io user-site repo.
+ * - Plain user site: set SITE_URL=https://joao-afonso-p.github.io.
  * - Project repo: set BASE_PATH=/repo-name.
- * - Custom domain: set SITE_URL=https://joaoafonso.com and add public/CNAME.
  *
  * Nothing else in the codebase hardcodes the deployed origin.
  */
-const SITE_URL = process.env.SITE_URL ?? 'https://joao-afonso-p.github.io';
+const SITE_URL = process.env.SITE_URL ?? 'https://joaoafonsopereira.com';
 const BASE_PATH = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({

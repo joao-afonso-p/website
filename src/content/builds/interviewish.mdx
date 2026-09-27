@@ -1,0 +1,161 @@
+---
+title: 'Interviewish'
+headline: 'Interview prep that remembers more about you than your CV does.'
+oneLiner: 'Interview prep that remembers more about you than your CV does.'
+description: 'A tool I built to make interview preparation more contextual, personal and useful over time.'
+role: 'Independent project · Product, engineering & strategy'
+year: 2026
+status: live
+url: 'https://interviewish.app/'
+featured: true
+order: 4
+cover: './interviewish/memory-bank-cover.png'
+coverAlt: 'The Interviewish Memory Bank, listing saved work experiences tagged as learnings or achievements with the dates they were logged.'
+tags: []
+draft: false
+#
+# Screenshots live in src/content/builds/interviewish/ and are imported below.
+# All four are redacted: the employer / application target is blurred out of the
+# sidebar and headers, and the CV screenshot additionally has the email, the
+# uploaded filename and the extracted CV text blurred. Unredacted originals were
+# deliberately not committed.
+---
+
+import Figure from '../../components/case/Figure.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import PullQuote from '../../components/case/PullQuote.astro';
+import overview from './interviewish/overview.png';
+import roastInterview from './interviewish/roast-interview.png';
+import cvFeedback from './interviewish/cv-feedback-redacted.png';
+import memoryBank from './interviewish/memory-bank.png';
+
+## Why I built it
+
+I first noticed the problem at a university career fair. I was there representing my company and spent the day talking with students preparing for their first jobs. Different conversations kept coming back to the same problem: people had projects, coursework, internships and real experiences, but often struggled to understand what was actually worth talking about, and how to turn it into a convincing story.
+
+Around the same time, a few people close to me were going through exactly that. There were already plenty of AI interview simulators and CV reviewers. What I couldn't find was something that became more useful the more it got to know the candidate.
+
+So I started wondering what interview prep could look like if the system learned not only from a CV and a job description, but also from the person's actual experiences and the way they communicate.
+
+That became Interviewish.
+
+## More than a question generator
+
+Interviewish is a workspace built around a real job opportunity. A user creates an account, adds a role, uploads a CV and prepares specifically for that application.
+
+From there, they can:
+
+- get general CV feedback;
+- get CV feedback tailored to a specific role;
+- prepare with extra context about the job and, when available, the company;
+- run technical, functional or cultural mock interviews;
+- choose between normal and roast feedback;
+- answer by text or voice;
+- get feedback directly inside the interview flow.
+
+The point was to actually help someone connect their actual experience to the job they were trying to get instead of simply generating a list of questions.
+
+<Figure
+  src={overview}
+  alt="The Interviewish dashboard: a sidebar of navigation, counters for active applications and interviews, and an active application card showing a Senior AI Engineer role marked as applied."
+  caption="A job-search workspace built around active applications rather than isolated AI prompts."
+/>
+
+## Practice, then fix it immediately
+
+The interview flow is deliberately conversational: users can choose between technical, functional and cultural interviews, then answer each question by text or voice.
+
+Feedback arrives directly in the conversation, so they can immediately see what worked, what was missing, and what they probably should not say again before moving on.
+
+The roast mode doesn't change the substance of the feedback, it just removes some of the politeness and makes it funnier!
+
+<Figure
+  prominent
+  src={roastInterview}
+  alt="A mock interview in roast mode, question two of five. The candidate's answer about an agentic application is followed by sharper-toned feedback inline in the conversation, then a harder follow-up question."
+  caption="Roast mode changes the delivery, not the standard of feedback."
+/>
+
+## Grounded in the actual opportunity
+
+Interviewish can review a CV on its own, but it becomes much more useful when that CV is paired with a specific role.
+
+That moves the feedback away from generic advice and towards what the actual opportunity is asking for.
+
+<Figure
+  src={cvFeedback}
+  alt="The curriculum view: an uploaded CV, the text extracted from it for the model, and a CV feedback panel listing strengths. Personal details are blurred."
+  caption="General CV feedback becomes more useful when it is evaluated against a real opportunity."
+/>
+
+## The interesting part was the memory
+
+My main technical interest while doing this was to learn more about personalization and memory. So the main goal was to decide what the system should remember about the person.
+
+### Explicit memory
+
+The Memory Bank is fully visible and user-controlled. Users can save wins and learnings from their work over time, by text or voice, even when they are not actively looking for a new job.
+
+These are often exactly the things that never make it into a CV but suddenly become useful six months later when someone asks "Tell me about a time when..."
+
+### Implicit personalization
+
+Separately, Interviewish learns recurring patterns from interview responses. For example:
+
+- someone may consistently keep answers too high-level and lose useful detail;
+- someone may use strong technical language but struggle to connect the pieces into a clear overall story.
+
+These patterns are not shown back as some slightly creepy personality profile but they stay in the background and only matter when they can make future feedback better. What I really wanted was to make personalization feel like continuity rather than surveillance!
+
+<Figure
+  prominent
+  src={memoryBank}
+  alt="The Memory Bank, listing experiences the user has recorded over time, each tagged as a learning or an achievement and dated."
+  caption="Explicit memories are user-controlled. Communication patterns stay in the background and only influence feedback subtly."
+/>
+
+## Making it a real product
+
+I wanted to take Interviewish past the "cool prototype" stage, so I decided to also build all the other less exciting things:
+
+- authentication;
+- usage limits;
+- a free tier;
+- paid usage;
+- one-off purchases;
+- subscriptions;
+- Stripe integration;
+- deployment and cloud infrastructure.
+
+Monetization was never really the point! The paid layer mostly existed because AI calls cost money and, unfortunately, I'm not rich and infrastructure providers have not yet agreed to accept enthusiasm as payment.
+
+## Where it is now
+
+Interviewish is still live and usable. It was used by a few dozen people, including people outside my immediate network, but I never pushed it as a serious consumer business.
+
+At some point, I stopped actively expanding it because it had already answered the question I originally wanted to explore.
+
+People could use it, people I knew got real value from it while job hunting, and the product had reached the stage where keeping it useful made more sense than adding features forever.
+
+<p class="case-meta">Last actively updated · 30 Apr 2026</p>
+
+## What I learned
+
+<Numbered number="01" title="Memory needs curation">
+Remembering more does not automatically mean understanding someone better. Useful memory depends on deciding what should survive a session, what should stay visible and what should quietly disappear.
+
+</Numbered>
+
+<Numbered number="02" title="Personalization has a creepiness threshold">
+Good personalization should feel like continuity. The moment the user starts thinking "wait, how does it know that?", the experience changes.
+
+</Numbered>
+
+<Numbered number="03" title="Shipping changes the engineering problem">
+A prototype can stop at a good AI interaction but that's not a real product. Authentication, payments, limits, deployment, costs and reliability quickly become part of the product too. Less exciting, equally real.
+
+</Numbered>
+
+## Built with
+
+<p class="case-meta">Cloudflare · Google Cloud · Neon · Stripe</p>

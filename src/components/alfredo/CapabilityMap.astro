@@ -1,0 +1,1226 @@
+---
+import {
+  alfredoCapabilities,
+  alfredoCopy,
+  alfredoMap,
+  alfredoStatuses,
+  type AlfredoAnchor,
+} from '../../config/alfredo';
+import CapabilityPanel from './CapabilityPanel.astro';
+
+/**
+ * The capability map: Alfredo in the middle, everything it is learning to
+ * support around it, and a connection per capability whose drawing says what
+ * stage that capability is at.
+ *
+ * Two layouts, one set of markup and one set of content.
+ *
+ *   >=1024px  A constellation. The SVG holds only the connections; every label
+ *             is ordinary HTML sitting above it, so the type is real type at
+ *             every width instead of scaled glyphs. The canvas keeps a fixed
+ *             aspect ratio and the SVG scales uniformly inside it, which is
+ *             what lets a percentage position and an SVG coordinate refer to
+ *             the same point.
+ *    <1024px  The same nodes as a connected sequence hanging off a spine below
+ *             Alfredo. Not the radial map shrunk until the labels collide, and
+ *             not the accordion this replaced: the connector per row still
+ *             carries the status, so the page says the same thing either way.
+ *
+ * Geometry comes from `alfredoMap` and each capability's polar `map` entry, so
+ * the only way to move a node is to change its angle or radius. Nothing below
+ * knows any capability's name.
+ *
+ * Interaction is a disclosure, not a route: selecting a capability reveals its
+ * panel, and `#hash` is kept in step so a capability can be linked to directly.
+ * Motion is confined to two statuses, runs over five to six seconds, and is
+ * dropped entirely under `prefers-reduced-motion`, where the line treatments
+ * still tell the four states apart.
+ */
+interface Props {}
+
+const { width, height, centerX, centerY, flatten, coreHalfWidth, coreHalfHeight, coreGap } =
+  alfredoMap;
+
+/**
+ * Which side of its connection point a label hangs off. Derived from the angle
+ * so a new capability only has to say where it sits, not how it is set.
+ */
+function anchorFor(angle: number): AlfredoAnchor {
+  const degrees = ((angle % 360) + 360) % 360;
+  if (degrees > 55 && degrees < 125) return 'top';
+  if (degrees > 235 && degrees < 305) return 'bottom';
+  return degrees > 90 && degrees < 270 ? 'right' : 'left';
+}
+
+/** The small-screen connector is a border, so the dash pattern becomes a style. */
+function lineStyleFor(dash: string | undefined): 'solid' | 'dashed' | 'dotted' {
+  if (!dash) return 'solid';
+  return dash.startsWith('1 ') ? 'dotted' : 'dashed';
+}
+
+const round = (value: number): number => Math.round(value * 100) / 100;
+const percent = (value: number, total: number): string => `${round((value / total) * 100)}%`;
+
+const total = alfredoCapabilities.length;
+
+const nodes = alfredoCapabilities.map((capability, index) => {
+  const radians = (capability.map.angle * Math.PI) / 180;
+  const x = centerX + capability.map.radius * Math.cos(radians);
+  const y = centerY - capability.map.radius * Math.sin(radians) * flatten;
+
+  const dx = x - centerX;
+  const dy = y - centerY;
+  const distance = Math.hypot(dx, dy) || 1;
+  const ux = dx / distance;
+  const uy = dy / distance;
+
+  /**
+   * Where the ray to this node leaves the invisible rectangle around Alfredo.
+   * Connections start there rather than at the centre, so none of them is ever
+   * drawn underneath the central node's glass.
+   */
+  const exit =
+    Math.min(
+      ux === 0 ? Number.POSITIVE_INFINITY : coreHalfWidth / Math.abs(ux),
+      uy === 0 ? Number.POSITIVE_INFINITY : coreHalfHeight / Math.abs(uy),
+    ) + coreGap;
+
+  const startX = centerX + ux * exit;
+  const startY = centerY + uy * exit;
+  const status = alfredoStatuses[capability.status];
+
+  return {
+    capability,
+    status,
+    x: round(x),
+    y: round(y),
+    startX: round(startX),
+    startY: round(startY),
+    /** The validating marker sits out near the node, where the work still is. */
+    pulseX: round(startX + (x - startX) * 0.84),
+    pulseY: round(startY + (y - startY) * 0.84),
+    anchor: capability.map.anchor ?? anchorFor(capability.map.angle),
+    lineStyle: lineStyleFor(status.dash),
+    /** The panel pins to the side away from its own node, never over it. */
+    side: (x > centerX ? 'left' : 'right') as 'left' | 'right',
+    /**
+     * A gentle bulge down the small-screen sequence, so it reads as a map
+     * rather than a table. Derived from the count, so adding a capability
+     * reshapes the curve instead of breaking a hardcoded list.
+     */
+    stagger: Math.round(20 * Math.sin(((index + 0.5) / total) * Math.PI)),
+    /** Connections reach outward one after another rather than all at once. */
+    drawDelay: `${(index * 0.07).toFixed(2)}s`,
+    /**
+     * How far the travelling point has to go to get from the start of this
+     * connection to its node, and when it sets off. The offsets are staggered
+     * across a long cycle so the points never march in step, which is what
+     * would turn a quiet map into a busy one.
+     */
+    flowX: round(x - startX),
+    flowY: round(y - startY),
+    flowDelay: `${(index * 0.83).toFixed(2)}s`,
+    /**
+     * Which side of the spine this capability branches to on small screens.
+     * Alternating is the whole point: stacked down one rail these read as a
+     * list whatever the connectors do.
+     */
+    branch: index % 2 === 0 ? 'left' : 'right',
+  };
+});
+---
+
+{/* Labelled by attribute rather than by a heading: the section had a visually
+    hidden `Capability map` heading above it, which still turned up whenever
+    the page was read or copied as text. The name is worth keeping for
+    assistive technology, the heading is not. */}
+<section class="alfredo-map" data-alfredo-map aria-label="Capability map">
+  {/* One instruction, worded for the input the screen has. Both are always in
+      the markup and CSS picks; no breakpoint is read in JavaScript. */}
+  <p class="map-tap meta">
+    <span class="map-tap-touch">{alfredoCopy.tapHint}</span>
+    <span class="map-tap-pointer">{alfredoCopy.clickHint}</span>
+  </p>
+
+  <div class="map-canvas">
+    <svg
+      class="map-links"
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {nodes.map((node) => (
+        <g
+          data-link={node.capability.id}
+          data-tone={node.status.tone}
+          data-motion={node.status.motion}
+          style={`--link-opacity:${node.status.opacity};--draw-delay:${node.drawDelay}`}
+        >
+          <line
+            class="link-line"
+            x1={node.startX}
+            y1={node.startY}
+            x2={node.x}
+            y2={node.y}
+            stroke-dasharray={node.status.dash}
+          />
+
+          {node.status.motion === 'pulse' && (
+            <circle class="link-pulse" cx={node.pulseX} cy={node.pulseY} r="4" />
+          )}
+
+          {/* One slow point travelling out along every connection, so the map
+              always has a little life in it rather than only the capabilities
+              that happen to be mid-validation. It starts where the line does
+              and is carried to the node by a translation of exactly the line's
+              own delta, so it can never leave the line it belongs to. */}
+          <circle
+            class="link-flow"
+            cx={node.startX}
+            cy={node.startY}
+            r="2.5"
+            style={`--flow-x:${node.flowX}px;--flow-y:${node.flowY}px;--flow-delay:${node.flowDelay}`}
+          />
+        </g>
+      ))}
+    </svg>
+
+    <button class="core glass-elevated" type="button" data-alfredo-core>
+      <span class="core-name">Alfredo</span>
+      <span class="core-kind">Personal OS</span>
+      <span class="core-pillars">Context · Memory · Judgment · Action</span>
+      <span class="sr-only">Show the whole map and close any open capability</span>
+    </button>
+
+    {/* `display: contents` on wide screens, so the nodes position against the
+        canvas; a real box below 1024px, where it carries the spine. */}
+    <span class="map-spine" aria-hidden="true"></span>
+
+    <div class="map-nodes">
+      {nodes.map((node) => (
+        <div
+          class="node"
+          data-node={node.capability.id}
+          data-anchor={node.anchor}
+          data-tone={node.status.tone}
+          data-marker={node.status.marker}
+          data-line={node.lineStyle}
+          data-branch={node.branch}
+          data-subdued={String(node.status.subdued)}
+          style={`--x:${percent(node.x, width)};--y:${percent(node.y, height)};--stagger:${node.stagger}px`}
+        >
+          <span class="node-marker" aria-hidden="true"></span>
+
+          {/* The small-screen twin of the travelling point in the SVG: it runs
+              out from the spine along this branch. Hidden on wide screens,
+              where the SVG draws its own. */}
+          <span
+            class="node-flow"
+            aria-hidden="true"
+            style={`--flow-delay:${node.flowDelay}`}
+          ></span>
+
+          <button
+            class="node-button"
+            type="button"
+            aria-expanded="false"
+            aria-controls={`alfredo-panel-${node.capability.id}`}
+            data-capability={node.capability.id}
+          >
+            <span class="node-label">
+              <span class="node-name">{node.capability.name}</span>
+              <span class="node-hint">{node.capability.hint}</span>
+            </span>
+
+            {/* Status and the disclosure affordance share a line: stacked in
+                a branch's narrow half they would otherwise take one each. The
+                plus is decorative; `aria-expanded` carries the real state. */}
+            <span class="node-meta">
+              <span class="node-status meta">{node.status.label}</span>
+
+              <span class="node-more" aria-hidden="true">
+                +
+              </span>
+            </span>
+          </button>
+        </div>
+      ))}
+    </div>
+
+    {nodes.map((node) => (
+      <CapabilityPanel capability={node.capability} side={node.side} />
+    ))}
+  </div>
+</section>
+
+<style>
+  /* ==========================================================================
+     Small screens first: Alfredo on top, the capabilities as a connected
+     sequence below it. The constellation is a wide-screen enhancement.
+     ========================================================================== */
+
+  .alfredo-map {
+    position: relative;
+  }
+
+  /* The sentence and the swatches say the same thing twice. On a phone the
+     sentence costs three lines of mono before the map has started, so only the
+     swatches survive; the sentence returns once there is a row to put it on. */
+
+  /* Says out loud what hover says on a wide screen. Sits on the legend rule so
+     it reads as part of how to use the map, not as a line of page copy. */
+  /* The only line above the map now, and it carries the hairline the legend
+     used to, so the map still sits under a rule rather than floating. Which
+     wording shows is keyed to the input, not the width: a 900px tablet is a
+     finger and a 900px window is a cursor. */
+  .map-tap {
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-rule);
+    color: var(--color-accent);
+  }
+
+  .map-tap-pointer {
+    display: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .map-tap-touch {
+      display: none;
+    }
+
+    .map-tap-pointer {
+      display: inline;
+    }
+  }
+
+  .map-canvas {
+    position: relative;
+    padding-top: 20px;
+  }
+
+  /* The connections are drawn as borders on small screens. */
+  .map-links {
+    display: none;
+  }
+
+  /* ---- Alfredo ----------------------------------------------------------- */
+
+  /* Sticky on small screens, and that is the whole point of the small-screen
+     map. Laid out as a plain list, Alfredo scrolled away after two rows and
+     what was left was a list with decorative ticks: nothing on screen said the
+     capabilities belonged to one system. Pinned, the centre stays visible the
+     whole way down and the spine keeps visibly running out from under it.
+     `top` clears the sticky site header, which measures 79px on a phone once
+     it is a single wordmark-and-menu row, plus a little air. */
+  .core {
+    position: sticky;
+    top: 5.5rem;
+    z-index: 5;
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 18px 20px;
+    /* `.glass-elevated` supplies the material; only the edge is tinted, so the
+       centre reads as the one surface with the accent on it. */
+    border-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-glass-border));
+    color: var(--color-ink);
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .core-name {
+    display: block;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .core-kind {
+    display: block;
+    margin-top: 9px;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .core-pillars {
+    display: block;
+    margin-top: 7px;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ---- The branching map -------------------------------------------------
+
+     Alfredo sits at the top with a spine falling from its centre, and the
+     capabilities branch off it alternately left and right. This replaced a
+     single left-hand rail with every capability stacked down it: that was a
+     list with ticks on it, and it read as one however much the ticks moved.
+     Branching is the smallest change that makes the shape a diagram again.
+
+     A true radial map, the shape the wide screen uses, does not fit here.
+     390px leaves about 342px of content, and a centre node with labels either
+     side of it needs roughly 100px per label before anything else. Branching
+     keeps the full labels, keeps the connections carrying status, and keeps
+     every target a comfortable size. */
+
+  /* The spine drops from directly under the centre of the Alfredo node. */
+  .map-spine {
+    display: block;
+    width: 1px;
+    height: 32px;
+    margin: 0 auto;
+    background-color: var(--color-rule);
+  }
+
+  .map-nodes {
+    position: relative;
+  }
+
+  /* ---- Capability branches ------------------------------------------------ */
+
+  .node {
+    /* How far the branch reaches out from the spine before its label starts.
+       Varied per capability so the two sides do not read as a rigid ladder. */
+    --branch: calc(20px + var(--stagger) / 2);
+
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  /* Each branch draws its own segment of the spine, so the line runs unbroken
+     from Alfredo to the last capability and stops there rather than trailing
+     past it. */
+  .node::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 1px solid var(--color-rule);
+  }
+
+  .node:last-child::after {
+    bottom: 50%;
+  }
+
+  /* The branch itself, carrying the status, reaching from the spine out to
+     whichever side this capability sits on. */
+  .node::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: var(--branch);
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  .node[data-branch='left']::before {
+    right: 50%;
+  }
+
+  .node[data-branch='right']::before {
+    left: 50%;
+  }
+
+  /* ---- The travelling point ----------------------------------------------
+     Always running, on every connection, live or not. The brief this page
+     started from said live should feel calm and only work-in-progress should
+     move; that has been overruled, so the movement is instead kept slow and
+     small enough that nine of them still read as one quiet system. */
+  .node-flow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    margin: -2px 0 0 -2px;
+    border-radius: 50%;
+    background-color: var(--color-rule-strong);
+    opacity: 0;
+  }
+
+  .node[data-tone='accent'] .node-flow {
+    background-color: var(--color-accent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .node[data-branch='left'] .node-flow {
+      animation: alfredo-flow-left 7s linear var(--flow-delay, 0s) infinite;
+    }
+
+    .node[data-branch='right'] .node-flow {
+      animation: alfredo-flow-right 7s linear var(--flow-delay, 0s) infinite;
+    }
+  }
+
+  @keyframes alfredo-flow-left {
+    0% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.75;
+    }
+    62% {
+      opacity: 0.75;
+    }
+    74%,
+    100% {
+      transform: translateX(calc(-1 * var(--branch)));
+      opacity: 0;
+    }
+  }
+
+  @keyframes alfredo-flow-right {
+    0% {
+      transform: translateX(0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.75;
+    }
+    62% {
+      opacity: 0.75;
+    }
+    74%,
+    100% {
+      transform: translateX(var(--branch));
+      opacity: 0;
+    }
+  }
+
+  .node[data-tone='accent']::before {
+    border-top-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+
+  .node[data-line='dashed']::before {
+    border-top-style: dashed;
+  }
+
+  .node[data-line='dotted']::before {
+    border-top-style: dotted;
+  }
+
+  /* Each connector draws itself out from the spine as its row arrives, and its
+     marker lands after it. This is the one thing the small-screen map has
+     instead of the constellation's geometry, so it is worth the few lines.
+
+     `data-animate` means only "a script is running that will mark rows as
+     seen". Whether that should produce motion is decided entirely by the query
+     below, never in JavaScript: a breakpoint read once at load is a race, and
+     a stale answer would leave the connectors stuck at zero width. So the
+     script sets one flag unconditionally, CSS owns the breakpoint and the
+     motion preference, and with no script at all the connectors are simply
+     already drawn. */
+  /* The row builds itself in three beats as it arrives: the spine drops past
+     it, the connector reaches out to the row, then the marker lands. Three
+     moves rather than the 21px twitch this started as, which was far too small
+     to register as anything at all.
+
+     As on the constellation, every collapsed state lives inside its keyframes
+     rather than in a rule of its own, so a row that never animates is a row
+     that is simply already drawn. Nothing here can leave a capability sitting
+     on the page with no line attaching it to Alfredo. */
+  @media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+    .alfredo-map[data-animate] .node[data-seen]::after {
+      transform-origin: top center;
+      animation: alfredo-spine 420ms var(--ease-editorial) both;
+    }
+
+    .alfredo-map[data-animate] .node[data-seen]::before {
+      animation: alfredo-connect 400ms var(--ease-editorial) 200ms both;
+    }
+
+    .alfredo-map[data-animate] .node[data-seen] .node-marker {
+      animation: alfredo-land 280ms var(--ease-editorial) 460ms both;
+    }
+  }
+
+  @keyframes alfredo-spine {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes alfredo-connect {
+    from {
+      width: 0;
+    }
+    to {
+      width: var(--branch);
+    }
+  }
+
+  @keyframes alfredo-land {
+    from {
+      opacity: 0;
+      transform: scale(0.2);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* The marker sits on the spine itself, where the branch leaves it, so the
+     whole run reads as one line with nine junctions on it. Placement is in the
+     scoped block below; only the size is shared with the constellation. */
+  .node-marker {
+    width: var(--spacing-dot);
+    height: var(--spacing-dot);
+  }
+
+  .node[data-marker='filled'] .node-marker {
+    background-color: var(--color-rule-strong);
+  }
+
+  .node[data-marker='filled'][data-tone='accent'] .node-marker {
+    background-color: var(--color-accent);
+  }
+
+  .node[data-marker='hollow'] .node-marker {
+    box-shadow: inset 0 0 0 1px var(--color-rule-strong);
+  }
+
+  .node[data-marker='hollow'][data-tone='accent'] .node-marker {
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+  }
+
+  .node-button {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 14px 0;
+    border: 0;
+    border-radius: var(--glass-radius);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* Each branch puts its label in its own half of the row, hard against the
+     spine, so the labels form two clean columns either side of the line.
+     Scoped: these outrank the constellation's own `.node-button` padding, and
+     a hidden hint would stay hidden there and kill the hover summaries. */
+  @media (max-width: 1023px) {
+    .node[data-branch='left'] .node-button {
+      grid-column: 1;
+      align-items: flex-end;
+      padding-right: calc(var(--branch) + 8px);
+      text-align: right;
+    }
+
+    .node[data-branch='right'] .node-button {
+      grid-column: 2;
+      align-items: flex-start;
+      padding-left: calc(var(--branch) + 8px);
+      text-align: left;
+    }
+
+    .node-marker {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .node-hint {
+      display: none;
+    }
+  }
+
+  /* Takes the free space so the status and the plus stay paired at the right
+     edge instead of being spread apart by the row's own distribution. */
+  .node-label {
+    min-width: 0;
+  }
+
+  .node-name {
+    display: block;
+    color: var(--color-ink);
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    transition: color 180ms var(--ease-editorial);
+  }
+
+  .node[data-subdued='true'] .node-name {
+    color: var(--color-muted);
+  }
+
+  /* The one-line summary is dropped from the branching layout: at half the
+     screen per label it wrapped to three lines and turned every branch back
+     into a paragraph. It is the first thing in the detail sheet instead, and
+     it still appears on hover on the constellation. */
+  .node-hint {
+    color: var(--color-muted);
+    font-size: var(--text-small);
+    line-height: 1.45;
+  }
+
+  .node-meta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  /* A plus, which rotates into a cross once the row is open. Cheaper than two
+     glyphs and it animates the state change rather than swapping it. */
+  .node-more {
+    flex: none;
+    width: 1em;
+    /* The accent, because this is the row's interaction affordance and blue is
+       what the rest of the site uses to say a thing can be acted on. */
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1;
+    text-align: center;
+    transition:
+      transform 220ms var(--ease-editorial),
+      color 180ms var(--ease-editorial);
+  }
+
+  .node[data-active] .node-name,
+  .node[data-active] .node-status,
+  .node[data-active] .node-more {
+    color: var(--color-accent);
+  }
+
+  .node[data-active] .node-more {
+    transform: rotate(45deg);
+  }
+
+  /* ==========================================================================
+     Wide screens: the constellation.
+     ========================================================================== */
+
+  @media (min-width: 1024px) {
+    .map-canvas {
+      position: relative;
+      /* The canvas scales as one piece, which is what keeps an SVG coordinate
+         and a percentage offset pointing at the same place. */
+      container-type: inline-size;
+      aspect-ratio: 1200 / 780;
+      padding-top: 0;
+      /* Room either side of the canvas for a hover hint on the topmost and
+         bottommost nodes to hang into. A hint is a transient tooltip carrying
+         the page background, so it may leave the canvas; what it must not do
+         is land on the legend rule or the footnote. */
+      margin-top: 58px;
+      margin-bottom: 18px;
+    }
+
+    .map-links {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .map-links g {
+      opacity: var(--link-opacity);
+      transition: opacity 240ms var(--ease-editorial);
+    }
+
+    .link-line {
+      stroke-width: 1;
+      /* Hairlines stay hairlines, and dash patterns stay in screen units, at
+         every canvas size. */
+      vector-effect: non-scaling-stroke;
+      stroke: var(--color-rule-strong);
+    }
+
+    [data-tone='accent'] .link-line {
+      stroke: var(--color-accent);
+    }
+
+    .link-pulse {
+      fill: var(--color-accent);
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    [data-motion='pulse'] .link-pulse {
+      animation: alfredo-pulse 5.5s var(--ease-editorial) infinite;
+    }
+
+    /* The constellation's travelling point. The SVG scales with the canvas, so
+       the translation is written in the same user units the line is. */
+    .link-flow {
+      fill: var(--color-rule-strong);
+      opacity: 0;
+    }
+
+    [data-tone='accent'] .link-flow {
+      fill: var(--color-accent);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .link-flow {
+        animation: alfredo-flow 7s linear var(--flow-delay, 0s) infinite;
+      }
+    }
+
+    [data-motion='drift'] .link-line {
+      animation: alfredo-drift 6s linear infinite;
+    }
+
+    /* A capability is open: its connection stays at full strength, the rest
+       step back rather than disappear. */
+    .alfredo-map[data-selected] .map-links g {
+      opacity: calc(var(--link-opacity) * 0.35);
+    }
+
+    .alfredo-map .map-links g[data-active],
+    .alfredo-map .map-links g[data-hover] {
+      opacity: 1;
+    }
+
+    /* Every connection grows out of Alfredo when the map first comes into
+       view, one after another. Scaling the whole group about the map's centre
+       is what makes that a draw rather than a fade: both ends of the line
+       start at the middle, so the line extends outward from under the central
+       node exactly along its own path. `vector-effect` on the line keeps the
+       hairline a hairline and the dash pattern in screen units throughout.
+
+       Only `transform` is animated. Opacity belongs to the status and to the
+       dimming above, and an animation with `forwards` would pin it and break
+       selecting a capability. */
+    @media (prefers-reduced-motion: no-preference) {
+      /* The collapsed state lives in the keyframes, not in a rule of its own.
+         That matters: a rule would hide every connection until something
+         arrived to reveal it, so any browser that would not run the animation
+         would render a map with no connections at all. Written this way the
+         worst case is a map that simply does not animate. */
+      .alfredo-map[data-animate] .map-links g {
+        transform-box: view-box;
+        transform-origin: 600px 378px;
+      }
+
+      .alfredo-map[data-animate] .map-links g[data-seen] {
+        animation: alfredo-reach 780ms var(--ease-editorial) var(--draw-delay, 0s) both;
+      }
+    }
+
+    /* ---- Alfredo ---------------------------------------------------------- */
+
+    /* Sized in container units so the node keeps the same proportion of the
+       canvas it was drawn against. That is what guarantees the connections
+       still start outside it when the canvas is narrower than its design
+       width. The floors stop the type shrinking past readable. */
+    .core {
+      position: absolute;
+      top: 48.46%;
+      left: 50%;
+      width: clamp(212px, 21.667cqw, 260px);
+      max-width: none;
+      margin: 0;
+      padding: clamp(16px, 1.667cqw, 20px);
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    .core-name {
+      font-size: clamp(19px, 2cqw, 24px);
+    }
+
+    .core-kind {
+      margin-top: clamp(7px, 0.75cqw, 9px);
+      font-size: clamp(9.5px, 0.917cqw, 11px);
+    }
+
+    .core-pillars {
+      margin-top: clamp(5px, 0.583cqw, 7px);
+      font-size: clamp(7.5px, 0.708cqw, 8.5px);
+    }
+
+    /* The spine, the plus and the small-screen travelling point all belong to
+       the branching layout. The instruction line stays: it is the only thing
+       above the map now, and a pointer needs telling as much as a finger. */
+    .map-spine,
+    .node-more,
+    .node-flow {
+      display: none;
+    }
+
+    /* ---- Capability nodes -------------------------------------------------- */
+
+    .map-nodes {
+      display: contents;
+    }
+
+    /* The coordinates ride on custom properties rather than on `left`/`top`
+       directly, so the same inline style can be ignored entirely by the
+       stacked layout instead of having to be overridden out of it. */
+    .node {
+      position: absolute;
+      top: var(--y);
+      left: var(--x);
+      display: block;
+      width: 0;
+      height: 0;
+      margin: 0;
+      z-index: 1;
+    }
+
+    .node::before,
+    .node::after {
+      display: none;
+    }
+
+    /* The marker is the connection's full stop: it sits exactly on the point
+       the line ends at, whichever way the label hangs. */
+    .node-marker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    /* The label clears its connection point by 14px of real space. The button
+       carries padding at all times so that selecting a capability tints a
+       surface rather than moving the type. */
+    .node-button {
+      position: absolute;
+      display: flex;
+      flex: none;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      width: max-content;
+      padding: 9px 12px;
+      text-align: left;
+    }
+
+    .node[data-anchor='left'] .node-button {
+      top: 0;
+      left: 0;
+      transform: translate(2px, -50%);
+    }
+
+    .node[data-anchor='right'] .node-button {
+      top: 0;
+      right: 0;
+      align-items: flex-end;
+      text-align: right;
+      transform: translate(-2px, -50%);
+    }
+
+    .node[data-anchor='top'] .node-button {
+      bottom: 0;
+      left: 0;
+      align-items: center;
+      text-align: center;
+      transform: translate(-50%, -5px);
+    }
+
+    .node[data-anchor='bottom'] .node-button {
+      top: 0;
+      left: 0;
+      align-items: center;
+      text-align: center;
+      transform: translate(-50%, 5px);
+    }
+
+    .node-name {
+      font-size: 19px;
+    }
+
+    /* One line of context on hover, and nothing that moves the map. It carries
+       the page background so that, in the few places two labels come close, it
+       covers rather than collides. */
+    .node-hint {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: -7px;
+      width: max-content;
+      max-width: min(168px, 14cqw);
+      margin-top: 0;
+      padding: 4px 7px;
+      background-color: var(--color-paper);
+      font-size: 12px;
+      line-height: 1.4;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms var(--ease-editorial);
+    }
+
+    .node[data-anchor='right'] .node-hint {
+      right: -7px;
+      left: auto;
+    }
+
+    .node[data-anchor='top'] .node-hint,
+    .node[data-anchor='bottom'] .node-hint {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+    }
+
+    .node[data-anchor='top'] .node-hint {
+      top: auto;
+      bottom: calc(100% + 2px);
+    }
+
+    .node-button:hover .node-hint,
+    .node-button:focus-visible .node-hint,
+    .node[data-active] .node-hint {
+      opacity: 1;
+    }
+
+    .node-button:hover .node-name {
+      color: var(--color-accent);
+    }
+
+    .node[data-subdued='true'] .node-button:hover .node-name {
+      color: var(--color-accent);
+    }
+
+    /* Everything else steps back while one capability is being read. */
+    .alfredo-map[data-selected] .node:not([data-active]) {
+      opacity: 0.5;
+      transition: opacity 240ms var(--ease-editorial);
+    }
+
+    .map-footnote {
+      margin-top: 30px;
+    }
+  }
+
+  /* ==========================================================================
+     Motion. Two statuses move, both slowly, and neither of them is `live`.
+     ========================================================================== */
+
+  @keyframes alfredo-pulse {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scale(0.55);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes alfredo-drift {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  @keyframes alfredo-flow {
+    0% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    12% {
+      opacity: 0.8;
+    }
+    62% {
+      opacity: 0.8;
+    }
+    74%,
+    100% {
+      transform: translate(var(--flow-x), var(--flow-y));
+      opacity: 0;
+    }
+  }
+
+  @keyframes alfredo-reach {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  /* The line treatments alone still distinguish all four states, so nothing is
+     lost by removing the movement entirely. */
+  @media (prefers-reduced-motion: reduce) {
+    .link-pulse {
+      display: none;
+    }
+
+    /* Matches the specificity of the rule that starts the drift, so the motion
+       is actually removed here rather than left to the global override that
+       collapses every animation's duration. */
+    [data-motion='drift'] .link-line {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * The page's only script. A capability is a disclosure: one open at a time,
+   * `aria-expanded` kept truthful, Escape closes and hands focus back.
+   *
+   * `.glass-blue` is a global class, so the selected node's surface has to be
+   * toggled here rather than selected for in the scoped styles above.
+   */
+  const map = document.querySelector<HTMLElement>('[data-alfredo-map]');
+
+  if (map) {
+    const nodes = Array.from(map.querySelectorAll<HTMLElement>('[data-node]'));
+    const panels = Array.from(map.querySelectorAll<HTMLElement>('[data-panel]'));
+    const links = Array.from(map.querySelectorAll<SVGGElement>('[data-link]'));
+    const core = map.querySelector<HTMLButtonElement>('[data-alfredo-core]');
+
+    let current: string | null = null;
+
+    const triggerFor = (id: string) =>
+      map.querySelector<HTMLButtonElement>(`[data-capability="${id}"]`);
+
+    function paint(id: string | null) {
+      for (const node of nodes) {
+        const on = node.dataset.node === id;
+        node.toggleAttribute('data-active', on);
+
+        const trigger = node.querySelector('button');
+        trigger?.setAttribute('aria-expanded', String(on));
+        trigger?.classList.toggle('glass-blue', on);
+      }
+
+      for (const link of links) {
+        link.toggleAttribute('data-active', link.getAttribute('data-link') === id);
+      }
+
+      for (const panel of panels) {
+        panel.hidden = panel.dataset.panel !== id;
+      }
+
+      map!.toggleAttribute('data-selected', id !== null);
+    }
+
+    /** Deep links stay shareable without the page ever becoming seven routes. */
+    function syncHash(id: string | null) {
+      const next = id ? `#${id}` : `${location.pathname}${location.search}`;
+      history.replaceState(null, '', next);
+    }
+
+    function open(id: string, focusPanel: boolean) {
+      current = id;
+      paint(id);
+      syncHash(id);
+
+      if (!focusPanel) return;
+      const panel = panels.find((candidate) => candidate.dataset.panel === id);
+      panel?.focus({ preventScroll: true });
+    }
+
+    function close(returnFocus: boolean) {
+      const previous = current;
+      current = null;
+      paint(null);
+      syncHash(null);
+
+      if (returnFocus && previous) triggerFor(previous)?.focus({ preventScroll: true });
+    }
+
+    for (const node of nodes) {
+      const id = node.dataset.node;
+      const trigger = node.querySelector('button');
+      if (!id || !trigger) continue;
+
+      trigger.addEventListener('click', () => {
+        if (current === id) close(false);
+        else open(id, true);
+      });
+
+      // Hovering or tabbing to a node brings its connection forward. The SVG
+      // is a sibling of the nodes, so this cannot be done in CSS alone.
+      const link = links.find((candidate) => candidate.getAttribute('data-link') === id);
+      const emphasise = () => link?.setAttribute('data-hover', '');
+      const relax = () => link?.removeAttribute('data-hover');
+
+      trigger.addEventListener('pointerenter', emphasise);
+      trigger.addEventListener('pointerleave', relax);
+      trigger.addEventListener('focus', emphasise);
+      trigger.addEventListener('blur', relax);
+    }
+
+    core?.addEventListener('click', () => close(false));
+
+    for (const panel of panels) {
+      panel
+        .querySelector<HTMLButtonElement>('[data-alfredo-close]')
+        ?.addEventListener('click', () => close(true));
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && current) close(true);
+    });
+
+    // Anywhere outside the map's own controls closes the open capability,
+    // which is the natural way out of the bottom sheet on a touch screen.
+    document.addEventListener('pointerdown', (event) => {
+      if (!current) return;
+      const target = event.target as Element | null;
+      if (target?.closest('[data-panel],[data-node],[data-alfredo-core]')) return;
+      close(false);
+    });
+
+    const initial = decodeURIComponent(location.hash.slice(1));
+    if (initial && nodes.some((node) => node.dataset.node === initial)) {
+      open(initial, false);
+    }
+
+    // Small screens only: draw each connector as its row arrives. The
+    // constellation above 1024px has its own language and needs none of this,
+    // and anyone asking for less motion gets the connectors already drawn.
+    // Marks things as they arrive, at any width. The flag says only that this
+    // is running; the stylesheet decides whether it means motion, so there is
+    // no breakpoint read here to go stale. On wide screens the marks drive the
+    // connections reaching out of Alfredo; on narrow ones they build each row.
+    map.setAttribute('data-animate', '');
+
+    /** Rows on small screens, connection groups on wide ones. */
+    const reveals = [...nodes, ...links];
+    const reveal = (element: Element) => element.setAttribute('data-seen', '');
+
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          reveal(entry.target);
+          watcher.unobserve(entry.target);
+        }
+      },
+      // Deliberately eager: anything touching the viewport counts. The hidden
+      // state here is a zero-width line, so a missed callback would not cost a
+      // flourish, it would cost the connection itself.
+      { threshold: 0 },
+    );
+
+    for (const element of reveals) watcher.observe(element);
+
+    // The safety net for exactly that. If anything has still not been marked a
+    // few seconds in, whatever the reason, reveal everything: the map must
+    // never be left sitting there with its connections invisible.
+    window.setTimeout(() => {
+      for (const element of reveals) {
+        if (!element.hasAttribute('data-seen')) reveal(element);
+      }
+      watcher.disconnect();
+    }, 2500);
+  }
+</script>

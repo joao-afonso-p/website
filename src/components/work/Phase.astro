@@ -1,0 +1,53 @@
+---
+/**
+ * A named phase inside a single role: a mono index, a heavier hairline, then
+ * the section heading. Used where one job was really two stretches of work and
+ * the page needs to say so without splitting the employer in two.
+ */
+interface Props {
+  number: string;
+  title: string;
+}
+
+const { number, title } = Astro.props;
+---
+
+<div class="work-phase">
+  <p class="work-phase-index">Phase {number}</p>
+  <h3 class="work-phase-title">{title}</h3>
+</div>
+
+<style>
+  .work-phase {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  :global(.prose) > .work-phase {
+    margin-top: 4rem;
+  }
+
+  :global(.prose) > .work-phase:first-child {
+    margin-top: 0;
+  }
+
+  .work-phase-index {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: var(--text-meta--line-height);
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  /* Beats the chapter's lifted `h3` rule so both phases open identically. */
+  .work-phase .work-phase-title {
+    margin: 0.75rem 0 0;
+    color: var(--color-ink);
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    letter-spacing: var(--text-h3--letter-spacing);
+    font-weight: 500;
+  }
+</style>

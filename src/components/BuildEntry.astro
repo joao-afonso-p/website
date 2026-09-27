@@ -1,0 +1,187 @@
+---
+import { Image } from 'astro:assets';
+import type { EntryStatus } from '../content.config';
+import { url } from '../lib/paths';
+import StatusIndicator from './StatusIndicator.astro';
+
+/**
+ * A build on the index, with the product actually visible.
+ *
+ * `ProjectRow` is the right component for Side Quests and Work, where the
+ * metadata varies enough to give a list rhythm: five different year ranges,
+ * different statuses, one highlighted entry. Builds has none of that. Every
+ * entry is `live`, every entry is 2026, so every row came out the same shape
+ * and the page read as a list of blog posts.
+ *
+ * The fix is not a louder component, it is evidence. Each build already ships
+ * screenshots, and the collection schema already had `cover`/`coverAlt`; they
+ * were simply never used on the index. So a build entry is the same editorial
+ * row as everywhere else, with one screenshot mounted beside it.
+ *
+ * Covers arrive at two very different shapes: ~400 x 1240 phone captures and
+ * ~2048 x 1200 desktop ones. Forcing both into one frame would either crop the
+ * phone shots to a sliver or blow them up into soft pixels, so the orientation
+ * is read off the image at build time and picks its own width. The mount, the
+ * hairline and the caption-free treatment are the same `.glass-elevated`
+ * language `PhoneFigure` and `Figure` use inside the case studies.
+ */
+interface Props {
+  /** Mono index, e.g. `01`. Decorative. */
+  number?: string;
+  title: string;
+  description?: string;
+  status?: EntryStatus;
+  year?: number;
+  /** Replaces the bare year, e.g. `Since Jun 2026`. */
+  since?: string;
+  /** App-relative path, resolved here. */
+  href: string;
+  cover?: ImageMetadata;
+  coverAlt?: string;
+}
+
+const { number, title, description, status, year, since, href, cover, coverAlt } = Astro.props;
+
+/** Tall captures are phones and must not be stretched to a desktop measure. */
+const portrait = cover ? cover.height > cover.width : false;
+const dateLabel = since ?? (year === undefined ? undefined : String(year));
+---
+
+<article class="build">
+  <a class="build-link group" href={url(href)}>
+    <div class="build-text">
+      <p class="build-eyebrow meta">
+        {number && <span class="build-number">{number}</span>}
+        <StatusIndicator status={status} />
+        {dateLabel && (
+          <time datetime={year === undefined ? undefined : String(year)}>{dateLabel}</time>
+        )}
+      </p>
+
+      <h3 class="build-title text-h2 text-ink">{title}</h3>
+
+      {description && <p class="build-line text-body text-muted">{description}</p>}
+
+      <p class="build-more meta">
+        Read the story{' '}
+        <span class="arrow" aria-hidden="true">
+          &#8594;
+        </span>
+      </p>
+    </div>
+
+    {cover && (
+      <div class="build-figure" data-portrait={String(portrait)}>
+        <div class="build-mount glass-elevated">
+          <Image
+            class="build-image"
+            src={cover}
+            alt={coverAlt ?? ''}
+            widths={portrait ? [280, 400] : [420, 700, 1000]}
+            sizes={portrait ? '17rem' : '(min-width: 768px) 46vw, 100vw'}
+            loading="lazy"
+            decoding="async"
+            quality={82}
+          />
+        </div>
+      </div>
+    )}
+  </a>
+</article>
+
+<style>
+  .build {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .build:last-child {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .build-link {
+    display: grid;
+    gap: 22px;
+    padding: 28px 0 32px;
+    text-decoration: none;
+  }
+
+  .build-eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 14px;
+    margin: 0;
+  }
+
+  .build-number {
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .build-title {
+    margin: 14px 0 0;
+    text-decoration: none;
+  }
+
+  .build-link:hover .build-title {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.12em;
+  }
+
+  .build-line {
+    margin: 10px 0 0;
+    max-width: var(--container-text);
+  }
+
+  .build-more {
+    margin: 16px 0 0;
+    color: var(--color-accent);
+  }
+
+  /* The mount, not the image, is the glass. Same treatment the case studies
+     use: a thin surface, a hairline on the capture, no device mockup. */
+  .build-mount {
+    padding: 6px;
+    overflow: hidden;
+  }
+
+  .build-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+
+  /* A phone capture is held at phone width and never stretched, on any screen.
+     It is also cropped to a fixed frame rather than shown end to end: at its
+     own 0.32 ratio a single cover ran 850px, a whole phone screen per build,
+     which is a listing that scrolls like a case study. Cropped from the top,
+     the part that identifies the product is exactly the part kept, and all
+     four entries end up carrying similar visual weight. */
+  .build-figure[data-portrait='true'] .build-mount {
+    width: min(100%, 17rem);
+  }
+
+  .build-figure[data-portrait='true'] .build-image {
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  @media (min-width: 768px) {
+    .build-link {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 48px;
+      align-items: center;
+      padding: 40px 0 44px;
+    }
+
+    .build-figure[data-portrait='true'] {
+      /* Centred in its column: a narrow figure pinned left would leave a hole
+         the width of a desktop screenshot beside it. */
+      display: flex;
+      justify-content: center;
+    }
+  }
+</style>

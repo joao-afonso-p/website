@@ -54,7 +54,7 @@ const looseYear = z.coerce.number().int();
 const tagList = z.array(z.string()).default([]);
 
 /**
- * Builds — the products and tools that are the spine of the site.
+ * Builds: the products and tools that are the spine of the site.
  *
  * `order` curates the sequence on `/builds` by hand instead of inferring it
  * from dates. `featured` is kept for future use; nothing reads it today.
@@ -64,13 +64,29 @@ const builds = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      /**
+       * A sentence about the build, used as the page's `h1` when present. The
+       * `title` then becomes the eyebrow above it: the eyebrow names the thing,
+       * the headline says something about it.
+       */
+      headline: z.string().optional(),
       oneLiner: z.string(),
       description: z.string().optional(),
+      /** Ownership, e.g. `Independent project · Product, engineering & strategy`. */
+      role: z.string().optional(),
       year: looseYear.optional(),
+      /**
+       * Replaces the bare `year` in the eyebrow when a build wants to say when
+       * it started rather than which year it belongs to, e.g. `Since Jul 2026`.
+       * Display-only: `year` still drives the listing row and the sort.
+       */
+      since: z.string().optional(),
       status: statusSchema.optional(),
       tags: tagList,
       stack: z.array(z.string()).optional(),
       url: z.string().optional(),
+      /** Overrides the `Visit <title>` label on the external link. */
+      cta: z.string().optional(),
       repo: z.string().optional(),
       featured: z.boolean().default(false),
       order: looseYear.optional(),
@@ -82,24 +98,63 @@ const builds = defineCollection({
 });
 
 /**
- * Side quests — smaller, stranger or shorter-lived things, including work done
- * inside someone else's organisation. Hence `org`, `role` and a human-written
- * `period` string: these entries are often a season rather than a launch date.
+ * Side quests: work that wasn't quite a job and wasn't quite a weekend
+ * project, including work done inside someone else's organisation. Hence `org`,
+ * `role` and a human-written `period` string: these entries are often a season
+ * rather than a launch date.
+ *
+ * The collection is read as a chronology: `/side-quests` is a timeline running
+ * newest first, like builds, and `yearLabel` is the label it actually prints.
  */
 const sideQuests = defineCollection({
   loader: glob({ base: './src/content/side-quests', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
+    /**
+     * A sentence about the side quest, used as the page's `h1` when present.
+     * The `title` then becomes the eyebrow above it, the same contract as builds:
+     * the eyebrow names the thing, the headline says something about it.
+     */
+    headline: z.string().optional(),
     oneLiner: z.string(),
+    /**
+     * The listing summary: what the timeline row says about the entry.
+     */
     description: z.string().optional(),
+    /**
+     * The lead paragraph under the headline. Separate from `description`
+     * because the two are read in different places and are doing different
+     * jobs: `description` has to make sense in a list of five, while `intro`
+     * has to open a page whose title has already been read.
+     */
+    intro: z.string().optional(),
     org: z.string().optional(),
     role: z.string().optional(),
     period: z.string().optional(),
+    /**
+     * The year label on the `/side-quests` timeline, e.g. a single year or an open
+     * range ending in `Now`. Display-only, and deliberately separate from `period`: the
+     * timeline wants the shortest thing that locates the entry in time, while
+     * `period` is the precise span the detail page prints.
+     */
+    yearLabel: z.string().optional(),
     year: looseYear.optional(),
     status: statusSchema.optional(),
     tags: tagList,
     url: z.string().optional(),
+    /** Overrides the `Visit <title>` label on the external link. */
+    cta: z.string().optional(),
     repo: z.string().optional(),
+    /**
+     * A short line under the year on the timeline, set in the accent: the one
+     * place the section says something out loud rather than letting the
+     * chronology imply it. Reserve it: two of these and neither is noticeable.
+     */
+    marker: z.string().optional(),
+    /**
+     * `true` gives the entry more room and a heavier rule on the timeline.
+     * For the one side quest that outgrew the others, not a pinned position.
+     */
     featured: z.boolean().default(false),
     order: looseYear.optional(),
     draft: z.boolean().default(false),
@@ -107,27 +162,47 @@ const sideQuests = defineCollection({
 });
 
 /**
- * Work — the résumé-shaped record. `period` is the string that gets rendered;
- * `start` / `end` exist only so the list can sort itself, and `current` keeps
- * an ongoing role at the top without needing an end date sentinel.
- * `title` overrides the display heading when `role` alone reads badly.
+ * Work: the professional timeline on `/work`.
+ *
+ * Unlike builds and side quests there is no detail page per entry. `/work` is
+ * one continuous page and every role is a chapter of it, rendered in order, so
+ * the frontmatter below describes a chapter rather than a listing row: its
+ * place in the chronology and its headline. The narrative itself stays in
+ * the MDX body.
+ *
+ * `start` and `end` are the only dates. The page formats them (`Nov 2022`) and
+ * sorts by `start`, oldest first, so nothing is typed twice. `current: true`
+ * replaces the end date with `Present`.
  */
 const work = defineCollection({
   loader: glob({ base: './src/content/work', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     company: z.string(),
+    /** The job title held first. */
     role: z.string(),
-    title: z.string().optional(),
-    period: z.string().optional(),
-    start: looseDate.optional(),
+    /** A later title at the same company, e.g. after a change of scope. */
+    laterRole: z.string().optional(),
+    start: looseDate,
     end: looseDate.optional(),
     current: z.boolean().default(false),
     location: z.string().optional(),
-    oneLiner: z.string(),
-    description: z.string().optional(),
-    tags: tagList,
-    stack: z.array(z.string()).optional(),
+    /** The company's own site. Rendered as a small outward link. */
     url: z.string().optional(),
+    /** Display text for `url`, e.g. `enlitia.com`. Defaults to the hostname. */
+    urlLabel: z.string().optional(),
+    /**
+     * The one-word shift this chapter stands for, e.g. `Research` or `Teams`.
+     * Read by the progression strip at the top of `/work` as well as the
+     * chapter itself, so the strip can never disagree with the timeline.
+     */
+    stage: z.string(),
+    /** The sentence under the company name. */
+    headline: z.string(),
+    /** Short context under the headline. */
+    intro: z.string().optional(),
+    /** The central chapter: a heavier marker on the spine and more air. */
+    featured: z.boolean().default(false),
+    /** Tiebreaker only: `start` already decides the order. */
     order: looseYear.optional(),
     draft: z.boolean().default(false),
   }),

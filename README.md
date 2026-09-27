@@ -1,10 +1,10 @@
-# joaoafonso — personal website
+# joaoafonso: personal website
 
 A personal site built as a working record rather than a portfolio: products, experiments, side
-quests, each with the reasoning left in. The design is deliberately restrained —
+quests, each with the reasoning left in. The design is deliberately restrained:
 editorial magazine meets technical notebook: warm paper ground, near-black ink, one navy accent,
 hairline rules, typographic hierarchy instead of cards, and effectively no JavaScript shipped to
-the browser — `/alfredo` inlines ~350 bytes for its accordion, and every other page ships none.
+the browser: `/alfredo` inlines ~350 bytes for its accordion, and every other page ships none.
 Every colour, size and measure comes from the design tokens in `src/styles/global.css`; there are
 no gradients, shadows, glows or rounded cards, and border radius never exceeds 2px.
 
@@ -23,15 +23,15 @@ pnpm install
 pnpm dev
 ```
 
-| Command             | What it does                                                         |
-| ------------------- | -------------------------------------------------------------------- |
-| `pnpm install`      | Installs dependencies from the lockfile                              |
-| `pnpm dev`          | Dev server on <http://localhost:4321>, drafts visible                |
-| `pnpm build`        | Static build into `dist/`, drafts excluded                           |
-| `pnpm preview`      | Serves `dist/` exactly as it will be published                       |
-| `pnpm check`        | `astro check` — TypeScript plus content-collection schema validation |
-| `pnpm format`       | Prettier, writes in place (100 cols, single quotes, semicolons)      |
-| `pnpm format:check` | Prettier in verify mode — the same check CI runs                     |
+| Command             | What it does                                                        |
+| ------------------- | ------------------------------------------------------------------- |
+| `pnpm install`      | Installs dependencies from the lockfile                             |
+| `pnpm dev`          | Dev server on <http://localhost:4321>, drafts visible               |
+| `pnpm build`        | Static build into `dist/`, drafts excluded                          |
+| `pnpm preview`      | Serves `dist/` exactly as it will be published                      |
+| `pnpm check`        | `astro check`: TypeScript plus content-collection schema validation |
+| `pnpm format`       | Prettier, writes in place (100 cols, single quotes, semicolons)     |
+| `pnpm format:check` | Prettier in verify mode, the same check CI runs                     |
 
 Before pushing: `pnpm format && pnpm check && pnpm build`.
 
@@ -40,8 +40,8 @@ Before pushing: `pnpm format && pnpm check && pnpm build`.
 ## Architecture
 
 Routes are file-based. Listings are flat index pages; each collection has one `[...slug]` detail
-template (a rest route, so content files may be nested in folders — `builds/2026/tide.md` becomes
-`/builds/2026/tide/`). Nothing is server-rendered — the whole site is static HTML.
+template (a rest route, so content files may be nested in folders: `builds/2026/tide.md` becomes
+`/builds/2026/tide/`). Nothing is server-rendered: the whole site is static HTML.
 
 Pages are emitted as directories and every internal link carries a trailing slash, so links,
 canonical URLs and the sitemap all agree on one URL shape and no click costs a redirect. Internal
@@ -49,7 +49,7 @@ links must go through `url()` from `src/lib/paths.ts`, which applies both the ba
 trailing slash.
 
 ```
-/                    homepage — masthead and "Currently", nothing else
+/                    homepage: masthead and "Currently", nothing else
 /work                /work/[...slug]
 /builds              /builds/[...slug]
 /side-quests         /side-quests/[...slug]
@@ -65,8 +65,8 @@ public/                   copied verbatim: favicon.svg, og-default.png, .nojekyl
                           CNAME (only if you add a custom domain)
 src/
   config/site.ts          name, description, tagline, nav, social links, the "Currently" list
-  config/alfredo.ts       the Alfredo capability record — the whole content model for /alfredo
-  content.config.ts       collection schemas (zod) — the single source of truth for frontmatter
+  config/alfredo.ts       the Alfredo capability record: the whole content model for /alfredo
+  content.config.ts       collection schemas (zod): the single source of truth for frontmatter
   content/
     builds/               shipped products and tools
     side-quests/          smaller or older detours, collaborations, non-product work
@@ -76,7 +76,7 @@ src/
     content.ts            typed data access: getBuilds, getFeaturedBuilds, getSideQuests,
                           getWorkEntries, isPublished, formatDate, formatYear, pageDescription
     paths.ts              url() / absoluteUrl() / canonicalUrl() / appPath() / isActive() /
-                          isExact() — base-path- and trailing-slash-aware href helpers
+                          isExact(): base-path- and trailing-slash-aware href helpers
   layouts/BaseLayout.astro
   components/             Seo, Container, SiteHeader, SiteFooter, ProjectRow,
                           StatusIndicator, PageIntro, EntryMeta, EmptyState, Prose,
@@ -99,13 +99,13 @@ Two conventions worth remembering when editing templates:
 Content is Markdown (or MDX) in `src/content/<collection>/`. The filename becomes the slug:
 `src/content/builds/interviewish.md` → `/builds/interviewish`.
 
-The tables below are a summary. **`src/content/README.md` is the full authoring reference** — field
+The tables below are a summary. **`src/content/README.md` is the full authoring reference**: field
 notes, worked examples and the body-section conventions live there. `src/content.config.ts` is the
 enforcing schema; if the two ever disagree, the schema wins and `pnpm check` will say so.
 
 Fields marked `?` are optional. Omit an optional field entirely rather than leaving it blank.
 
-### `builds` — shipped products and tools
+### `builds`: shipped products and tools
 
 | Field         | Type                     | Notes                                     |
 | ------------- | ------------------------ | ----------------------------------------- |
@@ -124,7 +124,7 @@ Fields marked `?` are optional. Omit an optional field entirely rather than leav
 | `coverAlt`    | string?                  | required in practice whenever `cover` set |
 | `updated`     | date?                    |                                           |
 
-### `sideQuests` — `src/content/side-quests/`
+### `sideQuests`: `src/content/side-quests/`
 
 | Field         | Type                     | Notes                         |
 | ------------- | ------------------------ | ----------------------------- |
@@ -132,7 +132,7 @@ Fields marked `?` are optional. Omit an optional field entirely rather than leav
 | `oneLiner`    | string                   | required                      |
 | `description` | string?                  |                               |
 | `org`, `role` | string?                  | who it was for, what you did  |
-| `period`      | string?                  | free text, e.g. `2021 — 2022` |
+| `period`      | string?                  | free text, e.g. `2021 - 2022` |
 | `year`        | number?                  |                               |
 | `status`      | status?                  |                               |
 | `tags`        | string[]                 | required, may be empty        |
@@ -141,14 +141,14 @@ Fields marked `?` are optional. Omit an optional field entirely rather than leav
 | `order`       | number?                  |                               |
 | `draft`       | boolean, default `false` |                               |
 
-### `work` — one file per role
+### `work`: one file per role
 
 | Field          | Type                     | Notes                             |
 | -------------- | ------------------------ | --------------------------------- |
 | `company`      | string                   | required                          |
 | `role`         | string                   | required                          |
 | `title`        | string?                  | display override for the heading  |
-| `period`       | string?                  | free text, e.g. `2023 — present`  |
+| `period`       | string?                  | free text, e.g. `2023 - present`  |
 | `start`, `end` | date?                    | machine-readable equivalents      |
 | `current`      | boolean, default `false` | `true` sorts the entry to the top |
 | `location`     | string?                  |                                   |
@@ -187,7 +187,7 @@ it can grow without a schema change. The conventional sections:
 
 ### Add a Build
 
-1. Create `src/content/builds/<slug>.md` (lowercase, hyphenated — this becomes the URL).
+1. Create `src/content/builds/<slug>.md` (lowercase, hyphenated: this becomes the URL).
 2. Write the frontmatter, omitting anything you do not yet know:
 
    ```markdown
@@ -214,7 +214,7 @@ it can grow without a schema change. The conventional sections:
 
 3. `pnpm dev` and open `/builds/<slug>`. Drafts are visible in dev.
 4. `order` decides where it sits on `/builds` (ascending, then by year, then title). `featured` is
-   carried in the schema for future use — the homepage is deliberately just a masthead, so nothing
+   carried in the schema for future use: the homepage is deliberately just a masthead, so nothing
    reads it today.
 5. Remove `draft: true` when it is ready, then `pnpm check && pnpm build` and push.
 
@@ -229,7 +229,7 @@ side quests are intentionally lighter.
 1. Create `src/content/work/<company-role>.md`.
 2. `company`, `role` and `oneLiner` are required. Set `current: true` on the present role and
    `false` (or omit) everywhere else; current roles sort to the top, the rest by recency.
-3. `period` is the string shown on the page (`2023 — present`); `start` / `end` are optional
+3. `period` is the string shown on the page (`2023 - present`); `start` / `end` are optional
    machine-readable dates.
 4. Use the body for the real substance, including
    `## Things that don't fit in my résumé`.
@@ -250,39 +250,50 @@ Use `pnpm build && pnpm preview` to see exactly what the public site will contai
 
 ## Deploying
 
-`.github/workflows/deploy.yml` builds and publishes on every push to `main`, and can also be run
-manually from the Actions tab (`workflow_dispatch`). `.github/workflows/ci.yml` runs
-`format:check`, `check` and `build` on pull requests without deploying.
+The site lives at <https://joaoafonsopereira.com>, published from the
+[`joao-afonso-p/joao-afonso-p.github.io`](https://github.com/joao-afonso-p/joao-afonso-p.github.io)
+repository.
 
-### First-time GitHub Pages setup
+`.github/workflows/deploy.yml` checks, builds and publishes on every push to `main`, and can also be
+run manually from the Actions tab (`workflow_dispatch`). `.github/workflows/ci.yml` runs the same
+`format:check`, `check` and `build` gate on pull requests without deploying.
 
-These steps have to be done by hand in GitHub's web UI; nothing in the repo can do them.
+### How GitHub Pages is set up
 
-1. Create a **public** repository named `joao-afonso-p.github.io` on GitHub. Do not add a README or
-   a `.gitignore` — the repo already has both.
-2. Push this repository to it:
+These live in the repository settings, not in any file:
 
-   ```bash
-   git remote add origin git@github.com:joao-afonso-p/joao-afonso-p.github.io.git
-   git push -u origin main
-   ```
+- **Settings → Pages → Source** is **GitHub Actions**. Until it is, the deploy job fails.
+- **Settings → Pages → Custom domain** is `joaoafonsopereira.com`, with **Enforce HTTPS** on.
+  Workflow-based deployments ignore a `public/CNAME` file, so there is none; the domain is only
+  stored here.
 
-3. In the repository, go to **Settings → Pages** and set **Source** to **GitHub Actions**. This is
-   the one switch that cannot be set from a workflow file; until it is flipped, the deploy job
-   fails.
-4. Re-run the `Deploy` workflow from **Actions** if the first push ran before step 3.
-5. The site appears at <https://joao-afonso-p.github.io>. The deployed URL is also printed as the
-   `github-pages` environment URL on each successful run.
+Because this is the user-site repo, the custom domain also covers every project site under the
+account: `joao-afonso-p.github.io/<repo>/` redirects to `joaoafonsopereira.com/<repo>/`.
 
 `public/.nojekyll` is committed so GitHub Pages serves the built output as-is instead of running it
-through Jekyll — which would otherwise drop Astro's `_astro/` asset directory.
+through Jekyll, which would otherwise drop Astro's `_astro/` asset directory.
+
+### DNS
+
+The domain is registered at GoDaddy. Its records point the apex at GitHub Pages and `www` at the
+Pages host (GitHub redirects `www` to the apex):
+
+| Type    | Name  | Value                                                                                      |
+| ------- | ----- | ------------------------------------------------------------------------------------------ |
+| `A`     | `@`   | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`                 |
+| `AAAA`  | `@`   | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+| `CNAME` | `www` | `joao-afonso-p.github.io.`                                                                 |
+
+Check the current addresses against GitHub's
+[custom domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
+before changing them.
 
 ### Changing the deployment target
 
 The origin and base path are configured in exactly one place, `astro.config.mjs`:
 
 ```js
-const SITE_URL = process.env.SITE_URL ?? 'https://joao-afonso-p.github.io';
+const SITE_URL = process.env.SITE_URL ?? 'https://joaoafonsopereira.com';
 const BASE_PATH = process.env.BASE_PATH ?? '/';
 ```
 
@@ -293,47 +304,15 @@ are unset. So changing where the site lives means setting a variable, not editin
 
 Repository variables live under **Settings → Secrets and variables → Actions → Variables**.
 
-| Target                                 | `SITE_URL`                        | `BASE_PATH` | Also needed         |
-| -------------------------------------- | --------------------------------- | ----------- | ------------------- |
-| User site (current)                    | unset                             | unset       | —                   |
-| Custom domain                          | `https://joaoafonso.com`          | unset       | `public/CNAME`, DNS |
-| Project repo `github.com/user/website` | `https://joao-afonso-p.github.io` | `/website`  | —                   |
+| Target                                 | `SITE_URL`                        | `BASE_PATH` | Also needed                    |
+| -------------------------------------- | --------------------------------- | ----------- | ------------------------------ |
+| Custom domain (current)                | unset                             | unset       | Pages custom domain, DNS       |
+| Plain user site                        | `https://joao-afonso-p.github.io` | unset       | Remove the Pages custom domain |
+| Project repo `github.com/user/website` | `https://joao-afonso-p.github.io` | `/website`  | -                              |
 
-#### Switching to a custom domain (`joaoafonso.com`) later
+To test another origin locally: `SITE_URL=https://example.com pnpm build && pnpm preview`.
 
-1. Add a repository variable `SITE_URL` = `https://joaoafonso.com`. Leave `BASE_PATH` unset.
-2. Add a `public/CNAME` file containing the bare hostname and nothing else:
-
-   ```bash
-   echo 'joaoafonso.com' > public/CNAME
-   ```
-
-   It must be committed — GitHub Pages reads it from the published artifact on every deploy, and a
-   missing `CNAME` silently resets the custom domain.
-
-3. At the DNS registrar, point the apex domain at GitHub Pages with four `A` records (or a single
-   `ALIAS`/`ANAME` if the registrar supports it), and `www` at the Pages host:
-
-   | Type              | Name  | Value                      |
-   | ----------------- | ----- | -------------------------- |
-   | `A`               | `@`   | `185.199.108.153`          |
-   | `A`               | `@`   | `185.199.109.153`          |
-   | `A`               | `@`   | `185.199.110.153`          |
-   | `A`               | `@`   | `185.199.111.153`          |
-   | `CNAME`           | `www` | `joao-afonso-p.github.io.` |
-   | `AAAA` (optional) | `@`   | GitHub's IPv6 addresses    |
-
-   Verify the current addresses against GitHub's
-   [custom domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
-   before relying on them.
-
-4. In **Settings → Pages → Custom domain**, enter `joaoafonso.com` and save. Wait for the DNS check
-   to pass, then tick **Enforce HTTPS** (the certificate can take up to a day to issue).
-5. Push, or re-run the `Deploy` workflow, so the build picks up the new `SITE_URL`.
-
-To test locally before switching: `SITE_URL=https://joaoafonso.com pnpm build && pnpm preview`.
-
-#### Deploying to a project repo instead
+### Deploying to a project repo instead
 
 If the site ever moves to a normal repository (`github.com/joao-afonso-p/<repo>`), it is served from
 a sub-path. Set the repository variable `BASE_PATH` = `/<repo>` (leading slash, no trailing slash)
@@ -353,7 +332,7 @@ One caveat: crawlers only honour `robots.txt` at the origin root, so on a sub-pa
 - Action versions in the workflows are pinned to major versions (`actions/checkout@v5`,
   `actions/setup-node@v5`, `actions/configure-pages@v5`, `actions/upload-pages-artifact@v4`,
   `actions/deploy-pages@v4`, `pnpm/action-setup@v4`) and the pnpm version is pinned exactly.
-- The favicon is a single `public/favicon.svg` — the scaffold's `favicon.ico` was removed.
+- The favicon is a single `public/favicon.svg`: the scaffold's `favicon.ico` was removed.
 - `public/og-default.png` is the 1200x630 social share card used by every page. It is a static
   asset, rendered to match the site's own typography. If you change the tagline in
   `src/config/site.ts`, re-make this image so the card still matches. `Seo.astro` checks the file
@@ -369,7 +348,7 @@ One caveat: crawlers only honour `robots.txt` at the origin root, so on a sub-pa
 - `/alfredo` is a deliberate exception to the design system: it has its own surface
   (`--color-alfredo-*` in `global.css`), its own 1160px measure and a tighter type scale, because
   Alfredo is its own sub-project. The site's typefaces and index-table language carry over. It is
-  also the only page that ships JavaScript — a native-button accordion needs it to keep
+  also the only page that ships JavaScript: a native-button accordion needs it to keep
   `aria-expanded` truthful.
 - One known contrast gap: `--color-alfredo-muted` (`#72777c`) is **4.36:1** on the Alfredo
   background and **3.66:1** on the active-row wash, where WCAG AA wants 4.5:1. It was supplied as

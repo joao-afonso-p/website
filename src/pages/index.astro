@@ -1,27 +1,41 @@
 ---
+import Container from '../components/Container.astro';
 import Currently from '../components/home/Currently.astro';
 import Hero from '../components/home/Hero.astro';
+import Sections from '../components/home/Sections.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 /**
- * The homepage: a masthead and one line about now. Nothing else.
+ * The homepage: a masthead, one line about now, and the way in.
  *
- * It states the premise and gets out of the way — the work itself lives behind
- * the nav, so previewing it here would only say the same thing twice. Currently
- * sits tight under the hero (`mt-10`) because it belongs to the masthead rather
- * than being a section of its own.
+ * It used to be the masthead alone, on the reasoning that the work lived
+ * behind the nav and previewing it here would say the same thing twice. That
+ * reasoning depended on the nav being permanently visible, which it no longer
+ * is below 768px: the header collapses to a menu there, and a masthead with no
+ * visible route onward is a dead end. So the four destinations are listed
+ * here, with a line each, which is something the header could never afford.
+ *
+ * `Currently` is still not a section of the page; it is an annotation on the
+ * masthead, so it goes into the hero's `annotation` slot and shares the
+ * masthead's grid rather than opening a band of its own below it.
  *
  * No `title` prop: BaseLayout emits the bare branded title. No `description`
- * either — `site.description` is already the best sentence available about what
+ * either: `site.description` is already the best sentence available about what
  * this site is.
- *
- * `BaseLayout` is a `min-h-dvh` flex column with `flex-1` on `<main>`, so on a
- * page this short the footer settles at the bottom of the viewport instead of
- * floating halfway up it.
  */
 ---
 
 <BaseLayout>
-  <Hero />
-  <Currently />
+  <Hero>
+    <Currently slot="annotation" />
+  </Hero>
+
+  <section class="mt-16 md:mt-24" aria-labelledby="home-sections">
+    <Container>
+      <h2 class="sr-only" id="home-sections">
+        Sections
+      </h2>
+      <Sections />
+    </Container>
+  </section>
 </BaseLayout>

@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * Product evidence from a mobile-first build.
+ *
+ * `Figure` assumes a wide desktop screenshot and grows it rightward across the
+ * page. That is exactly the wrong move for a 393 x 1236 phone capture: stretched
+ * to the same measure it becomes a column of soft pixels two screens tall. This
+ * is the same idea (one screenshot, one glass mount, one mono caption, no
+ * device mockup), re-laid-out around a tall, narrow image.
+ *
+ * The composition is a two-column grid: the screenshot held at a phone-sized
+ * width on the left, the caption set as a sidenote beside it on the right. The
+ * figure breaks out only as far as `--container-text`, not the full wide
+ * measure, so it stays anchored to the reading column instead of floating in a
+ * field of empty page. Below 768px it collapses to a single column and the
+ * screenshot takes the content width.
+ *
+ * Widths are chosen against the source resolution, not for impact: these are 1x
+ * captures at ~393px, so anything displayed much above that is an upscale.
+ * `prominent` (22rem / 352px) is reserved for the two screenshots carrying the
+ * page's argument; everything else sits at 18.5rem / 296px, where the slight
+ * downscale keeps the UI type crisp.
+ *
+ * The same component handles detail crops: a crop is just a shorter image of
+ * the same width. `detail` renders one at 25rem, its exact capture width: a
+ * crop exists to make one control legible, and at the full screens' measure the
+ * source list inside it is too small to read.
+ */
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption: string;
+  /** Widens the screenshot. For the screenshots that carry the argument. */
+  prominent?: boolean;
+  /** A cropped detail rather than a whole screen. Rendered 1:1. */
+  detail?: boolean;
+}
+
+const { src, alt, caption, prominent = false, detail = false } = Astro.props;
+---
+
+<figure
+  class:list={[
+    'phone-figure',
+    prominent && 'phone-figure-prominent',
+    detail && 'phone-figure-detail',
+  ]}
+>
+  <div class="phone-figure-frame glass-elevated">
+    <Image
+      src={src}
+      alt={alt}
+      class="phone-figure-image"
+      loading="lazy"
+      decoding="async"
+      quality={90}
+    />
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .phone-figure {
+    /* Anchored to the reading column rather than the wide measure. Capped
+       against the viewport so the figure can never cause a horizontal
+       scrollbar. */
+    width: min(var(--container-text), calc(100vw - 3.5rem));
+    max-width: none;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+    --phone-width: 18.5rem;
+  }
+
+  .phone-figure-prominent {
+    --phone-width: 22rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .phone-figure-detail {
+    --phone-width: 25rem;
+  }
+
+  /* Mobile: one column, screenshot across the content width but never past its
+     own natural size, where it would only be upscaled. */
+  .phone-figure-frame {
+    width: min(100%, 24.5rem);
+    padding: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .phone-figure {
+      width: min(var(--container-text), calc(100vw - 5.5rem));
+      margin-top: 3.5rem;
+      margin-bottom: 3.5rem;
+      display: grid;
+      grid-template-columns: var(--phone-width) minmax(0, 1fr);
+      gap: 0 3rem;
+      align-items: start;
+    }
+
+    .phone-figure-prominent {
+      margin-top: 5rem;
+      margin-bottom: 5rem;
+    }
+
+    .phone-figure-frame {
+      width: 100%;
+      padding: 0.625rem;
+    }
+  }
+
+  .phone-figure-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+
+  .phone-figure figcaption {
+    margin-top: 0.875rem;
+    max-width: var(--container-prose);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 768px) {
+    /* Set as a sidenote against the top of the screenshot, on the mono rail the
+       rest of the site's metadata uses. The optical nudge lines the caption's
+       first line up with the top edge of the image inside the mount. */
+    .phone-figure figcaption {
+      margin-top: 0.625rem;
+      max-width: 18rem;
+    }
+  }
+</style>

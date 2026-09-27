@@ -1,0 +1,166 @@
+---
+title: 'Holin'
+headline: 'Winning competitions was the easy part. Finding a market was harder.'
+oneLiner: 'A competition team that went looking for the business behind the problems.'
+description: 'From winning sustainability data challenges to testing whether there was a real market behind them.'
+intro: 'What started as a series of sustainability data challenges became an attempt to find out whether those problems could exist outside a competition.'
+period: '2022'
+yearLabel: '2022'
+year: 2022
+tags: ['Data science', 'Sustainability']
+featured: false
+order: 4
+draft: false
+#
+# The dates are deliberately loose: the competition activity runs from 2021,
+# the market work is 2022, and the mentoring epilogue is 2023. The entry is
+# filed under 2022 because that is where the substance of it sits.
+#
+# Images live in src/content/side-quests/holin/ and are imported below. Three
+# are photographs and get the section's documentary hairline; sustainameter.png
+# is a product UI, so it gets the glass mount /builds uses for screenshots.
+# That split is the rule for the whole section: a photograph is a photograph,
+# and a screenshot is evidence.
+#
+# The two competition photographs are deliberately set as one pair under one
+# caption rather than as two separate figures. The wins are context for the
+# question the page is actually about, and two stages in a row would make this
+# a trophy page. The results also link to their public record, which is better
+# evidence than a photograph of a stage.
+---
+
+import ExternalLink from '../../components/quest/ExternalLink.astro';
+import Milestones from '../../components/quest/Milestones.astro';
+import Photo from '../../components/quest/Photo.astro';
+import PhotoPair from '../../components/quest/PhotoPair.astro';
+import PhoneFigure from '../../components/case/PhoneFigure.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import PullQuote from '../../components/case/PullQuote.astro';
+import competitionEurekathon from './holin/competition1.png';
+import competitionWdl from './holin/competition2.png';
+import pycon from './holin/pycon.png';
+import sustainameter from './holin/sustainameter.png';
+
+## It started with competitions
+
+In 2021 and 2022, I was part of a small team competing in national and international data science challenges, mostly around sustainability and public-impact problems.
+
+We worked on everything from mobility and waste to street safety, biodiversity and ESG.
+
+The first big result came at Eurekathon 2021, where we won with a data-driven solution focused on improving the adoption and efficiency of soft mobility in Matosinhos.
+
+Then, in 2022, we won the World Data League, a four-month international competition with 50 teams from 36 countries and several sustainability-focused stages.
+
+<PhotoPair
+  size="text"
+  items={[
+    {
+      src: competitionEurekathon,
+      alt: 'The team on stage at Eurekathon 2021, holding an oversized first-place cheque.',
+    },
+    {
+      src: competitionWdl,
+      alt: 'The team on stage at the World Data League finals in 2022, wearing medals.',
+    },
+  ]}
+  caption="Eurekathon, 2021, and the World Data League finals, 2022."
+/>
+
+Later that year, SustainaMeter, another project from the team, received an ESG Honourable Mention in the expert.ai Natural Language Hackathon for Good.
+
+<PhoneFigure
+  prominent
+  src={sustainameter}
+  alt="The SustainaMeter interface: an ESG evaluation of a selected company, with post, like and comment counts against a top-five comparison and a chart of ESG sub-category occurrences."
+  caption="SustainaMeter, reading a company’s ESG posture out of its own published content."
+/>
+
+<Milestones
+  items={[
+    {
+      year: '2021',
+      title: 'Eurekathon',
+      result: 'Winner',
+      href: 'https://www.youtube.com/watch?v=HUgeEVuDHW4',
+    },
+    {
+      year: '2022',
+      title: 'World Data League',
+      result: 'Winner',
+      href: 'https://www.youtube.com/watch?v=YUWOW335Gss&t=26019s',
+    },
+    {
+      year: '2022',
+      title: 'Natural Language Hackathon for Good',
+      result: 'ESG Honourable Mention',
+      href: 'https://devpost.com/software/holin-s-esg-glassdoor',
+    },
+  ]}
+/>
+
+## Taking it outside the competition bubble
+
+As the work grew, we also started sharing it outside competitions. In 2022, members of the Holin team presented one of our projects at <ExternalLink href="https://pretalx.evolutio.pt/pyconpt2022/talk/H8ZHTY/">PyCon Portugal</ExternalLink>.
+
+<Photo
+  src={pycon}
+  alt="Four members of the Holin team standing beside a PyCon Portugal 2022 banner reading “Yay, you made it!”."
+  caption="PyCon Portugal, 2022."
+  size="column"
+/>
+
+## Then the interesting question changed
+
+After a while, winning competitions stopped being the interesting part. We had built useful things, met people in the sustainability space and learned enough to ask the question that actually mattered:
+
+**Was there a real business here?**
+
+A few of us started exploring that seriously under <ExternalLink href="https://holistic-insights.github.io/">Holin</ExternalLink>.
+
+Instead of immediately forming a company and building yet another product, we started talking to the people who might actually need, buy or fund this kind of work.
+
+A trophy is nice... but a customer is slightly more useful.
+
+<PullQuote text="Was there actually a business here?" />
+
+## Getting out of the data science bubble
+
+I spoke with municipalities in northern Portugal, sustainability consultants, companies in the sector, public-sector decision makers and other people around the sustainability ecosystem.
+
+That included conversations with local government leaders and even a former Portuguese Secretary of State for the Environment.
+
+I also went to conferences, spoke with potential partners and tried to understand where data science could create enough value that someone would actually pay for it. Turns out that last part matters quite a lot!
+
+<PullQuote text="The problems were real. The budgets were not." />
+
+## A market can be too early
+
+What we found was useful, even if it was not the answer we wanted. The problems were real, and there were people genuinely interested in better data, analytics and sustainability tools.
+
+But much of that demand sat around public institutions and sustainability initiatives where budgets were limited, procurement was slow and there simply was not enough willingness to invest in the kinds of solutions we wanted to build.
+
+We could probably have kept finding isolated projects. What we could not find was enough evidence to justify building a company around them.
+
+So we stopped!
+
+Not because the problems disappeared, but because the market was not giving us enough reasons to keep pushing.
+
+## What I took from it
+
+<Numbered number="01" title="A good problem is not automatically a good market">
+  Technical relevance, social importance and willingness to pay are three very different things.
+</Numbered>
+
+<Numbered number="02" title="Talk to the market before building the company">
+  Some of the most useful work we did had nothing to do with models. It was talking to the people
+  who would eventually need to fund, buy or deploy them.
+</Numbered>
+
+<Numbered number="03" title="Knowing when to stop is part of building">
+  We had competition wins, recognition, contacts and interesting problems. None of those were enough
+  on their own to justify starting a company.
+</Numbered>
+
+## Epilogue
+
+A year later, I went back to the World Data League, this time as a mentor, supporting several teams through the competition, including finalists.

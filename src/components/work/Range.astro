@@ -1,0 +1,56 @@
+---
+/**
+ * A typographic band listing the range of a role's technical work: one mono
+ * line between two hairlines, wrapping naturally. Deliberately not badges and
+ * not a stack section. It belongs where breadth itself is part of the story,
+ * which on `/work` is one chapter.
+ */
+interface Props {
+  items: string[];
+  /** Accessible name for the list. */
+  label: string;
+}
+
+const { items, label } = Astro.props;
+---
+
+<ul class="work-range" aria-label={label}>
+  {items.map((item) => (
+    <li>{item}</li>
+  ))}
+</ul>
+
+<style>
+  /* `.prose ul` gives each item a hairline bullet and left padding; the band
+     uses the separators below instead. */
+  .work-range {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.6;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .work-range li {
+    margin: 0;
+    padding-left: 0;
+    white-space: nowrap;
+  }
+
+  .work-range li::before {
+    display: none;
+  }
+
+  .work-range li:not(:last-child)::after {
+    content: '/' / '';
+    margin: 0 0.75em;
+    color: var(--color-faint);
+  }
+</style>

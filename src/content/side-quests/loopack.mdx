@@ -1,0 +1,142 @@
+---
+title: 'Loopack'
+headline: 'I joined to help with the software. I ended up wiring the bins too.'
+oneLiner: 'A reusable-cup return system, from RFID tags and motors up to the backend.'
+description: 'From Raspberry Pis and RFID tags to cloud infrastructure: helping turn a reusable-cup idea into a working IoT system.'
+intro: 'A reusable-cup system that pulled me from cloud software all the way down to Raspberry Pis, RFID readers and motors.'
+period: 'Late 2023 - Sep 2024'
+yearLabel: '2023–2024'
+year: 2023
+tags: ['IoT', 'Circular economy']
+url: 'https://loopack.pt/index.html#about'
+cta: 'Visit Loopack'
+featured: false
+order: 3
+draft: false
+#
+# Photographs live in src/content/side-quests/loopack/ and are imported below.
+# They are the real thing: two phone snapshots of a workbench, a square shot of
+# a finished bin and one photograph from a pilot. They are not retouched, and
+# they are not mounted in glass the way the product screenshots on /builds are
+# because a bad photograph of a real prototype is the evidence here.
+#
+# team.jpeg is the one exception, and only technically: the supplied file was a
+# screen capture of a photo viewer, so the viewer's letterboxing and the
+# filename of the next photo were cropped off. Nothing inside the photograph
+# itself was cropped, altered or colour-corrected.
+---
+
+import ExternalLink from '../../components/quest/ExternalLink.astro';
+import Photo from '../../components/quest/Photo.astro';
+import PhotoPair from '../../components/quest/PhotoPair.astro';
+import MetaLine from '../../components/case/MetaLine.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import PullQuote from '../../components/case/PullQuote.astro';
+import { url as path } from '../../lib/paths';
+import bin from './loopack/bin.jpeg';
+import materials from './loopack/materials.jpeg';
+import raspberry from './loopack/raspberry.jpeg';
+import team from './loopack/team.jpeg';
+
+<Photo
+  eager
+  src={bin}
+  alt="A hand dropping an RFID-tagged reusable cup into the opening of the Loopack smart return bin."
+  caption="The Loopack smart return bin for RFID-tagged reusable cups."
+  size="text"
+/>
+
+## How I got involved
+
+Loopack started as an idea a friend had been carrying since university. He already understood the mechanical side of the product: 3D modelling, 3D printing, physical design and the entire business idea.
+
+What he needed was someone who could make the technical system actually work end to end, so I joined initially to help with the software while he focused more heavily on the mechanical and business sides.
+
+It did not stay “just software” for very long.
+
+## From RFID tags to the cloud
+
+Each reusable cup carried an RFID tag. The smart bins had to identify the cup, trigger the mechanical opening system, register the return and synchronize that event with the rest of the platform.
+
+I ended up working across that whole chain:
+
+- Raspberry Pi software;
+- RFID readers;
+- motors and electronics;
+- wiring and GPIO;
+- device-to-backend communication;
+- databases;
+- backend infrastructure;
+- the user-facing application.
+
+For once, debugging meant checking both the code and the cables.
+
+## Garage mode
+
+Much of the early product was built exactly as it looks in the photos: Raspberry Pis, loose wires, RFID boards, motors, glue, 3D-printed parts and a lot of iteration.
+
+<PhotoPair
+  items={[
+    {
+      src: materials,
+      alt: 'A workbench covered with early Loopack prototype materials: stacks of reusable cups, plywood parts, motors, wiring and electronics.',
+    },
+    {
+      src: raspberry,
+      alt: 'Two Raspberry Pi boards wired to RFID reader modules on a desk, used to control the Loopack smart-bin prototype.',
+    },
+  ]}
+  caption="The bench the first system was built on: cups, plywood, motors, and two Raspberry Pis wired to RFID readers."
+/>
+
+There was no clean separation between hardware and software. If the bin did not open, the problem could be a motor, a GPIO pin, the RFID reader, the application logic or the backend. Very efficient way to make every bug slightly more suspicious...
+
+## Turning the prototype into a system
+
+As the project evolved, we also started restructuring parts of the software and infrastructure. We moved away from a very basic backend setup and introduced a more structured stack, including Supabase.
+
+I also worked directly with an engineering student who joined the project, building parts of the system together and gradually transferring context and ownership.
+
+That was important because by then the project was becoming more than a bench prototype held together by code, wires and optimism.
+
+## The moment it became real
+
+The first meaningful real-world test was a month-long pilot in one of the engineering faculty departments, connected to an existing coffee vending area.
+
+<Photo
+  src={team}
+  alt="Three people in Loopack hoodies standing beside the reusable-cup dispenser, next to the coffee vending machines it was installed against."
+  caption="The pilot, installed beside an existing coffee vending area, with the cup dispenser in place."
+  size="wide"
+/>
+
+Technically, it worked! Cups could be identified, returned and tracked through the system in a real environment instead of on our workbench. We later tested the concept again at a university event with heavier usage.
+
+Those pilots were the point where the project stopped feeling like an electronics prototype and started behaving like a system people could actually use. And, importantly, one that still worked when people who had not built it started touching it.
+
+## Why I left
+
+Around the same time, <a href={path('/side-quests/full-belly')}>Full Belly</a> was starting to show enough potential that I wanted to focus my time there. I was able to hand over the technical context and much of the work to the engineering student I had been working with before moving on.
+
+After I left, Loopack went on to run <ExternalLink href="https://eco.sapo.pt/2024/10/30/loopack-tem-prova-de-fogo-em-arraial-universitario-para-acabar-com-copos-descartaveis/">its largest public test yet</ExternalLink> at a major academic event, and it was a nice confirmation that the thing had outgrown the workbench!
+
+## What I learned
+
+<Numbered number="01" title="Software gets very real when it controls something physical">
+  A bug in a web app is annoying, but a bug in a system that has to read a cup, move a motor and
+  register an event gives you a very different relationship with debugging.
+</Numbered>
+
+<Numbered number="02" title="End-to-end ownership changes how you think">
+  Working from electronics and device code all the way to backend and UI made the system boundaries
+  much more tangible.
+</Numbered>
+
+<Numbered number="03" title="A prototype only becomes a product when it survives the real world">
+  The important milestone was not getting the RFID reader to work on a table. It was seeing the full
+  system operate with real users, real usage and all the messiness that comes with both.
+</Numbered>
+
+## Worked with
+
+<MetaLine lines={['Raspberry Pi · RFID readers · Motors & electronics · GPIO · Supabase']} />

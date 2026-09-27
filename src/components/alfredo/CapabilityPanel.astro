@@ -1,0 +1,268 @@
+---
+import { alfredoPanelLabels, alfredoStatuses, type AlfredoCapability } from '../../config/alfredo';
+
+/**
+ * One capability's detail, and the only place that content is written out.
+ *
+ * It renders twice over, in a sense: on wide screens it is an anchored glass
+ * panel that floats inside the map, pinned to the side opposite the capability
+ * it belongs to, so the node you just chose is never the thing it covers. Below
+ * 1024px the same element becomes a bottom sheet. One element, two behaviours,
+ * no duplicated copy.
+ *
+ * This is one of the few surfaces on the site where the material earns its
+ * keep: the panel sits over the map rather than beside it, and `.glass-blue`
+ * is what tells you so. Everything inside it stays flat editorial type.
+ *
+ * Every panel is in the HTML from the start and hidden with `[hidden]`, which
+ * is what lets the page stay a single route with no client framework: opening
+ * a capability is one attribute change, not a fetch.
+ */
+interface Props {
+  capability: AlfredoCapability;
+  /** Which edge of the map this panel pins to on wide screens. */
+  side: 'left' | 'right';
+}
+
+const { capability, side } = Astro.props;
+
+const status = alfredoStatuses[capability.status];
+const titleId = `alfredo-panel-title-${capability.id}`;
+---
+
+<section
+  class="panel glass-blue"
+  id={`alfredo-panel-${capability.id}`}
+  data-panel={capability.id}
+  data-side={side}
+  aria-labelledby={titleId}
+  tabindex="-1"
+  hidden
+>
+  <button class="panel-close" type="button" data-alfredo-close>
+    Close <span aria-hidden="true">&#10005;</span>
+  </button>
+
+  <h3 class="panel-title" id={titleId}>
+    {capability.name}
+  </h3>
+
+  <p class="panel-standing meta">
+    <span class="panel-status">{status.label}</span>
+    <span aria-hidden="true"> &#183; </span>
+    <span>{capability.category}</span>
+  </p>
+
+  <p class="panel-summary">{capability.summary}</p>
+
+  {capability.note && <p class="panel-note">{capability.note}</p>}
+
+  <h4 class="panel-label meta">{capability.existsLabel ?? alfredoPanelLabels.exists}</h4>
+
+  <ul class="panel-list">
+    {capability.exists.map((item) => (
+      <li>{item}</li>
+    ))}
+  </ul>
+
+  <h4 class="panel-label meta">{capability.learningLabel ?? alfredoPanelLabels.learning}</h4>
+
+  <p class="panel-learning">{capability.learning}</p>
+
+  {capability.boundary && (
+    <>
+      <h4 class="panel-label meta">{alfredoPanelLabels.boundary}</h4>
+      <p class="panel-learning panel-learning-quiet">{capability.boundary}</p>
+    </>
+  )}
+
+  {capability.systems && capability.systems.length > 0 && (
+    <>
+      <h4 class="panel-label meta">{alfredoPanelLabels.systems}</h4>
+      <p class="panel-systems meta">{capability.systems.join(' · ')}</p>
+    </>
+  )}
+</section>
+
+<style>
+  /* ---- Shared type, whichever shape the panel is in --------------------- */
+
+  .panel {
+    z-index: 3;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 24px 26px 26px;
+  }
+
+  .panel-close {
+    float: right;
+    margin: -6px -8px 0 12px;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 180ms var(--ease-editorial);
+  }
+
+  .panel-close:hover {
+    color: var(--color-ink);
+  }
+
+  .panel-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  .panel-standing {
+    margin: 10px 0 0;
+  }
+
+  .panel-status {
+    color: var(--color-accent);
+  }
+
+  .panel-summary {
+    margin: 16px 0 0;
+    color: var(--color-ink-soft);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  /* Why a status is not the next one up. A hairline rather than a callout
+     box: it is a caveat, not a warning. */
+  .panel-note {
+    margin: 14px 0 0;
+    padding-left: 12px;
+    border-left: 1px solid var(--color-rule-strong);
+    color: var(--color-muted);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  .panel-label {
+    margin: 20px 0 10px;
+    font-weight: 400;
+  }
+
+  .panel-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .panel-list li {
+    position: relative;
+    padding-left: 1.1rem;
+    color: var(--color-ink-soft);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  .panel-list li + li {
+    margin-top: 0.5rem;
+  }
+
+  /* The same hairline bullet the site's long-form lists use. */
+  .panel-list li::before {
+    content: '';
+    position: absolute;
+    top: 0.62em;
+    left: 0;
+    width: 0.4rem;
+    height: 1px;
+    background-color: var(--color-rule-strong);
+  }
+
+  .panel-learning {
+    margin: 0;
+    padding-left: 12px;
+    border-left: 1px solid var(--color-accent);
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .panel-learning-quiet {
+    border-left-color: var(--color-rule-strong);
+    color: var(--color-ink-soft);
+  }
+
+  .panel-systems {
+    margin: 0;
+  }
+
+  /* ---- Wide screens: an anchored panel floating inside the map ---------- */
+
+  @media (min-width: 1024px) {
+    .panel {
+      position: absolute;
+      top: 50%;
+      width: clamp(320px, 34%, 400px);
+      /* Sized so the longest panel clears the cap outright rather than
+         scrolling by a few pixels, which reads as a defect. Shorter panels are
+         unaffected; a genuinely long one still scrolls. */
+      max-height: 96%;
+      transform: translateY(-50%);
+      animation: alfredo-panel-in 260ms var(--ease-editorial) both;
+    }
+
+    .panel[data-side='left'] {
+      left: 0;
+    }
+
+    .panel[data-side='right'] {
+      right: 0;
+    }
+
+    @keyframes alfredo-panel-in {
+      from {
+        opacity: 0;
+        transform: translateY(calc(-50% + 10px));
+      }
+    }
+  }
+
+  /* ---- Narrow screens: a bottom sheet ----------------------------------- */
+
+  @media (max-width: 1023px) {
+    .panel {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 60;
+      max-height: 82dvh;
+      padding-bottom: max(26px, env(safe-area-inset-bottom));
+      border-bottom: 0;
+      border-radius: var(--glass-radius) var(--glass-radius) 0 0;
+      box-shadow:
+        0 -12px 40px rgba(20, 30, 40, 0.1),
+        inset 0 1px 0 var(--color-glass-highlight);
+      animation: alfredo-sheet-in 240ms var(--ease-editorial) both;
+    }
+
+    .panel-close {
+      /* Bigger target on touch, and the only way out of the sheet besides
+         tapping the map behind it. */
+      margin: -10px -10px 0 12px;
+      padding: 10px;
+    }
+
+    @keyframes alfredo-sheet-in {
+      from {
+        transform: translateY(12%);
+        opacity: 0;
+      }
+    }
+  }
+</style>

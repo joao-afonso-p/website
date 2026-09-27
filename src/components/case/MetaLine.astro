@@ -1,0 +1,28 @@
+---
+/**
+ * A mono metadata line inside long-form content: "Built with", a start date,
+ * a live URL. The type comes from `.prose .case-meta` in global.css, so this
+ * sits on the same rail as figure captions and nothing new is introduced.
+ *
+ * Values arrive as a prop rather than a slot on purpose. MDX parses a
+ * multi-line JSX child as Markdown and wraps it in a `<p>` of its own; the HTML
+ * parser then hoists that `<p>` out of this one and the class (and with it the
+ * styling) is left behind on an empty element. Passing strings keeps the
+ * markup in Astro's hands, where line length and Prettier cannot break it.
+ */
+interface Props {
+  /** One string per rendered line. */
+  lines: string[];
+}
+
+const { lines } = Astro.props;
+---
+
+<p class="case-meta">
+  {lines.map((line, index) => (
+    <>
+      {index > 0 && <br />}
+      {line}
+    </>
+  ))}
+</p>

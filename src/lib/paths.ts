@@ -11,7 +11,7 @@ const BASE = import.meta.env.BASE_URL;
 /**
  * True for paths that should carry a trailing slash. Pages do (the build emits
  * `about/index.html`, which is served as `/about/`, and that is what canonicals
- * and the sitemap advertise). Files do not — `/favicon.svg/` would 404.
+ * and the sitemap advertise). Files do not: `/favicon.svg/` would 404.
  */
 function isPagePath(path: string): boolean {
   if (path === '/' || path.endsWith('/')) return false;
@@ -57,7 +57,7 @@ export function isActive(path: string, current: string): boolean {
  * Strip the deploy base from a real request pathname.
  *
  * `Astro.url.pathname` already includes the configured base, while `url()`
- * prepends it — so passing a pathname straight into `url()`/`absoluteUrl()`
+ * prepends it, so passing a pathname straight into `url()`/`absoluteUrl()`
  * yields `/base/base/page`. Always run request pathnames through this first.
  * Invisible while the base is `/`; wrong the moment it is not.
  */

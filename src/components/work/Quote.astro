@@ -1,0 +1,51 @@
+---
+/**
+ * A line set apart from the prose on `/work`.
+ *
+ * Typographic only, in the same language as `case/PullQuote.astro`: a hairline
+ * above, the text set large. It is a separate
+ * component because PullQuote sizes itself against the viewport so it can
+ * break out of a reading column, and inside the timeline's chapter column that
+ * width would run past the right edge on tablets and phones. This one takes the
+ * width of whatever it is placed in.
+ *
+ * Reserve it for the few lines the page is built around. Pass the text as a
+ * prop, never as a slot, for the reason PullQuote documents: MDX wraps a long slotted line
+ * in a `<p>` of its own and the styling is lost.
+ */
+interface Props {
+  text: string;
+  class?: string;
+}
+
+const { text, class: className } = Astro.props;
+---
+
+<div class:list={['work-quote', className]}>
+  <p class="work-quote-text">{text}</p>
+</div>
+
+<style>
+  .work-quote {
+    max-width: var(--container-prose);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  .work-quote-text {
+    margin: 0;
+    color: var(--color-ink);
+    font-weight: 500;
+    text-wrap: balance;
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+  }
+
+  /* Inside a chapter body the prose rhythm would put 1.5em above it. A quote
+     wants more air than a paragraph on both sides. */
+  :global(.prose) > .work-quote {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+</style>

@@ -3,7 +3,7 @@
   <!--
     A quiet typographic mark drawn as paths, not <text>, so it renders
     identically everywhere instead of falling back to a system font.
-    Paper ground, a JA monogram in ink, one navy hairline beneath it —
+    Paper ground, a JA monogram in ink, one navy hairline beneath it,
     the same rule language the pages use.
     Palette: paper #f4f3ef, ink #161616, accent #1f3a5f.
   -->

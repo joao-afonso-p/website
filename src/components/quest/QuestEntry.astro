@@ -1,0 +1,244 @@
+---
+import type { EntryStatus } from '../../content.config';
+import { url } from '../../lib/paths';
+import StatusIndicator from '../StatusIndicator.astro';
+
+/**
+ * One entry on the /side-quests timeline.
+ *
+ * Deliberately NOT `ProjectRow`. The builds index is a ranked table (mono
+ * index, status column, tag column, compact rows) and side quests are a
+ * chronology. So the number is replaced by the year, the title is set a step
+ * larger, the description is given a reading size instead of a caption size,
+ * and the rows are given much more air. Same hairlines, same mono metadata,
+ * same hover, same arrow: a different reading, not a different design system.
+ *
+ * Desktop (>=768px) is a three-part grid: YEAR | title + description | arrow.
+ * Mobile reorganises rather than shrinks: the year and the arrow collapse into
+ * one compact mono row above the title.
+ *
+ * Two things mark the entry that outgrew the others, and neither of them
+ * changes the type scale: every title and description on the page is set
+ * identically, because a list where one row shouts is a list you stop reading
+ * as a list. `emphasis` buys vertical room and a heavier top rule; `marker`
+ * puts one accent-coloured line under the year. The accent is the loud part:
+ * it is the only colour in a rail that is otherwise near-black and grey, so it
+ * is the first thing the eye lands on.
+ *
+ * Hairlines only: `border-t` on every entry and `last:border-b` to close the
+ * list, so render these as direct siblings.
+ */
+interface Props {
+  /** The timeline label, e.g. `2021` or `2024 - Now`. Never a sort key. */
+  year: string;
+  /** Machine-readable year for `<time>`, when the label maps to one. */
+  datetime?: string;
+  /** A short accent line under the year. One per page, or it stops working. */
+  marker?: string;
+  title: string;
+  description: string;
+  status?: EntryStatus;
+  /** Overrides the uppercased status word. */
+  statusLabel?: string;
+  /** App-relative path, e.g. `/side-quests/holin`. Resolved via `url()` here. */
+  href: string;
+  /** More room, a heavier rule and a larger description. */
+  emphasis?: boolean;
+}
+
+const {
+  year,
+  datetime,
+  marker,
+  title,
+  description,
+  status,
+  statusLabel,
+  href,
+  emphasis = false,
+} = Astro.props;
+---
+
+<div class:list={['quest-entry', emphasis && 'quest-entry-emphasis']}>
+  <a href={url(href)} class="quest-entry-link group">
+    {/* Mobile: the rail and the arrow share one row above the title. Desktop:
+        they become the first and last cells of the grid. */}
+    <div class="quest-entry-mono">
+      <div class="quest-entry-rail">
+        <p class="quest-entry-year">{datetime ? <time datetime={datetime}>{year}</time> : year}</p>
+
+        {marker && <p class="quest-entry-marker">{marker}</p>}
+      </div>
+
+      <span class="meta arrow quest-entry-arrow" aria-hidden="true">
+        &#8594;
+      </span>
+    </div>
+
+    <div class="quest-entry-body">
+      <h3 class="quest-entry-title">{title}</h3>
+      <p class="quest-entry-description">{description}</p>
+      <StatusIndicator status={status} label={statusLabel} class="mt-4" />
+    </div>
+  </a>
+</div>
+
+<style>
+  .quest-entry {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .quest-entry:last-child {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  /* The one entry that outgrew the others gets the emphasised hairline the
+     design system already has, above and below itself. */
+  .quest-entry-emphasis {
+    border-top-color: var(--color-rule-strong);
+  }
+
+  .quest-entry-emphasis + :global(.quest-entry) {
+    border-top-color: var(--color-rule-strong);
+  }
+
+  .quest-entry-link {
+    display: block;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+    transition: background-color var(--default-transition-duration) var(--ease-editorial);
+  }
+
+  .quest-entry-link:hover {
+    background-color: var(--color-paper-sunk);
+  }
+
+  .quest-entry-emphasis .quest-entry-link {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  /* Mobile: the year and the arrow share one mono line above the title. */
+  .quest-entry-mono {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.625rem;
+  }
+
+  /* Holds the year and, on one entry, the marker under it. `align-items:
+     baseline` on the row above lines the arrow up with the year rather than
+     with the bottom of the rail. */
+  .quest-entry-rail {
+    flex: 1;
+  }
+
+  .quest-entry-year {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+    text-wrap: nowrap;
+  }
+
+  .quest-entry-arrow {
+    margin-left: auto;
+  }
+
+  .quest-entry-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    font-weight: 500;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .quest-entry-link:hover .quest-entry-title {
+    text-decoration-line: underline;
+  }
+
+  .quest-entry-description {
+    margin: 0.75rem 0 0;
+    max-width: var(--container-prose);
+    color: var(--color-ink-soft);
+  }
+
+  /* The one filled block of colour on the site.
+     Everything else here is hairlines and type on paper, so a solid rectangle
+     is the loudest thing available without adding a new visual language: it is
+     still mono, still uppercase, still square-cornered. Small on purpose: the
+     colour does the work, so the type can drop to the site's label size and the
+     block stays a tag rather than a button. No radius, no shadow, no border.
+
+     It takes the site accent rather than a colour of its own: now that the
+     accent is itself bright, what marks this out is that it is filled, and a
+     second near-identical blue would only muddy the palette. */
+  .quest-entry-marker {
+    display: inline-block;
+    margin: 0.5rem 0 0;
+    padding: 0.25rem 0.4rem 0.2rem;
+    background-color: var(--color-accent);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.2;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .quest-entry-link {
+      display: grid;
+      grid-template-columns: 9rem minmax(0, 1fr) 1.5rem;
+      align-items: baseline;
+      gap: 0 2.5rem;
+      padding-top: 2.5rem;
+      padding-bottom: 2.5rem;
+    }
+
+    .quest-entry-emphasis .quest-entry-link {
+      padding-top: 3.75rem;
+      padding-bottom: 3.75rem;
+    }
+
+    /* Dissolve the mobile mono row so the year and the arrow become grid
+       children in their own right. Every cell is then placed explicitly, which
+       frees the DOM to keep the mobile reading order (year, arrow, body)
+       while the row reads year, body, arrow across the page. */
+    .quest-entry-mono {
+      display: contents;
+    }
+
+    .quest-entry-rail {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .quest-entry-body {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .quest-entry-arrow {
+      grid-column: 3;
+      grid-row: 1;
+      margin-left: 0;
+      justify-self: end;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .quest-entry-link {
+      grid-template-columns: 11rem minmax(0, 1fr) 1.5rem;
+      gap: 0 3.5rem;
+    }
+  }
+</style>

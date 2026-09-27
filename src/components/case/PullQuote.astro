@@ -1,0 +1,69 @@
+---
+/**
+ * A question or claim lifted out of the prose.
+ *
+ * Typographic only: display-adjacent scale, a hairline above, and the accent on
+ * the mark that opens it. No rounded quote card, no large glyph, no tint.
+ *
+ * Pass the quote as `text` unless it is short enough to sit on one line of MDX
+ * with its tags. This is the same trap `MetaLine.astro` documents: a quote long
+ * enough for Prettier to break onto its own line stops being JSX text and
+ * becomes a Markdown paragraph, MDX wraps it in a `<p>`, and the HTML parser
+ * then hoists that `<p>` straight out of the `<p>` below, leaving the text
+ * outside the styled element and silently set at body size. A string prop keeps
+ * the markup in Astro's hands, where line length cannot reach it.
+ *
+ * The slot is still supported, and is the right choice for a short quote.
+ */
+interface Props {
+  /** Optional mono label above the quote. */
+  label?: string;
+  /** The quote. Use instead of the slot for anything that wraps. */
+  text?: string;
+}
+
+const { label, text } = Astro.props;
+---
+
+<aside class="pull-quote">
+  {label && <p class="pull-quote-label">{label}</p>}
+  <p class="pull-quote-text">{text ?? <slot />}</p>
+</aside>
+
+<style>
+  .pull-quote {
+    width: min(var(--container-text), calc(100vw - 3.5rem));
+    max-width: none;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-rule-strong);
+  }
+
+  @media (min-width: 768px) {
+    .pull-quote {
+      width: min(var(--container-text), calc(100vw - 5.5rem));
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+    }
+  }
+
+  .pull-quote-label {
+    margin: 0 0 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .pull-quote-text {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    letter-spacing: var(--text-h2--letter-spacing);
+    font-weight: 500;
+    text-wrap: balance;
+  }
+</style>

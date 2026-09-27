@@ -1,58 +1,116 @@
 ---
+import { render } from 'astro:content';
 import Container from '../../components/Container.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import PageIntro from '../../components/PageIntro.astro';
-import ProjectRow from '../../components/ProjectRow.astro';
+import Chapter from '../../components/work/Chapter.astro';
+import Progression from '../../components/work/Progression.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getWorkEntries } from '../../lib/content';
+import { getCareer } from '../../lib/work';
 
 /**
- * The work index. Company reads as the row title because that is what the eye
- * scans for; role and period sit in the mono metadata column beside it.
- * `current: true` is the only thing that earns a status marker here.
+ * Work: the long version of the career, on one page.
+ *
+ * There are no per-role pages. What this section has to show is how the work
+ * changed from one job to the next, and that only reads if the jobs are read
+ * in sequence, so every role is a chapter of one continuous timeline. The
+ * timeline runs newest first, like /builds and /side-quests, so the current
+ * role is the first thing read. The progression strip above it is the one
+ * place the career runs oldest to newest, left to right, so the direction of
+ * travel is still stated before the detail reverses it. The chapters are
+ * deliberately unequal: each MDX body is as long as that stretch of work has
+ * substance for, and the central one is longest.
+ *
+ * Four parts: the masthead, a one-line progression of the shift each role
+ * stands for, the timeline, and a short closing. Everything about a role
+ * (year, place, headline) lives in its frontmatter in
+ * `src/content/work/`, so nothing here is typed twice.
  */
-const roles = await getWorkEntries();
+/**
+ * Oldest first, and the strip above and the timeline below now share that one
+ * order. The timeline used to run newest first, like the other listings, but a
+ * career told backwards asks the reader to reassemble it: every chapter needs
+ * the one below it for context. Read forwards it is simply a story, and the
+ * progression strip, which was always left to right, stops disagreeing with
+ * the thing it summarises.
+ *
+ * Anyone who wants the current role first has the strip: each stage in it is
+ * an in-page link straight to its chapter.
+ */
+const career = await getCareer();
 
-const joined = (parts: Array<string | undefined>): string | undefined => {
-  const text = parts.filter((part): part is string => Boolean(part)).join(' · ');
-  return text === '' ? undefined : text;
-};
+const chapters = await Promise.all(
+  career.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
 ---
 
 <BaseLayout
   title="Work"
-  description="Formal professional experience, written out properly — the parts that do not fit on a one-page résumé."
+  description="How my work moved from research to systems, product, teams and technical leadership, across INESC TEC, ANOVA, iLoF, Enlitia and Loka."
 >
   <Container>
     <PageIntro
-      eyebrow="Work"
-      title="The expanded résumé."
-      lead="Formal professional experience, written out properly — the parts that do not fit on a single page."
-      note="Not a reproduction of a LinkedIn profile."
-      count={roles.length}
+      title="From research to building AI systems, teams and products."
+      lead="I started close to the models. Over time, I kept moving closer to the intersection of engineering, product, people and business."
+      note="The résumé version is shorter."
     />
 
-    {/* Structural only: the row components render h3, so the page needs an
-        h2 between them and the h1. No visible label is wanted here. */}
-    <h2 class="sr-only">All roles</h2>
+    {chapters.length > 0 ? (
+      <>
+        <section class="pb-16 md:pb-24" aria-labelledby="work-progression">
+          <h2 id="work-progression" class="text-h3 text-ink mb-4 max-w-text md:mb-5">
+            The job titles changed. The direction was more consistent.
+          </h2>
 
-    {roles.length > 0 ? (
-      <div>
-        {roles.map((entry, index) => (
-          <ProjectRow
-            number={String(index + 1).padStart(2, '0')}
-            title={entry.data.title ?? entry.data.company}
-            description={entry.data.description ?? entry.data.oneLiner}
-            status={entry.data.current ? 'live' : undefined}
-            statusLabel={entry.data.current ? 'Current' : undefined}
-            tags={entry.data.tags}
-            meta={joined([entry.data.role, entry.data.period])}
-            href={`/work/${entry.id}`}
-          />
-        ))}
-      </div>
+          {/* The strip was always a set of in-page links, and nothing said so.
+              With the timeline running oldest first it is also the shortcut to
+              the current role, which is worth one line of mono to point out. */}
+          <p class="meta text-accent mb-6 md:mb-8">Select a stage to jump to it</p>
+
+          <Progression entries={career} headingId="work-progression" />
+        </section>
+
+        <ol class="timeline" aria-label="Career timeline, earliest first">
+          {chapters.map(({ entry, Content }) => (
+            <Chapter entry={entry}>
+              <Content />
+            </Chapter>
+          ))}
+        </ol>
+
+        <section class="mt-16 md:mt-24" aria-labelledby="work-consistent">
+          <div class="border-t border-rule pt-8 md:pt-10">
+            <h2 class="text-h2 text-ink max-w-text" id="work-consistent">
+              What stayed consistent
+            </h2>
+            <p class="text-lead text-ink-soft mt-7 max-w-text">
+              The scope changed a lot, but the pattern did not: I like being close to the problem,
+              close enough to the technology to build it, close enough to the product and business
+              to understand why we are doing it, and close enough to the people involved to actually
+              move things forward.
+            </p>
+            <p class="text-lead text-ink-soft mt-7 max-w-text">
+              I also like thinking of myself as a generalist. I enjoy learning new domains,
+              understanding how different systems work, and looking for the intersections between
+              them. A lot of the most interesting work, at least for me, happens when something from
+              one world turns out to be useful in another.
+            </p>
+            <p class="text-body text-muted mt-6 max-w-text">
+              That is still the kind of work I look for.
+            </p>
+          </div>
+        </section>
+      </>
     ) : (
-      <EmptyState message="Each role gets written out in full, or not at all — so they land here one at a time. The compressed version is the résumé." />
+      <EmptyState message="Each role gets written out in full, or not at all, so they land here one at a time." />
     )}
   </Container>
 </BaseLayout>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>

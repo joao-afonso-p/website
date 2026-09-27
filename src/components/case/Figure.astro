@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * Product evidence inside a case study.
+ *
+ * Screenshots need more room than the reading measure allows, so the figure
+ * breaks out of `.prose` and grows rightward from the page's left edge. It stays
+ * left-aligned rather than centring, because the whole site shares one left
+ * edge and a centred image would break it.
+ *
+ * The screenshot sits in a glass mount: `.glass-elevated` supplies the material,
+ * the hairline border, the specular edge and the single site-wide depth shadow,
+ * and a small even inset of padding turns it into a surround. The frame is the
+ * only thing made of glass: the screenshot itself is never blurred, tinted or
+ * overlaid, because it is the evidence and it has to stay pixel-sharp. The dark
+ * product UI against the cool light mount is the point: it reads as something
+ * mounted on the page rather than pasted into it.
+ *
+ * Still no browser chrome, no device mockup, no tilt, no hover state.
+ *
+ * `src` is an imported image, so Astro fingerprints and optimises it. When it is
+ * absent the figure renders a marked plate instead, unmounted and unglassed,
+ * because a placeholder is not evidence, which keeps the page's rhythm intact
+ * while a screenshot is still missing.
+ */
+interface Props {
+  src?: ImageMetadata;
+  /** Required even when `src` is pending, so the alt text is written once. */
+  alt: string;
+  caption: string;
+  /** `true` gives the figure the page's widest treatment. */
+  prominent?: boolean;
+  /** Where the file belongs, shown only in the pending state. */
+  pendingPath?: string;
+}
+
+const { src, alt, caption, prominent = false, pendingPath } = Astro.props;
+---
+
+<figure class:list={['case-figure', prominent && 'case-figure-prominent']}>
+  {src ? (
+    <div class="case-figure-frame glass-elevated">
+      <Image src={src} alt={alt} class="case-figure-image" loading="lazy" decoding="async" />
+    </div>
+  ) : (
+    <div class="case-figure-pending">
+      <p>Screenshot pending</p>
+      {pendingPath && <p>{pendingPath}</p>}
+    </div>
+  )}
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .case-figure {
+    /* Break out of the reading measure. Grows rightward from the page gutter,
+       capped so the figure can never exceed the viewport and introduce a
+       horizontal scrollbar. */
+    width: min(var(--container-wide), calc(100vw - 3.5rem));
+    max-width: none;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .case-figure-prominent {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    /* Every screenshot gets the wide treatment: these are dense product UIs and
+       shrinking them to the reading measure would make them unreadable.
+       `prominent` buys extra vertical room, not extra width. */
+    .case-figure {
+      width: min(var(--container-wide), calc(100vw - 5.5rem));
+      margin-top: 3.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .case-figure-prominent {
+      margin-top: 5rem;
+      margin-bottom: 5rem;
+    }
+  }
+
+  /* The mount. Everything visible (material, border, radius, specular edge,
+     depth) comes from `.glass-elevated`; all this adds is the inset that makes
+     the material read as a surround instead of a backing plate. Deliberately
+     narrow: a mount, not a mat. The frame keeps the figure's outer width, so
+     the breakout measure is unchanged and the image simply sits inside it.
+
+     The inset is tuned against the 12px glass radius, not picked for looks. Any
+     less and the screenshot's square corner crowds the frame's rounded one and
+     the mount visibly pinches at the corners; 10px is where the corner gap
+     matches the straight edges closely enough to read as even. Mobile drops to
+     8px because 10px on a 334px figure starts reading as a mat. */
+  .case-figure-frame {
+    padding: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .case-figure-frame {
+      padding: 0.625rem;
+    }
+  }
+
+  /* Square corners inside the mount's rounded ones, and the original hairline:
+     it keeps the mount's inner edge crisp when a screenshot is light-on-light. */
+  .case-figure-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+
+  .case-figure figcaption {
+    margin-top: 0.875rem;
+    max-width: var(--container-prose);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* Deliberately plain: a plate holding the space, not a fake screenshot. */
+  .case-figure-pending {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 2048 / 1124;
+    border: 1px dashed var(--color-rule-strong);
+    background-color: var(--color-paper-sunk);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .case-figure-pending p {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .case-figure-pending p + p {
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: var(--color-faint);
+  }
+</style>

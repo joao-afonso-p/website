@@ -12,6 +12,7 @@
  */
 
 import { getCollection, type CollectionEntry } from 'astro:content';
+import type { EntryStatus } from '../content.config';
 
 export type BuildEntry = CollectionEntry<'builds'>;
 export type SideQuestEntry = CollectionEntry<'sideQuests'>;
@@ -90,7 +91,7 @@ export async function getBuilds(): Promise<BuildEntry[]> {
 
 /**
  * Builds for the homepage's Selected Builds table: `featured: true` first, then
- * the normal build order. Deliberately not a filter — if nothing is featured
+ * the normal build order. Deliberately not a filter: if nothing is featured
  * yet, the section still renders the most relevant builds instead of an empty
  * state. Pass `limit` to cap the list.
  */
@@ -102,7 +103,12 @@ export async function getFeaturedBuilds(limit?: number): Promise<BuildEntry[]> {
 
 /**
  * Published side quests: curated `order` first, then most recent year, then
- * title.
+ * title, newest first, the same reading as builds.
+ *
+ * `/side-quests` is still a chronology, it just runs backwards: the most recent
+ * thing is the most relevant, and the years in the left rail make the sequence
+ * legible in either direction. The detail pages' Later/Earlier links inherit
+ * this order.
  */
 export async function getSideQuests(): Promise<SideQuestEntry[]> {
   const sideQuests = await getCollection('sideQuests', isPublished);
@@ -113,6 +119,17 @@ export async function getSideQuests(): Promise<SideQuestEntry[]> {
       byText(a.data.title, b.data.title) ||
       byId(a, b),
   );
+}
+
+/**
+ * `live` means something different for a side quest than for a build.
+ *
+ * A live build is a deployed URL. A live side quest is an involvement that has
+ * not ended, so both the timeline and the detail header say `ONGOING`, and
+ * every other status keeps the collection's own word.
+ */
+export function sideQuestStatusLabel(status: EntryStatus | undefined): string | undefined {
+  return status === 'live' ? 'Ongoing' : undefined;
 }
 
 /**
@@ -146,7 +163,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-GB', {
 /** `12 Mar 2026`. Returns an em dash rather than `Invalid Date`. */
 export function formatDate(date: Date): string {
   const value = timestamp(date);
-  if (value === undefined) return '—';
+  if (value === undefined) return '-';
   return dateFormatter.format(value);
 }
 
@@ -154,8 +171,8 @@ export function formatDate(date: Date): string {
  * First usable candidate, else the given fallback. Keeps every page's
  * description distinct instead of silently inheriting the site-wide one.
  *
- * Placeholder text (`TODO: ...`) is correct on the page — it tells the owner
- * what to write — but must never become a meta description or social-card
+ * Placeholder text (`TODO: ...`) is correct on the page (it tells the owner
+ * what to write) but must never become a meta description or social-card
  * summary, where it would read as the page's actual summary.
  */
 export function pageDescription(candidates: Array<string | undefined>, fallback: string): string {
@@ -170,6 +187,6 @@ export function pageDescription(candidates: Array<string | undefined>, fallback:
 
 /** `2026`, or an em dash when the year is unknown. */
 export function formatYear(year?: number): string {
-  if (year === undefined || !Number.isFinite(year)) return '—';
+  if (year === undefined || !Number.isFinite(year)) return '-';
   return String(year);
 }

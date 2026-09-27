@@ -9,7 +9,7 @@ import { absoluteUrl } from '../lib/paths';
  *
  * Note: crawlers only honour robots.txt at the origin root. When BASE_PATH is a
  * sub-path (a project repo), this file is published at `<base>/robots.txt` and
- * is advisory only — the sitemap is still discoverable via the <link> tag in
+ * is advisory only: the sitemap is still discoverable via the <link> tag in
  * <head>.
  */
 export const GET: APIRoute = ({ site }) => {

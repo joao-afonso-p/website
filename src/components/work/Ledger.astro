@@ -1,0 +1,67 @@
+---
+/**
+ * Labelled facts, set as a record: mono label, the fact at reading size,
+ * hairlines between. For statements that need to be exact, such as what a
+ * formal title does and does not include, or the outcome of a thesis.
+ */
+interface Row {
+  label: string;
+  text: string;
+}
+
+interface Props {
+  rows: Row[];
+}
+
+const { rows } = Astro.props;
+---
+
+<dl class="work-ledger">
+  {rows.map((row) => (
+    <div class="work-ledger-row">
+      <dt class="work-ledger-label">{row.label}</dt>
+      <dd class="work-ledger-text">{row.text}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .work-ledger {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .work-ledger-row {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 640px) {
+    .work-ledger-row {
+      display: grid;
+      grid-template-columns: 9.5rem minmax(0, 1fr);
+      gap: 0 1.5rem;
+    }
+  }
+
+  .work-ledger-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 2.3;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .work-ledger-text {
+    margin: 0.25rem 0 0;
+    color: var(--color-ink);
+    line-height: 1.55;
+  }
+
+  @media (min-width: 640px) {
+    .work-ledger-text {
+      margin-top: 0;
+    }
+  }
+</style>

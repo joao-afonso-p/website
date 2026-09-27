@@ -5,52 +5,71 @@ import Container from '../Container.astro';
  * The homepage masthead, and the only place the site states its premise.
  *
  * Structure is borrowed from a magazine cover rather than a portfolio header:
- * a small mono nameplate (the page's `h1` — the header wordmark above it is a
- * running head, not a heading), the statement at display scale, then a hairline
- * carrying the two standfirst lines.
+ * the statement at display scale, then a hairline carrying the two standfirst
+ * lines.
  *
- * The accent carries two jobs and no more: the nameplate, and the full stop
- * that ends the statement. One blue glyph at display scale is the whole of the
- * page's colour — enough to register, too little to decorate.
+ * There used to be a small mono nameplate above the statement, carrying the
+ * page's `h1`. It was the same two words as the header wordmark directly above
+ * it, so it has gone. The statement is the `h1` now, which is the better
+ * heading anyway: it is what the page actually says. The header wordmark stays
+ * a running head rather than a heading, so the page still has exactly one.
+ *
+ * That leaves the accent one job on this page: the full stop that ends the
+ * statement. One blue glyph at display scale is the whole of the page's
+ * colour, enough to register and too little to decorate.
  *
  * The statement's line breaks are set by hand instead of being left to the
  * browser: at display scale a bad wrap is the difference between a masthead and
- * an accident. Three spans of 13–14 characters hold the same shape at every
- * breakpoint — a near-square block of type — because `--text-display` clamps
- * between 48px and 132px, and the measure grows at roughly the same rate.
+ * an accident. Three spans of 13 to 14 characters hold the same shape at every
+ * breakpoint, a near-square block of type, because `--text-display` clamps
+ * between 48px and 132px and the measure grows at roughly the same rate.
+ * Nothing constrains that block's width, deliberately: a column narrow enough
+ * to be a container is a column narrow enough to rewrap the statement. The
+ * explicit `text-wrap: normal` is part of that: `h1` is balanced site-wide,
+ * and below ~430px the spans are wider than the measure, so balancing would
+ * quietly re-break lines that are set by hand on purpose.
  *
  * The standfirst stays stacked until `lg`: at 768px a twelve-column split
  * leaves each half too narrow for `text-lead` and orphans "by habit." on its
- * own line. Its second line is broken by hand too, in three shapes — three
+ * own line. Its second line is broken by hand too, in three shapes: three
  * short lines below 768px, balanced automatically in the full-width band at
- * 768–1023px, and two lines in the half-width column from 1024px up — because
- * every automatic option left a two-word widow at one width or another.
+ * 768 to 1023px, and two lines in the half-width column from 1024px up. Every
+ * automatic option left a two-word widow at one width or another.
+ *
+ * The `annotation` slot is the one place anything may sit beside the masthead.
+ * It takes the second row of the standfirst's right-hand column, so a note
+ * hangs off the same rail as the standfirst on large screens and falls in
+ * below it, in reading order, when the grid collapses. It is opt-in: with the
+ * slot empty the grid is exactly the two-column standfirst it always was.
  */
 interface Props {}
+
+const hasAnnotation = Astro.slots.has('annotation');
 ---
 
-<section class="pt-14 md:pt-20 lg:pt-24">
+<section class="pt-16 md:pt-24 lg:pt-28">
   <Container>
-    <h1 class="meta text-accent">João Afonso</h1>
-
-    <p class="text-display text-ink mt-10 md:mt-14">
+    <h1 class="text-display text-ink [text-wrap:normal]">
       <span class="block">I build things</span>
       <span class="block">to see if they</span>
       <span class="block">
         should exist<span class="text-accent">.</span>
       </span>
-    </p>
+    </h1>
 
-    <div class="mt-12 grid gap-6 border-t border-rule pt-6 md:mt-16 md:pt-8 lg:grid-cols-12 lg:gap-x-6">
-      <p class="text-lead text-ink text-balance lg:col-span-5 lg:col-start-1">
-        AI engineer by trade. Builder by habit.
-      </p>
-      <p class="text-body text-muted md:text-balance lg:col-span-6 lg:col-start-7 lg:text-pretty">
-        A record of products, experiments,
-        <br class="md:hidden" /> side quests
-        <br class="hidden lg:inline" /> and things I’ve learned
+    <div class="mt-6 grid gap-6 border-rule pt-6 md:mt-16 md:pt-8 lg:grid-cols-12 lg:gap-x-6">
+      <p class="text-body text-muted md:text-balance lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:text-pretty">
+        A record of random products, experiments,
+        <br class="md:hidden" /> side quests,
+        <br class="hidden lg:inline" /> and things I learned
         <br class="md:hidden" /> along the way.
       </p>
+
+      {hasAnnotation && (
+        <div class="mt-4 lg:col-span-6 lg:col-start-7 lg:row-start-2">
+          <slot name="annotation" />
+        </div>
+      )}
     </div>
   </Container>
 </section>

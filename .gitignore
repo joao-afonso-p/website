@@ -5,7 +5,7 @@ dist/
 .astro/
 
 # dependencies
-node_modules/
+node_modules
 
 # logs
 *-debug.log*
@@ -15,6 +15,10 @@ node_modules/
 .env.local
 .env.production
 
-# editor / OS
+# editor / OS / agent worktrees
+.claude/
 .idea/
 .DS_Store
+
+# unsanitised source screenshots (real personal financial data)
+assets/

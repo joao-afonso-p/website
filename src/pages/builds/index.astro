@@ -1,45 +1,55 @@
 ---
+import BuildEntry from '../../components/BuildEntry.astro';
 import Container from '../../components/Container.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import PageIntro from '../../components/PageIntro.astro';
-import ProjectRow from '../../components/ProjectRow.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getBuilds } from '../../lib/content';
 
 /**
- * The builds index. One of four listing pages that share the same shape:
- * PageIntro, then the editorial index table as direct siblings, then nothing.
- * No filters, no tag cloud, no cards.
+ * The builds index.
+ *
+ * The other listing pages use `ProjectRow`, and should: their metadata varies
+ * enough to give a plain table rhythm. Builds does not. Every build here is
+ * `live` and every one is 2026, so the rows came out identical and the page
+ * read as a list of blog posts rather than as products.
+ *
+ * `BuildEntry` keeps the same editorial row, the same hairlines and the same
+ * mono metadata, and adds the one thing that actually distinguishes these
+ * entries from each other: a screenshot of the thing.
  */
 const builds = await getBuilds();
+
+// Entries show `oneLiner`, the row-length description by definition. The
+// longer `description` is what the detail page leads with.
 ---
 
 <BaseLayout
   title="Builds"
-  description="Things I have personally built, generally because of a real problem or real curiosity."
+  description="Mostly because I had a problem. Sometimes because I got curious."
 >
   <Container>
     <PageIntro
-      eyebrow="Builds"
       title="Things I built."
-      lead="Things I have personally built — generally because of a real problem, or real curiosity."
-      count={builds.length}
+      lead="Mostly because I had a problem. Sometimes because I got curious."
     />
 
-    {/* Structural only: the row components render h3, so the page needs an
-        h2 between them and the h1. No visible label is wanted here. */}
+    {/* Structural only: the entries render h3, so the page needs an h2 between
+        them and the h1. No visible label is wanted here. */}
     <h2 class="sr-only">All builds</h2>
 
     {builds.length > 0 ? (
       <div>
         {builds.map((entry, index) => (
-          <ProjectRow
+          <BuildEntry
             number={String(index + 1).padStart(2, '0')}
             title={entry.data.title}
-            description={entry.data.description ?? entry.data.oneLiner}
+            description={entry.data.oneLiner}
             status={entry.data.status}
             year={entry.data.year}
-            tags={entry.data.tags}
+            since={entry.data.since}
+            cover={entry.data.cover}
+            coverAlt={entry.data.coverAlt}
             href={`/builds/${entry.id}`}
           />
         ))}

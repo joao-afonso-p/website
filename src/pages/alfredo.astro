@@ -1,132 +1,99 @@
 ---
-import CapabilityTable from '../components/alfredo/CapabilityTable.astro';
+import CapabilityMap from '../components/alfredo/CapabilityMap.astro';
+import Container from '../components/Container.astro';
+import { alfredoCopy, alfredoMeta } from '../config/alfredo';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { url } from '../lib/paths';
 
 /**
  * The long project.
  *
- * Alfredo gets its own surface: a cooler, lighter paper, a brighter blue, its
- * own 1160px measure and a tighter type scale than the rest of the site. The
- * site's typefaces and its editorial index-table language carry over, so the
- * page still reads as part of the same universe while being unmistakably its
- * own thing. The full-bleed background is what makes the narrower measure read
- * as deliberate rather than misaligned.
+ * Alfredo used to sit on its own paper, with its own palette and its own
+ * measure. It no longer does: same warm background, same near-black ink, same
+ * blue, same type scale, same container as every other page. What makes it
+ * feel like its own thing now is the capability map, not a different surface,
+ * which is the right way round for the one page that has a real object on it.
  *
- * Content lives in `src/config/alfredo.ts`.
+ * Three areas and no more: the masthead, the map, and one closing statement.
+ * The map replaced an accordion that listed the same capabilities underneath
+ * it; nothing repeats the map's content anywhere on the page.
+ *
+ * The masthead is now kicker, heading, intro and nothing else. The mono rule
+ * that used to sit above it, carrying the standing facts and a small "follow"
+ * link, has gone the same way as the eyebrow rules on the other pages: it
+ * pushed the heading down most of a phone screen to say very little, and the
+ * page already ends on a proper call to action pointing at the same place.
+ *
+ * All copy lives in `src/config/alfredo.ts`, including the "follow" URL, which
+ * still renders the closing link only when it is set.
  */
+const { followUrl } = alfredoMeta;
 ---
 
-<BaseLayout
-  title="Alfredo"
-  description="A record of what Alfredo knows: a personal operating system, one capability at a time."
->
-  <div class="alfredo-surface">
-    <div class="alfredo-page">
-      <header class="alfredo-hero">
-        <div>
-          <p class="alfredo-kicker">A personal operating system · One capability at a time</p>
+<BaseLayout title="Alfredo" description={alfredoCopy.metaDescription}>
+  <Container>
+    <header class="pt-14 pb-12 md:pt-section md:pb-16">
+      <p class="meta text-accent">{alfredoCopy.kicker}</p>
 
-          <h1>A record of what Alfredo knows.</h1>
-        </div>
+      <h1 class="text-h1 text-ink mt-6 max-w-text md:mt-7">{alfredoCopy.heading}</h1>
 
-        <div class="alfredo-introduction">
-          <strong>Meet Alfredo.</strong>
-          An AI agent I’m building to understand the context of my life, remember what matters, and
-          help at the right moment—without taking control away from me.
-        </div>
-      </header>
+      <p class="text-lead text-ink-soft mt-10 max-w-text md:mt-12">{alfredoCopy.intro}</p>
+    </header>
 
-      <CapabilityTable />
+    <CapabilityMap />
 
-      <div class="alfredo-back">
-        <a href={url('/')}>
-          <span aria-hidden="true">&#8592;</span> Back to the rest of the site
-        </a>
+    <section class="mt-section md:mt-section-lg" aria-labelledby="alfredo-toward">
+      <div class="border-t border-rule pt-8 md:pt-10">
+        <h2 class="text-h2 text-ink max-w-text" id="alfredo-toward">
+          {alfredoCopy.closingHeading}
+        </h2>
+
+        <p class="text-lead text-ink-soft mt-7 max-w-text">{alfredoCopy.closingLead}</p>
+
+        {/* The one real call to action on the page. An editorial text link at
+            heading scale, the same treatment a build's "Visit" link gets, since
+            the site has no buttons. It shares `followUrl` with the small link
+            in the metadata line, so there is one URL to change. */}
+        {followUrl && (
+          <div class="mt-10 md:mt-12">
+            <a
+              class="text-accent hover:text-accent-hover text-h3 group inline-flex items-baseline gap-2 underline decoration-1 underline-offset-4 transition-colors hover:decoration-2"
+              href={followUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {alfredoCopy.ctaLabel}
+              <span class="arrow-up" aria-hidden="true">
+                &#8599;
+              </span>
+            </a>
+
+            <p class="meta mt-3">{alfredoCopy.ctaNote}</p>
+          </div>
+        )}
       </div>
-    </div>
-  </div>
+    </section>
+
+    <p class="mt-14 md:mt-20">
+      <a class="meta text-accent hover:text-accent-hover group transition-colors" href={url('/')}>
+        <span class="arrow-back" aria-hidden="true">
+          &#8592;
+        </span>{' '}
+        {alfredoCopy.backLabel}
+      </a>
+    </p>
+  </Container>
 </BaseLayout>
 
 <style>
-  /* Full-bleed so Alfredo's paper, not the site's, is the page surface. */
-  .alfredo-surface {
-    background: var(--color-alfredo-bg);
-    color: var(--color-alfredo-text);
+  /* The site's `.arrow` eases forward; a "back to" link should ease the other
+     way. Local to this page, which is the only place one is used. */
+  .arrow-back {
+    display: inline-block;
+    transition: transform 220ms var(--ease-editorial);
   }
 
-  .alfredo-page {
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 22px 30px 44px;
-  }
-
-  .alfredo-hero {
-    display: grid;
-    grid-template-columns: 2.3fr 1fr;
-    gap: 60px;
-    align-items: end;
-    padding: 60px 0 58px;
-  }
-
-  .alfredo-kicker {
-    margin: 0 0 22px;
-    color: var(--color-alfredo-blue);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .alfredo-hero h1 {
-    max-width: 820px;
-    margin: 0;
-    font-size: clamp(46px, 8vw, 92px);
-    font-weight: 400;
-    line-height: 0.94;
-    letter-spacing: -0.07em;
-  }
-
-  .alfredo-introduction {
-    max-width: 270px;
-    color: var(--color-alfredo-muted);
-    font-size: 13px;
-    line-height: 1.65;
-  }
-
-  .alfredo-introduction strong {
-    display: block;
-    margin-bottom: 12px;
-    color: var(--color-alfredo-text);
-    font-weight: 500;
-  }
-
-  .alfredo-back {
-    padding-top: 28px;
-  }
-
-  .alfredo-back a {
-    color: var(--color-alfredo-blue);
-    font-family: var(--font-mono);
-    font-size: 9px;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-
-  .alfredo-back a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  @media (max-width: 700px) {
-    .alfredo-page {
-      padding: 18px 14px 34px;
-    }
-
-    .alfredo-hero {
-      grid-template-columns: 1fr;
-      gap: 24px;
-      padding: 45px 0 40px;
-    }
+  a:hover > .arrow-back {
+    transform: translateX(-0.25em);
   }
 </style>

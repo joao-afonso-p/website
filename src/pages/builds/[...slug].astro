@@ -1,6 +1,5 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
-import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import Container from '../../components/Container.astro';
 import EntryMeta from '../../components/EntryMeta.astro';
@@ -16,9 +15,8 @@ import { url } from '../../lib/paths';
  *
  * Deliberately under-designed: real content arrives later and each page will be
  * designed properly then. What this template guarantees is a foundation that
- * cannot break — every frontmatter field is optional, and today all four builds
- * carry nothing but a title and a placeholder one-liner. The metadata block,
- * the status marker and the cover each vanish silently.
+ * cannot break: every frontmatter field is optional, and a missing one simply
+ * vanishes, whether that is the metadata block or the status marker.
  *
  * Paths and prev/next come from `getBuilds()`, so the reading order here is the
  * same order as /builds and drafts stay out of the built site.
@@ -45,11 +43,28 @@ const { data } = entry;
 const lead = data.description ?? data.oneLiner;
 const metaDescription = pageDescription(
   [data.description, data.oneLiner],
-  `${data.title} — a build by ${site.name}.`,
+  `${data.title}, a build by ${site.name}.`,
 );
 
 const list = (values: string[] | undefined): string | undefined =>
   values && values.length > 0 ? values.join(' · ') : undefined;
+
+/**
+ * The eyebrow names the thing and the `h1` says something about it, so a build
+ * with a `headline` puts its own name up top. Without one the `h1` is already
+ * the name, and repeating it would be noise, hence the collection label.
+ */
+const eyebrow = data.headline ? data.title : 'Build';
+const heading = data.headline ?? data.title;
+
+/**
+ * Status and year share the eyebrow rule, so neither is repeated below it.
+ * `since` replaces the bare year when a build would rather date its start
+ * ("Since Jul 2026") than name a year; the machine-readable `datetime` stays
+ * the year either way.
+ */
+const eyebrowYear = data.year === undefined ? undefined : String(data.year);
+const eyebrowDate = data.since ?? eyebrowYear;
 ---
 
 <BaseLayout title={data.title} description={metaDescription}>
@@ -59,40 +74,50 @@ const list = (values: string[] | undefined): string | undefined =>
     <article class="max-w-text">
       <header class="pt-14 pb-12 md:pt-section md:pb-16">
         <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
-          <p class="meta">Build</p>
-          <StatusIndicator status={data.status} class="ml-auto shrink-0" />
+          <p class="meta">{eyebrow}</p>
+
+          <p class="meta ml-auto flex shrink-0 items-baseline gap-2">
+            <StatusIndicator status={data.status} />
+            {data.status && eyebrowDate && <span aria-hidden="true">&#183;</span>}
+            {eyebrowDate && <time datetime={eyebrowYear}>{eyebrowDate}</time>}
+          </p>
         </div>
 
         <EntryMeta
           class="mt-8 md:mt-10"
           items={[
-            { label: 'Year', value: data.year === undefined ? undefined : String(data.year) },
             { label: 'Stack', value: list(data.stack) },
             { label: 'Tags', value: list(data.tags) },
             { label: 'Updated', value: data.updated ? formatDate(data.updated) : undefined },
           ]}
-          links={[
-            { label: 'Live', href: data.url },
-            { label: 'Source', href: data.repo },
-          ]}
+          links={[{ label: 'Source', href: data.repo }]}
         />
 
-        <h1 class="text-h1 text-ink mt-10 md:mt-12">{data.title}</h1>
+        <h1 class="text-h1 text-ink mt-10 md:mt-12">{heading}</h1>
         <p class="text-lead text-ink-soft mt-6">{lead}</p>
+
+        {data.role && <p class="meta text-muted mt-8">{data.role}</p>}
+
+        {/* An editorial text link, not a button: the site has no buttons. */}
+        {data.url && (
+          <p class="mt-8 md:mt-10">
+            <a
+              href={data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-accent hover:text-accent-hover text-h3 group inline-flex items-baseline gap-2 underline decoration-1 underline-offset-4 transition-colors hover:decoration-2"
+            >
+              {data.cta ?? `Visit ${data.title}`}
+              <span class="arrow-up" aria-hidden="true">
+                &#8599;
+              </span>
+            </a>
+          </p>
+        )}
       </header>
 
-      {data.cover && (
-        <Image
-          src={data.cover}
-          alt={data.coverAlt ?? ''}
-          widths={[640, 960, 1280]}
-          sizes="(min-width: 768px) 44rem, 100vw"
-          loading="eager"
-          decoding="async"
-          class="mb-14 w-full border border-rule"
-        />
-      )}
-
+      {/* No cover here: `cover` is the /builds index thumbnail. The page goes
+          straight to the text, and the case study places its own figures. */}
       <Prose>
         <Content />
       </Prose>

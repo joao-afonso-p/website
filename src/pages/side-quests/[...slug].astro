@@ -2,18 +2,32 @@
 import type { InferGetStaticPropsType } from 'astro';
 import { render } from 'astro:content';
 import Container from '../../components/Container.astro';
-import EntryMeta from '../../components/EntryMeta.astro';
 import Prose from '../../components/Prose.astro';
 import StatusIndicator from '../../components/StatusIndicator.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getSideQuests, pageDescription } from '../../lib/content';
+import { getSideQuests, pageDescription, sideQuestStatusLabel } from '../../lib/content';
 import { site } from '../../config/site';
 import { url } from '../../lib/paths';
 
 /**
- * A side quest. Same under-designed foundation as /builds/[slug]: an eyebrow
- * row, an optional mono metadata block, the title, the body at reading measure
- * and a quiet footer. Every metadata field is optional and simply disappears.
+ * A side quest.
+ *
+ * Same furniture as /builds/[slug] (an eyebrow row on a hairline, mono
+ * metadata, the headline, the lead, the body at reading measure, a quiet
+ * footer), with one difference. A build's metadata is a specification (stack,
+ * tags, last updated), so it is set as a `<dl>` of labelled pairs. A side
+ * quest's metadata is a single fact about when and in what capacity, so it is
+ * one mono line: `2021 · SHARKCODERS`, `2024 - NOW · CO-FOUNDER & CEO`.
+ *
+ * The bodies are MDX and deliberately unequal in length. Six months of teaching
+ * gets a short page and four years of building a company gets a long one; the
+ * template imposes no structure beyond the reading measure, so each story can
+ * be as long as it has substance for.
+ *
+ * Paths and prev/next come from `getSideQuests()`, so the reading order is the
+ * chronology of /side-quests, newest first, and drafts stay out of the built
+ * site. `prev` is therefore the *later* side quest and `next` the earlier one,
+ * which is why the labels below read Later/Earlier rather than Previous/Next.
  */
 export async function getStaticPaths() {
   const sideQuests = await getSideQuests();
@@ -34,17 +48,31 @@ const { entry, prev, next } = Astro.props as Props;
 const { Content } = await render(entry);
 
 const { data } = entry;
-const lead = data.description ?? data.oneLiner;
+const lead = data.intro ?? data.description ?? data.oneLiner;
 const metaDescription = pageDescription(
-  [data.description, data.oneLiner],
-  `${data.title} — a side quest of ${site.name}.`,
+  [data.description, data.intro, data.oneLiner],
+  `${data.title}, a side quest of ${site.name}.`,
 );
 
-const list = (values: string[] | undefined): string | undefined =>
-  values && values.length > 0 ? values.join(' · ') : undefined;
+/**
+ * The eyebrow names the thing and the `h1` says something about it, so an entry
+ * with a `headline` puts its own name up top. Without one the `h1` is already
+ * the name and the eyebrow falls back to the collection label.
+ */
+const eyebrow = data.headline ? data.title : 'Side quest';
+const heading = data.headline ?? data.title;
 
 /** `period` is the human string; `year` only stands in when there is no period. */
 const period = data.period ?? (data.year === undefined ? undefined : String(data.year));
+
+/**
+ * When, where, in what capacity, in that order, uppercased by `.meta`. Every
+ * part is optional, so the line shortens rather than breaking, and disappears
+ * entirely if an entry carries none of them.
+ */
+const metaLine = [period, data.org, data.role, ...data.tags]
+  .filter((part): part is string => Boolean(part))
+  .join(' · ');
 ---
 
 <BaseLayout title={data.title} description={metaDescription}>
@@ -54,26 +82,35 @@ const period = data.period ?? (data.year === undefined ? undefined : String(data
     <article class="max-w-text">
       <header class="pt-14 pb-12 md:pt-section md:pb-16">
         <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
-          <p class="meta">Side quest</p>
-          <StatusIndicator status={data.status} class="ml-auto shrink-0" />
+          <p class="meta">{eyebrow}</p>
+          <StatusIndicator
+            status={data.status}
+            label={sideQuestStatusLabel(data.status)}
+            class="ml-auto shrink-0"
+          />
         </div>
 
-        <EntryMeta
-          class="mt-8 md:mt-10"
-          items={[
-            { label: 'Organisation', value: data.org },
-            { label: 'Role', value: data.role },
-            { label: 'Period', value: period },
-            { label: 'Tags', value: list(data.tags) },
-          ]}
-          links={[
-            { label: 'Link', href: data.url },
-            { label: 'Source', href: data.repo },
-          ]}
-        />
+        {metaLine !== '' && <p class="meta mt-6">{metaLine}</p>}
 
-        <h1 class="text-h1 text-ink mt-10 md:mt-12">{data.title}</h1>
+        <h1 class="text-h1 text-ink mt-8 md:mt-10">{heading}</h1>
         <p class="text-lead text-ink-soft mt-6">{lead}</p>
+
+        {/* An editorial text link, not a button: the site has no buttons. */}
+        {data.url && (
+          <p class="mt-8 md:mt-10">
+            <a
+              href={data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-accent hover:text-accent-hover text-h3 group inline-flex items-baseline gap-2 underline decoration-1 underline-offset-4 transition-colors hover:decoration-2"
+            >
+              {data.cta ?? `Visit ${data.title}`}
+              <span class="arrow-up" aria-hidden="true">
+                &#8599;
+              </span>
+            </a>
+          </p>
+        )}
       </header>
 
       <Prose>
@@ -95,7 +132,7 @@ const period = data.period ?? (data.year === undefined ? undefined : String(data
           >
             {prev ? (
               <a href={url(`/side-quests/${prev.id}`)} class="group block">
-                <span class="meta text-muted">Previous</span>
+                <span class="meta text-muted">Later</span>
                 <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
                   {prev.data.title}
                 </span>
@@ -106,7 +143,7 @@ const period = data.period ?? (data.year === undefined ? undefined : String(data
 
             {next && (
               <a href={url(`/side-quests/${next.id}`)} class="group block md:text-right">
-                <span class="meta text-muted">Next</span>
+                <span class="meta text-muted">Earlier</span>
                 <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
                   {next.data.title}
                 </span>

@@ -1,0 +1,38 @@
+---
+company: 'ANOVA'
+role: 'Junior Data Scientist'
+start: 2020-09
+end: 2021-04
+location: 'Remote'
+url: 'https://www.anova.com/'
+stage: 'Systems'
+headline: 'Making data science run without someone pressing the button.'
+intro: 'ANOVA had recently been formed from several established companies. I joined a very small product effort where, in practice, I worked closely with one lead based in the United States. It was autonomous and international from the start.'
+#
+# The shortest chapter on purpose. The point is operationalization, not the
+# cloud setup, so the VM gets one sentence of why and nothing more.
+---
+
+import ExternalLink from '../../components/quest/ExternalLink.astro';
+
+ANOVA provides hardware monitoring for industrial tanks, but not every tank has a sensor. <ExternalLink href="https://www.anova.com/stockout/">The product I worked on</ExternalLink> estimated the levels of unmonitored tanks from monitored tanks that behaved like them.
+
+Historical refill and level patterns were used to identify which tanks were similar, and at runtime the monitored ones helped infer the current state of the ones without sensors. The goal was simple: anticipate refills and reduce the risk of stockouts.
+
+### Taking the person out of the loop
+
+The statistical process already existed when I joined. The problem was that every day, someone still had to make it happen, manually.
+
+The project lead would open some FTP servers, download the new sensor files, run the process manually and upload the outputs somewhere else so the downstream systems could pick them up.
+
+My main job was to remove that person from the loop.
+
+I built the pipeline end to end: automated FTP ingestion, the processing flow and automated delivery of the outputs. With the help from the DevOps team, I also set up an Azure VM that started on a schedule, ran the process, handled completion and shut itself down again.
+
+Once the pipeline was stable, I built an internal control center in Python with Tkinter: part dashboard, part backoffice, showing the data, product metrics, errors, logs and operational status.
+
+It also made it much easier to show leadership how the product was performing instead of asking them to trust a process running somewhere in the background.
+
+Later, I started representing the product in conversations with teams in Portugal and elsewhere in Europe about where Machine Learning could improve it. The existing approach was mostly statistical, and those conversations made me realise I wanted more direct exposure to Machine Learning itself.
+
+The role was also quite isolated: most of the work happened one to one, with my closest collaborator in another timezone. So when a contact suggested I apply for a Data Scientist role at iLoF, I did it.

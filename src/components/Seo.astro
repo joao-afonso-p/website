@@ -38,7 +38,7 @@ const {
  * so canonicals never come out as `/base/base/page`.
  */
 const isHome = appPath(Astro.url.pathname).replace(/\/$/, '') === '';
-const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
+const pageTitle = title ? `${title} - ${site.name}` : `${site.name} - ${site.tagline}`;
 const canonical = canonicalUrl(Astro.url.pathname, Astro.site);
 
 /**
@@ -87,7 +87,7 @@ const personJsonLd = isHome
 {shareImageUrl && (
   <>
     <meta property="og:image" content={shareImageUrl} />
-    <meta property="og:image:alt" content={`${site.name} — ${site.tagline}`} />
+    <meta property="og:image:alt" content={`${site.name} - ${site.tagline}`} />
     {shareImage === site.ogImage && (
       <>
         <meta property="og:image:width" content="1200" />

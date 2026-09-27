@@ -1,0 +1,141 @@
+---
+/**
+ * A few dated results, set as a record rather than a prize list.
+ *
+ * The temptation with competition results is a row of badges. This is the
+ * opposite: the site's own index-table language at its quietest: mono year,
+ * the name at reading size, the outcome in mono on the right, hairlines
+ * between. Nothing is coloured, enlarged or given a container, because on the
+ * page these are context for the story and not the story.
+ *
+ * A `href` turns the name into an editorial link, which keeps the public record
+ * next to the claim it supports instead of in a list of references at the
+ * bottom of the page.
+ */
+interface Milestone {
+  year: string;
+  title: string;
+  /** The outcome, e.g. `Winner`. Rendered in mono caps. */
+  result: string;
+  /** Public record of the result. External, opens in a new tab. */
+  href?: string;
+}
+
+interface Props {
+  items: Milestone[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="milestones">
+  {items.map((item) => (
+    <div class="milestone">
+      <dt class="milestone-year">
+        <time datetime={item.year}>{item.year}</time>
+      </dt>
+
+      <dd class="milestone-body">
+        <p class="milestone-title">
+          {item.href ? (
+            <a href={item.href} target="_blank" rel="noopener noreferrer" class="link">
+              {item.title}
+              <span class="arrow-up" aria-hidden="true">
+                &#8599;
+              </span>
+            </a>
+          ) : (
+            item.title
+          )}
+        </p>
+        <p class="milestone-result">{item.result}</p>
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .milestones {
+    width: min(var(--container-text), calc(100vw - 3.5rem));
+    max-width: none;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .milestones {
+      width: min(var(--container-text), calc(100vw - 5.5rem));
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
+  }
+
+  .milestone {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 0 1.5rem;
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .milestone:last-child {
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 768px) {
+    .milestone {
+      grid-template-columns: 5rem minmax(0, 1fr);
+      gap: 0 2.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+
+  .milestone-year {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.7;
+    letter-spacing: var(--text-meta--letter-spacing);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .milestone-body {
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    /* Name left, outcome right, on one line. Below that it stacks, because the
+       longer outcomes do not survive two columns on a phone. */
+    .milestone-body {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+  }
+
+  .milestone-title {
+    margin: 0;
+    color: var(--color-ink);
+  }
+
+  .milestone-result {
+    margin: 0.25rem 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.7;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-wrap: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    .milestone-result {
+      margin-top: 0;
+      text-align: right;
+    }
+  }
+</style>

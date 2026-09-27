@@ -1,0 +1,31 @@
+---
+/**
+ * An external link inside running prose.
+ *
+ * The builds pages never needed this: every link they have is a frontmatter
+ * `url` or `repo`, rendered by the template, which is where `target` and `rel`
+ * were already being set. The side quest pages put links inside sentences
+ * (the public record of a competition, an article about a pilot, a talk) and a
+ * Markdown `[label](url)` compiles to a bare `<a href>`, with no `target`, no
+ * `rel` and none of the site's external-link marking.
+ *
+ * So links in these bodies go through here instead: one place that opens a new
+ * tab, sets a safe `rel`, and carries the same `↗` the rest of the site uses to
+ * say "this leaves the page". Colour, underline and hover come from `.prose a`,
+ * so an external link is typographically identical to any other.
+ *
+ * The markup below is `prettier-ignore`d and has to stay on one line. These are
+ * inline elements: reformatted onto separate lines, the whitespace becomes part
+ * of the link, and the underline picks up a space before the label and another
+ * before the arrow. The narrow no-break space in front of the arrow is there to
+ * stop the arrow from wrapping onto a line of its own.
+ */
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+---
+
+{/* prettier-ignore */}
+<a href={href} target="_blank" rel="noopener noreferrer"><slot /><span class="arrow-up" aria-hidden="true">&#8239;&#8599;</span></a>

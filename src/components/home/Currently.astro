@@ -1,21 +1,41 @@
 ---
 import { currently } from '../../config/site';
-import Container from '../Container.astro';
+import { url } from '../../lib/paths';
 
 /**
- * The cheapest thing on the site to change: one quiet mono row, driven
- * entirely by `currently` in `src/config/site.ts`.
+ * One marginal note, pinned to the right rail of the masthead: the cheapest
+ * thing on the site to change, driven entirely by `currently` in
+ * `src/config/site.ts`.
  *
- * The label and the separators are the accent; the items themselves stay ink,
- * so the blue marks the structure rather than the content. The label is
- * uppercase mono (`.meta`); the items keep the sentence case they were authored
+ * This is the homepage's only glass surface, and it is deliberately the
+ * smallest object on the page. `.glass-subtle` because it is a floating
+ * annotation rather than a panel bolted to the paper; no shadow, no hover
+ * state on the surface itself: a note that lit up would read as a card.
+ * It carries no `Container` and no section margin: `Hero` places it in the
+ * standfirst grid, so the measure and the rhythm are the masthead's.
+ *
+ * `w-fit` sizes the note to its longest line instead of to the column, which
+ * is the whole difference between a margin note and a dashboard widget.
+ * `max-w-full` keeps that honest on narrow phones, where the longest item
+ * wraps rather than overflowing.
+ *
+ * The items stack. The horizontal row this replaces spanned the full measure
+ * and read as a status bar; stacked and shrink-wrapped it reads as a note, and
+ * the item that leads somewhere gets to be the first line rather than the
+ * first phrase. Stacking is also why the `·` separators are gone: there is no
+ * longer anything to separate.
+ *
+ * The label is the accent; the items stay ink-soft, except where an item opts
+ * into `accent` in `src/config/site.ts`, which today is "Building Alfredo",
+ * the one item that is a link. Which item is special is a content decision, so
+ * it lives in the data, not here. The arrow follows `href`, not `accent`: it
+ * promises a destination. The items keep the sentence case they were authored
  * in, at `text-small`, because three uppercased phrases at meta scale read as a
  * shouted status bar rather than a footnote. No icons, no dot, no
  * "status: online".
  *
- * The `·` separators appear only from `lg` up, which is the first width where
- * all three items fit on a single line. Below that the row would wrap and
- * leave a separator dangling at the end of a line, so the items simply stack.
+ * `<aside>` is a landmark, so it is named by its own heading: an unnamed
+ * complementary region is a thing to avoid, and "Currently" is the name.
  */
 interface Props {}
 
@@ -23,24 +43,32 @@ const items = currently;
 ---
 
 {items.length > 0 && (
-  <section class="mt-10 md:mt-12">
-    <Container>
-      <div class="flex flex-col gap-2 border-t border-rule pt-4 md:flex-row md:items-baseline md:gap-8">
-        <h2 class="meta text-accent shrink-0 whitespace-nowrap md:w-28">Currently</h2>
+  <aside class="glass-subtle w-fit max-w-full px-4 py-3.5" aria-labelledby="currently">
+    <h2 id="currently" class="meta text-accent">
+      Currently
+    </h2>
 
-        <ul class="text-small text-ink-soft space-y-1 font-mono lg:flex lg:flex-wrap lg:items-baseline lg:gap-x-2 lg:space-y-0">
-          {items.map((item, i) => (
-            <li>
-              {item}
-              {i < items.length - 1 && (
-                <span class="text-accent hidden pl-2 lg:inline" aria-hidden="true">
-                  &#183;
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Container>
-  </section>
+    <ul class="text-small text-ink-soft mt-2.5 space-y-1 font-mono">
+      {items.map((item) => (
+        <li>
+          {item.href ? (
+            <a
+              href={url(item.href)}
+              class:list={[
+                'decoration-1 underline-offset-4 transition-colors hover:underline',
+                item.accent ? 'text-accent hover:text-accent-hover' : 'hover:text-ink',
+              ]}
+            >
+              {item.label}{' '}
+              <span class="arrow" aria-hidden="true">
+                &#8594;
+              </span>
+            </a>
+          ) : (
+            <span class:list={[item.accent && 'text-accent']}>{item.label}</span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </aside>
 )}

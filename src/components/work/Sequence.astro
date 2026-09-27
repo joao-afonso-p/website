@@ -1,0 +1,83 @@
+---
+/**
+ * A short ordered progression: mono index, hairline, one line each. For a
+ * sequence where the order is the point, such as the route a piece of research
+ * took or the steps a proposal goes through. Not a list of skills.
+ *
+ * An item can carry a `note`, set in the accent beside it, to mark the step
+ * that mattered. One per sequence at most.
+ */
+interface Step {
+  text: string;
+  note?: string;
+}
+
+interface Props {
+  items: Array<string | Step>;
+  /** Accessible name for the list, e.g. "How the research progressed". */
+  label: string;
+}
+
+const { items, label } = Astro.props;
+const steps: Step[] = items.map((item) => (typeof item === 'string' ? { text: item } : item));
+---
+
+<ol class="work-sequence" aria-label={label}>
+  {steps.map((step, index) => (
+    <li class="work-sequence-step">
+      <span class="work-sequence-index" aria-hidden="true">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+      <span class="work-sequence-text">
+        {step.text}
+        {step.note && <span class="work-sequence-note">{step.note}</span>}
+      </span>
+    </li>
+  ))}
+</ol>
+
+<style>
+  /* `.prose ol` sets decimal markers and padding; this list numbers itself. */
+  .work-sequence {
+    list-style: none;
+    padding-left: 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .work-sequence-step {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 0 1rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .work-sequence .work-sequence-step {
+    margin-top: 0;
+  }
+
+  .work-sequence-index {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 2.3;
+    letter-spacing: var(--text-meta--letter-spacing);
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .work-sequence-text {
+    color: var(--color-ink);
+    line-height: 1.55;
+  }
+
+  .work-sequence-note {
+    display: inline-block;
+    margin-left: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+</style>

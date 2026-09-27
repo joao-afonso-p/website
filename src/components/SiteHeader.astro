@@ -1,5 +1,5 @@
 ---
-import { alfredoNav, nav, site } from '../config/site';
+import { alfredoNav, headerLink, nav, site } from '../config/site';
 import { isActive, isExact, url } from '../lib/paths';
 import Container from './Container.astro';
 
@@ -7,36 +7,73 @@ import Container from './Container.astro';
 interface Props {}
 
 /**
- * Deliberately not sticky, and deliberately free of JavaScript.
+ * A sticky glass surface that is invisible until you scroll.
  *
- * Mobile (<768px): wordmark row, hairline, then the nav as a wrapping
- * uppercase-mono list. No hamburger — five short labels fit on two lines and
- * a permanently visible nav beats a button that hides it.
- * Desktop: wordmark left, nav right, one hairline under the whole row.
+ * At the top of the page the surface is fully transparent, so the header reads
+ * exactly as the flat editorial band it was before. Once the page scrolls, the
+ * material appears underneath the type: cool translucency, backdrop blur and a
+ * hairline. That is the whole of the effect: no floating pill, no change of
+ * height, no layout shift.
+ *
+ * The nav runs in three groups: the pages of this site, then a hairline slash,
+ * then the two pointers out of it, Alfredo and LinkedIn. Only Alfredo takes
+ * the accent; the outward link stays muted so the row has one bright thing in
+ * it rather than two competing.
+ *
+ * Desktop (>=768px): wordmark left, the whole nav right, one hairline under
+ * the row.
+ *
+ * Mobile (<768px): wordmark and a `Menu` toggle on a single row, and the nav
+ * drops below it only when asked for. This page used to carry the nav open at
+ * all times, which cost 173px of a 844px phone screen on every page before a
+ * word of content. Five labels cannot wrap to one line, and a permanently
+ * visible nav is only worth its height while it is cheap. The homepage now
+ * lists the same destinations with a line of explanation each, so collapsing
+ * the header here does not make the site harder to find your way around.
  */
 const here = Astro.url.pathname;
 const isHome = isActive('/', here);
 ---
 
-<header>
-  <Container>
-    <div class="flex flex-col border-b border-rule md:flex-row md:items-baseline md:justify-between md:gap-10">
-      <p class="py-5 md:py-7">
-        <a
-          href={url('/')}
-          class="text-h3 text-ink hover:text-accent transition-colors"
-          aria-current={isHome ? 'page' : undefined}
-        >
-          {site.wordmark}
-        </a>
-      </p>
+{/* Scrolls away above the sticky header, which is how the scroll state is
+    detected without a scroll listener. 1px tall, negatively offset, so it
+    occupies no layout space. */}
+<div data-header-sentinel aria-hidden="true"></div>
 
-      <nav aria-label="Primary" class="border-t border-rule pb-5 pt-4 md:border-t-0 md:py-7">
-        <ul class="flex flex-wrap items-baseline gap-x-5 gap-y-2 md:gap-x-7">
+<header class="site-header sticky top-0 z-40" data-site-header>
+  <Container>
+    <div class="border-b border-rule md:flex md:flex-row md:items-baseline md:justify-between md:gap-10">
+      <div class="flex items-baseline justify-between gap-6 py-5 md:block md:py-7">
+        <p>
+          <a
+            href={url('/')}
+            class="text-h3 text-ink hover:text-accent transition-colors"
+            aria-current={isHome ? 'page' : undefined}
+          >
+            {site.wordmark}
+          </a>
+        </p>
+
+        <button
+          class="nav-toggle meta text-muted hover:text-ink md:hidden"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+          data-nav-toggle
+        >
+          <span data-nav-toggle-label>Menu</span>
+          <span class="nav-toggle-glyph" aria-hidden="true">
+            +
+          </span>
+        </button>
+      </div>
+
+      <nav id="primary-nav" class="nav-panel" aria-label="Primary" data-nav-panel>
+        <ul class="flex flex-col gap-y-4 pb-6 md:flex-row md:flex-wrap md:items-baseline md:gap-x-7 md:gap-y-2 md:pb-0">
           {nav.map((item) => {
             const active = isActive(item.href, here);
             // `isActive` is true for the whole section (e.g. /builds while on
-            // /builds/contas) — right for styling, wrong for `aria-current`,
+            // /builds/contas): right for styling, wrong for `aria-current`,
             // which must only claim "page" on the page itself.
             const current = isExact(item.href, here);
             return (
@@ -55,10 +92,8 @@ const isHome = isActive('/', here);
             );
           })}
 
-          {/* The separator only earns its place when the nav is a single row.
-              Once the list wraps, "Meet Alfredo" drops to its own line and a
-              visible `/` would be left dangling at the end of the line above,
-              so it is hidden until the row stops wrapping. */}
+          {/* The separator is a desktop device: it divides the row into groups.
+              Stacked on a phone there is no row to divide, so it goes. */}
           <li class="meta text-rule-strong hidden select-none md:block" aria-hidden="true">
             /
           </li>
@@ -78,8 +113,173 @@ const isHome = isActive('/', here);
               </span>
             </a>
           </li>
+
+          <li>
+            <a
+              href={headerLink.href}
+              target="_blank"
+              rel="me noopener noreferrer"
+              class="meta text-muted transition-colors hover:text-ink"
+            >
+              {headerLink.label}{' '}
+              <span class="arrow-up" aria-hidden="true">
+                &#8599;
+              </span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
   </Container>
 </header>
+
+<style>
+  [data-header-sentinel] {
+    height: 1px;
+    margin-bottom: -1px;
+  }
+
+  /* Transparent at rest: the header is the flat editorial band it always was. */
+  .site-header {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 200ms var(--ease-editorial),
+      border-color 200ms var(--ease-editorial);
+  }
+
+  /* Scrolled: the material appears under the type. The class carries the
+     backdrop-filter, the opacity and the @supports fallback, so the header
+     cannot drift from the rest of the site's glass. */
+  .site-header[data-scrolled] {
+    background-color: color-mix(in srgb, var(--color-paper-raised) 94%, white);
+    border-bottom-color: var(--color-rule);
+    box-shadow: inset 0 1px 0 var(--color-glass-highlight);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .site-header[data-scrolled] {
+      background-color: var(--color-glass-subtle);
+      border-bottom-color: var(--color-glass-border);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+      backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    }
+  }
+
+  /* The toggle is mono like the nav it opens, not a button-looking button:
+     the site has no buttons and this should not be the first one. */
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  /* The scoped `.nav-toggle` rule outranks Tailwind's `md:hidden`, so the
+     breakpoint has to be stated here rather than in the class list. */
+  @media (min-width: 768px) {
+    .nav-toggle {
+      display: none;
+    }
+  }
+
+  .nav-toggle-glyph {
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 220ms var(--ease-editorial);
+  }
+
+  .nav-toggle[aria-expanded='true'] .nav-toggle-glyph {
+    transform: rotate(45deg);
+  }
+
+  /* Closed by default below the breakpoint, always open above it. The `hidden`
+     attribute is deliberately not used: it carries `display:none !important`
+     globally, which a media query could not then override. */
+  @media (max-width: 767px) {
+    .nav-panel {
+      display: none;
+      border-top: 1px solid var(--color-rule);
+      padding-top: 18px;
+    }
+
+    .nav-panel[data-open] {
+      display: block;
+      animation: nav-open 200ms var(--ease-editorial) both;
+    }
+
+    @keyframes nav-open {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    .nav-panel {
+      padding-top: 0;
+      padding-bottom: 0;
+      border-top: 0;
+      padding-block: 1.75rem;
+    }
+  }
+</style>
+
+<script>
+  // Two jobs, both one attribute wide: flip the header's scrolled state, and
+  // open or close the small-screen nav.
+  const sentinel = document.querySelector('[data-header-sentinel]');
+  const header = document.querySelector('[data-site-header]');
+
+  if (sentinel && header) {
+    // IntersectionObserver rather than a scroll listener, so nothing runs per
+    // frame.
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          header.removeAttribute('data-scrolled');
+        } else {
+          header.setAttribute('data-scrolled', '');
+        }
+      },
+      { threshold: 0 },
+    ).observe(sentinel);
+  }
+
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-nav-panel]');
+  const label = document.querySelector<HTMLElement>('[data-nav-toggle-label]');
+
+  if (toggle && panel && label) {
+    const setOpen = (open: boolean) => {
+      panel.toggleAttribute('data-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Close' : 'Menu';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      setOpen(false);
+      toggle.focus({ preventScroll: true });
+    });
+
+    // Leaving the small-screen layout must not strand the toggle claiming the
+    // nav is collapsed while the desktop rules render it open.
+    const wide = window.matchMedia('(min-width: 768px)');
+    const sync = () => {
+      if (wide.matches) setOpen(false);
+    };
+    wide.addEventListener('change', sync);
+  }
+</script>

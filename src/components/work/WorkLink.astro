@@ -1,0 +1,41 @@
+---
+import { url } from '../../lib/paths';
+
+/**
+ * A contextual link inside a chapter: a pointer to evidence, or to the rest of
+ * a story that lives elsewhere on the site. Never navigation.
+ *
+ * Colour, underline and hover come from `.prose a`. External links open in a
+ * new tab and say so to assistive technology; the arrow is visual only. As in
+ * `quest/ExternalLink.astro`, the anchor is `prettier-ignore`d onto one line so
+ * that reformatting cannot put whitespace inside the underline. The label is a
+ * prop rather than a slot so that MDX cannot wrap it in a paragraph of its own.
+ */
+interface Props {
+  /** Absolute URL, or an app-relative path such as `/side-quests/holin`. */
+  href: string;
+  label: string;
+  external?: boolean;
+}
+
+const { href, label, external = false } = Astro.props;
+
+const target = external ? '_blank' : undefined;
+const rel = external ? 'noopener noreferrer' : undefined;
+const resolved = external ? href : url(href);
+const newTab = external ? ' (opens in a new tab)' : undefined;
+---
+
+<p class="work-link">
+  {/* prettier-ignore */}
+  <a href={resolved} target={target} rel={rel}>{label}{newTab && <span class="sr-only">{newTab}</span>}<span class="arrow-up" aria-hidden="true">&#8239;&#8599;</span></a>
+</p>
+
+<style>
+  .work-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+  }
+</style>

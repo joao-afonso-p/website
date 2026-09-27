@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * A documentary photograph inside a side quest.
+ *
+ * The builds pages mount screenshots in glass (`case/Figure.astro`): a product
+ * UI is evidence, and glass makes it read as something mounted on the page.
+ * These are not screenshots. They are photographs of a workbench, a mixer, a
+ * fair stand and a dog park, and several of them are bad photographs, which is
+ * the point. So there is no glass here, no radius, no shadow and no mockup:
+ * one hairline, the photograph, one mono caption. The side quest pages should
+ * feel more documentary than the builds pages, and this is where that happens.
+ *
+ * `size` is the image's display width, chosen against the photograph rather
+ * than applied uniformly: that variation is what stops five photographs from
+ * reading as a gallery:
+ *
+ *   wide    the wide measure. One opening photograph per page at most.
+ *   text    the reading column. Landscape photographs inside the narrative.
+ *   column  a portrait held at ~320px with the caption set beside it.
+ *   narrow  the same, at ~240px. For tall phone photographs and small asides.
+ *
+ * `column` and `narrow` put the caption in the margin instead of underneath,
+ * so a portrait photograph does not push a page apart vertically. `flip` moves
+ * that pairing the other way round (caption left, photograph right) and is
+ * the one layout on the site that does not start at the page's left edge. It is
+ * meant for one photograph on one page, to break an otherwise even rhythm; the
+ * caption still holds the left edge, so the column the reader is following is
+ * never actually broken.
+ */
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption: string;
+  size?: 'wide' | 'text' | 'column' | 'narrow';
+  /** Aside sizes only: photograph right, caption left. Use once per page. */
+  flip?: boolean;
+  /** Loads eagerly. For an opening photograph only. */
+  eager?: boolean;
+}
+
+const { src, alt, caption, size = 'text', flip = false, eager = false } = Astro.props;
+
+const isAside = size === 'column' || size === 'narrow';
+
+/**
+ * The rendered width, so `Image` is asked for the sizes the layout actually
+ * uses instead of the source's full resolution. These are photographs, not
+ * flat UI, so the 2x candidate is worth the bytes on a retina screen.
+ */
+const DISPLAY_PX: Record<NonNullable<Props['size']>, number> = {
+  wide: 1088,
+  text: 704,
+  column: 320,
+  narrow: 240,
+};
+
+const displayWidth = DISPLAY_PX[size];
+const widths = [displayWidth, displayWidth * 2].filter((width) => width <= src.width);
+const sizes =
+  size === 'wide'
+    ? '(min-width: 1180px) 68rem, calc(100vw - 5.5rem)'
+    : size === 'text'
+      ? '(min-width: 820px) 44rem, calc(100vw - 3.5rem)'
+      : `(min-width: 768px) ${displayWidth}px, calc(100vw - 3.5rem)`;
+---
+
+<figure
+  class:list={[
+    'quest-photo',
+    `quest-photo-${size}`,
+    isAside && 'quest-photo-aside',
+    flip && 'quest-photo-flip',
+  ]}
+>
+  <div class="quest-photo-frame">
+    <Image
+      src={src}
+      alt={alt}
+      widths={widths.length > 0 ? widths : [src.width]}
+      sizes={sizes}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding={eager ? 'sync' : 'async'}
+      quality={80}
+      class="quest-photo-image"
+    />
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  /* Break out of the reading measure, growing rightward from the page gutter.
+     Capped against the viewport so no photograph can introduce a horizontal
+     scrollbar at any width. */
+  .quest-photo {
+    max-width: none;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .quest-photo-wide {
+    width: min(var(--container-wide), calc(100vw - 3.5rem));
+  }
+
+  .quest-photo-text {
+    width: min(var(--container-text), calc(100vw - 3.5rem));
+  }
+
+  .quest-photo-aside {
+    width: min(var(--container-text), calc(100vw - 3.5rem));
+  }
+
+  @media (min-width: 768px) {
+    .quest-photo {
+      margin-top: 3.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .quest-photo-wide {
+      width: min(var(--container-wide), calc(100vw - 5.5rem));
+    }
+
+    .quest-photo-text,
+    .quest-photo-aside {
+      width: min(var(--container-text), calc(100vw - 5.5rem));
+    }
+  }
+
+  /* Mobile: the photograph takes the content width, but never more than its
+     own natural size: an upscaled snapshot only looks worse. */
+  .quest-photo-frame {
+    width: 100%;
+  }
+
+  .quest-photo-column .quest-photo-frame,
+  .quest-photo-narrow .quest-photo-frame {
+    width: min(100%, 20rem);
+  }
+
+  /* One hairline. No radius, no mount, no shadow. */
+  .quest-photo-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+
+  .quest-photo figcaption {
+    margin-top: 0.875rem;
+    max-width: var(--container-prose);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  @media (min-width: 768px) {
+    /* The aside composition: photograph held at its display width, caption set
+       as a sidenote on the mono rail beside it. */
+    .quest-photo-aside {
+      display: grid;
+      gap: 0 3rem;
+      align-items: start;
+    }
+
+    .quest-photo-column {
+      grid-template-columns: 20rem minmax(0, 1fr);
+    }
+
+    .quest-photo-narrow {
+      grid-template-columns: 15rem minmax(0, 1fr);
+    }
+
+    .quest-photo-column .quest-photo-frame,
+    .quest-photo-narrow .quest-photo-frame {
+      width: 100%;
+    }
+
+    .quest-photo-aside figcaption {
+      margin-top: 0.375rem;
+      max-width: 18rem;
+    }
+
+    /* Caption first, photograph second: the one asymmetric layout. */
+    .quest-photo-flip.quest-photo-column {
+      grid-template-columns: minmax(0, 1fr) 20rem;
+    }
+
+    .quest-photo-flip.quest-photo-narrow {
+      grid-template-columns: minmax(0, 1fr) 15rem;
+    }
+
+    .quest-photo-flip .quest-photo-frame {
+      order: 2;
+    }
+
+    /* The caption keeps the page's left edge even when the photograph does
+       not, so the column the reader is following is never actually broken. */
+    .quest-photo-flip figcaption {
+      order: 1;
+    }
+  }
+</style>

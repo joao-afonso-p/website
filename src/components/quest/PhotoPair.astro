@@ -1,0 +1,114 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * Two photographs of the same moment, side by side, under one caption.
+ *
+ * Not a gallery and not a grid that would take a third image: exactly two, of
+ * the same thing, where neither photograph makes the point on its own. It
+ * exists for the tall phone photographs: a 9:20 snapshot shown at the reading
+ * measure is a column of workbench two screens high, while two of them at half
+ * that width read as what they are, a couple of frames off someone's phone.
+ *
+ * The pair keeps both columns on mobile rather than stacking. Stacking would
+ * make each photograph twice as tall on the smallest screen, which is the
+ * opposite of what the layout is for.
+ */
+interface PairItem {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  /** Exactly two photographs. */
+  items: [PairItem, PairItem];
+  /** One caption for the pair. */
+  caption: string;
+  /** `narrow` for tall portrait photographs, `text` for landscape ones. */
+  size?: 'narrow' | 'text';
+}
+
+const { items, caption, size = 'narrow' } = Astro.props;
+---
+
+<figure class:list={['photo-pair', `photo-pair-${size}`]}>
+  <div class="photo-pair-grid">
+    {items.map((item) => (
+      <Image
+        src={item.src}
+        alt={item.alt}
+        widths={[280, 560].filter((width) => width <= item.src.width)}
+        sizes={
+          size === 'narrow' ? '(min-width: 768px) 15rem, 45vw' : '(min-width: 768px) 21rem, 45vw'
+        }
+        loading="lazy"
+        decoding="async"
+        quality={80}
+        class="photo-pair-image"
+      />
+    ))}
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .photo-pair {
+    max-width: none;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Deliberately narrower than the reading measure: the pair is a couple of
+     snapshots, not a spread. Capped against the viewport either way. */
+  .photo-pair-narrow {
+    width: min(32rem, calc(100vw - 3.5rem));
+  }
+
+  .photo-pair-text {
+    width: min(var(--container-text), calc(100vw - 3.5rem));
+  }
+
+  @media (min-width: 768px) {
+    .photo-pair {
+      margin-top: 3.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .photo-pair-text {
+      width: min(var(--container-text), calc(100vw - 5.5rem));
+    }
+  }
+
+  .photo-pair-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .photo-pair-grid {
+      gap: 1rem;
+    }
+  }
+
+  /* Same hairline as a single photograph, and nothing else. */
+  .photo-pair-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+
+  .photo-pair figcaption {
+    margin-top: 0.875rem;
+    max-width: var(--container-prose);
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+/**
+ * A realization inside a chapter, quieter than a quote: a hairline on the
+ * left, the sentence at lead size. For a line that marks a turn in the story.
+ */
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="work-callout">{text}</p>
+
+<style>
+  .work-callout {
+    padding-left: 1.25rem;
+    border-left: 1px solid var(--color-accent);
+    color: var(--color-ink);
+    font-size: var(--text-lead);
+    line-height: 1.4;
+    letter-spacing: var(--text-lead--letter-spacing);
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  :global(.prose) > .work-callout {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+</style>

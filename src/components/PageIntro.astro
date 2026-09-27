@@ -1,37 +1,25 @@
 ---
-/** The masthead of every page but the homepage. One `h1`, a lot of air. */
+/**
+ * The masthead of every page but the homepage. One `h1`, a lot of air.
+ *
+ * There used to be a mono rule above the heading carrying a section eyebrow on
+ * the left and a count or date span on the right: `WORK  JAN 2017 - PRESENT`,
+ * `BUILDS  04 ENTRIES`. It has gone. The eyebrow repeated the nav item you had
+ * just clicked and the heading right below it, and the count was metadata about
+ * the page rather than about the work. Between them they pushed the heading
+ * most of the way down a phone screen to say nothing the page did not already.
+ */
 interface Props {
-  eyebrow?: string;
   title: string;
   lead?: string;
   note?: string;
-  /** A number is rendered as `04 ENTRIES`; a string is used verbatim. */
-  count?: number | string;
 }
 
-const { eyebrow, title, lead, note, count } = Astro.props;
-
-/**
- * A zero count is suppressed: the empty state below already says there is
- * nothing here, and `00 ENTRIES` above it reads as a defect rather than a fact.
- */
-const countLabel =
-  typeof count === 'number'
-    ? count === 0
-      ? undefined
-      : `${String(count).padStart(2, '0')} ${count === 1 ? 'entry' : 'entries'}`
-    : count;
+const { title, lead, note } = Astro.props;
 ---
 
 <header class="pt-14 pb-12 md:pt-section md:pb-20">
-  {(eyebrow || countLabel) && (
-    <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
-      {eyebrow && <p class="meta">{eyebrow}</p>}
-      {countLabel && <p class="meta text-muted ml-auto shrink-0">{countLabel}</p>}
-    </div>
-  )}
-
-  <h1 class="text-h1 text-ink mt-8 max-w-text md:mt-10">{title}</h1>
+  <h1 class="text-h1 text-ink max-w-text">{title}</h1>
 
   {lead && <p class="text-lead text-ink-soft mt-6 max-w-text">{lead}</p>}
   {note && <p class="meta mt-8">{note}</p>}

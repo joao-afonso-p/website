@@ -1,0 +1,89 @@
+---
+company: 'INESC TEC'
+role: 'Undergraduate Researcher'
+start: 2017-01
+end: 2020-07
+location: 'Porto'
+stage: 'Research'
+headline: 'Where I learned that I wanted to build things.'
+intro: 'I joined INESC TEC while I was still at university, initially to understand what engineering looked like outside the classroom.'
+#
+# Two research groups, one employer. The phases are marked inside the body
+# rather than split into two entries, because the move between them was a
+# decision made inside the same place.
+#
+# Precision that matters here: the embedded firmware was written by a
+# colleague. Everything else on the carbon monoxide prototype is described as
+# it was done, including the parts done with support.
+---
+
+import Callout from '../../components/work/Callout.astro';
+import Ledger from '../../components/work/Ledger.astro';
+import Phase from '../../components/work/Phase.astro';
+import Sequence from '../../components/work/Sequence.astro';
+import WorkLink from '../../components/work/WorkLink.astro';
+
+<Phase number="01" title="From physiological signals to a system I could hold" />
+
+My first group worked on physiological monitoring for firefighter safety: how could we detect risk while someone was working in a physically demanding and dangerous environment?
+
+The first problem I worked on was estimating core body temperature from signals that could be measured externally, using methods such as Kalman filtering. At that point, I was mostly learning how research and applied engineering actually worked. I was definitely learning more than I was contributing.
+
+Then the work became much more end to end.
+
+The group built a prototype to monitor firefighters' exposure to carbon monoxide: a physical sensor carried with their equipment, measuring CO in the surrounding air, with a system around it to capture, transmit, store and analyze those measurements.
+
+I ended up working across almost the whole chain:
+
+- the electronics, designed with support from more experienced electronics researchers, and the components, which I selected and sourced;
+- assembling and soldering the prototype boards, and helping create a custom enclosure;
+- Bluetooth Low Energy communication and the Android app that received the measurements, stored them locally and uploaded them to a server;
+- the data analysis, including a physiological formula to estimate blood CO exposure from environmental concentration and time exposed.
+
+The embedded firmware that controlled the device itself was written by a colleague who specialized in it.
+
+<Callout text="Building the whole system helped me understand which part of engineering I wanted to stay closest to." />
+
+I liked experimenting with hardware, but this project made something pretty clear: software, data and building systems were where I wanted to go deeper.
+
+It was also one of the first times I realised how much I enjoyed owning something end to end instead of disappearing into one tiny part of it.
+
+<Phase number="02" title="Then I deliberately moved closer to Machine Learning" />
+
+For the final part of university, I changed research groups inside INESC TEC.
+
+That move was intentional. I wanted to explore Machine Learning properly and figure out whether it was the field I wanted to work in.
+
+My MSc thesis focused on fingerprint presentation attack detection. Many anti-spoofing models worked well once they had already seen examples of the attack materials during training. The harder question was whether a model could detect a spoofed fingerprint made from a material it had never seen before.
+
+Basically: could it spot an attack without having studied that exact trick already?
+
+The work moved through the field step by step:
+
+<Sequence
+  label="How the thesis research progressed"
+  items={[
+    'Handcrafted image features, turned into tabular datasets',
+    'Classical Machine Learning: SVM, Random Forest, Naive Bayes',
+    'Multilayer perceptrons',
+    'CNNs trained directly on the images',
+    'Pretrained CNNs and transfer learning',
+    'Adversarial training',
+    { text: 'Domain adaptation', note: 'The direction that worked' },
+    'Experiments with GAN-based approaches',
+  ]}
+/>
+
+The approach that worked best used adversarial techniques for domain adaptation, helping the model generalize beyond the spoof materials it had seen during training.
+
+That research became my first publication and also confirmed that Machine Learning was something I wanted to keep pursuing, just preferably close enough to real systems that the work did not end at the experiment.
+
+<Ledger
+  rows={[
+    { label: 'Publication', text: 'BIOSIG 2020. Main author; presented as a poster.' },
+    { label: 'Thesis', text: 'Graded 20/20.' },
+    { label: 'Recognition', text: 'Best MSc thesis in its research area at INESC TEC.' },
+  ]}
+/>
+
+<WorkLink href="https://ieeexplore.ieee.org/document/9210972" label="Published research" external />

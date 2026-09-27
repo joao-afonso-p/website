@@ -1,0 +1,127 @@
+---
+import type { WorkEntry } from '../../lib/content';
+
+/**
+ * The career in one line, before the detail: the shift each chapter stands
+ * for, in order, with the company beneath it in muted mono.
+ *
+ * Built from each entry's `stage`, so it cannot disagree with the timeline
+ * below it. Each stage is an in-page link to its chapter. That is the only
+ * interaction on it, and it is a convenience rather than navigation.
+ *
+ * Desktop (>=1024px) reads across as one row with arrows between the stages.
+ * Below that it becomes a short numbered list, one stage per hairline row,
+ * because a wrapping row of arrows leaves an arrow dangling at a line end.
+ * The arrows are CSS content with empty alternative text, so a screen reader
+ * hears an ordered list of five stages rather than "right arrow" four times.
+ */
+interface Props {
+  entries: WorkEntry[];
+  /** The id of the heading this strip is labelled by. */
+  headingId: string;
+}
+
+const { entries, headingId } = Astro.props;
+---
+
+<ol class="progression" aria-labelledby={headingId}>
+  {entries.map((entry, index) => (
+    <li class="progression-stage">
+      <a href={`#${entry.id}`} class="progression-link">
+        <span class="progression-index" aria-hidden="true">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span class="progression-name">{entry.data.stage}</span>
+        <span class="progression-company">{entry.data.company}</span>
+      </a>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .progression {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .progression-stage {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .progression-link {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0 1rem;
+    padding: 0.875rem 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1.4;
+    letter-spacing: var(--text-meta--letter-spacing);
+    text-transform: uppercase;
+    transition: background-color var(--default-transition-duration) var(--ease-editorial);
+  }
+
+  .progression-link:hover {
+    background-color: var(--color-paper-sunk);
+  }
+
+  .progression-index,
+  .progression-company {
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progression-name {
+    color: var(--color-ink);
+  }
+
+  .progression-link:hover .progression-name {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  @media (min-width: 1024px) {
+    .progression {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      border-top: 1px solid var(--color-rule);
+    }
+
+    .progression-stage {
+      position: relative;
+      border-top: 0;
+    }
+
+    /* The arrow sits in the gap before every stage but the first. */
+    .progression-stage + .progression-stage::before {
+      content: '\2192' / '';
+      position: absolute;
+      top: 1.1rem;
+      left: -0.35rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-small);
+      line-height: 1;
+      color: var(--color-accent);
+    }
+
+    .progression-link {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      height: 100%;
+      padding: 1.1rem 1.25rem 1.25rem 1.25rem;
+    }
+
+    .progression-stage:first-child .progression-link {
+      padding-left: 0;
+    }
+
+    .progression-index {
+      display: none;
+    }
+  }
+</style>

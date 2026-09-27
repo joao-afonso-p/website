@@ -1,0 +1,200 @@
+---
+title: 'Tide'
+headline: 'Context that survives the conversation.'
+oneLiner: 'A Type 1 diabetes companion I built after it suddenly became personal.'
+description: 'A lightweight Type 1 diabetes journal that turns everyday conversation into structured history.'
+role: 'Independent project · Product, engineering & design'
+year: 2026
+since: 'Since Jun 2026'
+status: live
+url: 'https://glucose-tide.netlify.app/'
+cta: 'Open Tide'
+featured: true
+order: 2
+cover: './tide/chat.png'
+coverAlt: 'The Tide chat screen, turning an everyday message about symptoms into a structured health entry.'
+tags: []
+draft: false
+#
+# Screenshots live in src/content/builds/tide/ and are imported below.
+#
+# Tide is used inside one family, so none of these are a real person's record.
+# Every screen was captured from the live app running on the demo profile that
+# ships with it: an invented name, age, weight, protocol and set of readings,
+# internally consistent but belonging to nobody. The UI, the numbers and the
+# Portuguese copy are exactly as the product renders them. Nothing has been
+# redacted, retouched or substituted. `monitor.png`, `trusted-sources.png` and
+# `sync.png` are crops of the captures, cropped only to remove empty page or to
+# isolate one control; no pixel inside them was altered.
+#
+# The product is mobile-first, so these are ~393px-wide portrait captures rather
+# than the wide desktop screenshots the other builds use. They are rendered
+# through PhoneFigure, which holds them near their natural size instead of
+# stretching them across the page.
+---
+
+import PhoneFigure from '../../components/case/PhoneFigure.astro';
+import MetaLine from '../../components/case/MetaLine.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import PullQuote from '../../components/case/PullQuote.astro';
+import { url as path } from '../../lib/paths';
+import onboarding from './tide/onboarding.png';
+import chat from './tide/chat.png';
+import history from './tide/history.png';
+import monitor from './tide/monitor.png';
+import trustedSources from './tide/trusted-sources.png';
+import sync from './tide/sync.png';
+
+## Why I built it
+
+A young family member was diagnosed with Type 1 diabetes.
+
+Her parents were already using a long-running ChatGPT conversation during the day, not as a replacement for medical care, but as a way to make sense of routine situations and keep track of what had happened.
+
+The problem was continuity... as the conversation grew, important context started getting buried or repeated:
+
+- which sensor she used;
+- her age and profile;
+- recent glucose readings;
+- what had happened earlier that day;
+- what had happened the day before.
+
+They asked me if there was a better way to keep that context from disappearing, and **Tide started from that question**!
+
+## Keep the conversation. Fix the memory.
+
+I didn't want to change the interaction they were already comfortable with, so the main interface is still a chat. Tide just gives that conversation a better memory. Today, it can extract and store:
+
+- glucose readings;
+- insulin events;
+- meals and carbohydrate intake.
+
+That structured history stays available to the rest of the product and can be brought back into future conversations. The user says something once, they do not need to maintain a separate log afterwards.
+
+{/* Quotes stay on one line: see the note in contas.mdx. */}
+
+<PullQuote>The conversation becomes the log.</PullQuote>
+
+<PhoneFigure
+  prominent
+  src={chat}
+  alt="Tide chat showing a fictional diabetes-related conversation with structured events captured from the exchange."
+  caption="The interaction stays conversational while useful events are captured in the background."
+/>
+
+## Context needs time, not just facts
+
+Remembering profile information is useful, but remembering what happened recently, when it happened, and in what order is often more useful.
+
+Tide combines:
+
+- persistent profile context;
+- recent structured events;
+- glucose history;
+- the latest known state.
+
+That means the conversation does not have to depend on an increasingly long transcript to reconstruct what happened yesterday.
+
+<PhoneFigure
+  src={onboarding}
+  alt="Tide onboarding screen with fictional profile and health context fields."
+  caption="Context is established up front instead of reconstructed from the conversation later."
+/>
+
+## From chat to structured history
+
+A message does not have to remain just a message! If someone mentions a glucose reading, an insulin event or a meal, Tide can turn it into a structured entry. That information then becomes available in:
+
+- the monitor;
+- the history timeline;
+- future chat context.
+
+The information is captured once, in natural language, and then reused without asking the user to keep several systems in sync.
+
+<PhoneFigure
+  prominent
+  src={history}
+  alt="Tide history timeline with fictional glucose, insulin and meal entries extracted from chat."
+  caption="Glucose, insulin and meals mentioned in conversation become structured timeline entries."
+/>
+
+## A deliberately small monitor
+
+The monitor is intentionally small. It shows:
+
+- current and recent glucose state;
+- recent glucose history;
+- the active profile and protocol context.
+
+I deliberately did not turn it into a medical dashboard full of charts and metrics. The goal was to make recent context easier to see, not to create another system the family had to maintain.
+
+<PhoneFigure
+  src={monitor}
+  alt="Tide monitor showing a fictional current glucose value, recent trend and active context."
+  caption="A small view of recent glucose context and the active profile state."
+/>
+
+## Search with boundaries
+
+External web search is off by default, but if the user enables it, Tide only searches a small whitelist of trusted diabetes and health sources that can even be updated in the settings!
+
+<PullQuote>When external information is needed, breadth is less useful than trust.</PullQuote>
+
+<PhoneFigure
+  detail
+  src={trustedSources}
+  alt="Tide settings showing the web-search toggle switched on above a short, editable list of trusted sources."
+  caption="Search is opt-in and, when enabled, limited to a short list of named sources."
+/>
+
+## Local first. Shared only when needed.
+
+Like <a href={path('/builds/contas')}>Contas</a>, Tide is local-first, so data stays on the device.
+
+However, for the small private family setting it was built for, I also added optional synchronization through Firestore. A random secret code identifies the shared workspace and lets the same data be accessed across devices.
+
+I deliberately kept this lightweight instead of building a full account system for a tool used by a handful of family members.
+
+<PhoneFigure
+  detail
+  src={sync}
+  alt="Tide settings showing the synchronization section and the randomly generated code that identifies a shared workspace."
+  caption="Local by default, with optional synchronization for the private family setting it was built for."
+/>
+
+## What Tide is, and what it is not
+
+Tide is a private family tool for context, journaling and continuity around everyday Type 1 diabetes routines. It is not a diagnostic system, not a clinical product, and not a replacement for medical professionals.
+
+That boundary shaped the product from the start: the goal was to preserve useful context and history, not to make the model pretend it should make medical decisions.
+
+## Where it is now
+
+Tide is live and usable, still being used in the family setting it was built for, and you can try it yourself!
+
+<MetaLine lines={['Started · Jun 2026', 'Live · glucose-tide.netlify.app']} />
+
+## What I learned
+
+<Numbered number="01" title="Context is more than memory">
+Remembering facts is useful, but remembering sequence and recency is often more useful. In a long-running conversation, knowing what happened yesterday can matter more than storing another static profile field.
+
+</Numbered>
+
+<Numbered number="02" title="Structure can emerge from conversation">
+If the information is already being expressed naturally, people should not have to enter it again somewhere else. Turning conversation into structured history made the product more useful without asking the user to change their behaviour.
+
+</Numbered>
+
+<Numbered number="03" title="In sensitive domains, restraint is a feature">
+More capability is not always better. Opt-in search, narrower sources and a deliberately small product surface were more useful here than trying to make the system do everything.
+
+</Numbered>
+
+## Built with
+
+<MetaLine
+  lines={[
+    'JavaScript · HTML · CSS · localStorage · Firebase / Firestore · Netlify · Netlify Edge Functions · OpenAI API',
+  ]}
+/>
