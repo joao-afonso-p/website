@@ -1,5 +1,5 @@
 ---
-import { site, social } from '../config/site';
+import { contactEmail, site, social } from '../config/site';
 import Container from './Container.astro';
 
 /** No props: the footer is driven entirely by `src/config/site.ts`. */
@@ -18,8 +18,8 @@ const year = new Date().getFullYear();
           <p class="meta mt-2">&copy; {year}</p>
         </div>
 
-        {social.length > 0 && (
-          <nav aria-label="Elsewhere">
+        {(social.length > 0 || contactEmail) && (
+          <nav aria-label="Elsewhere and contact">
             <ul class="flex flex-wrap items-baseline gap-x-6 gap-y-2">
               {social.map((link) => (
                 <li>
@@ -36,6 +36,19 @@ const year = new Date().getFullYear();
                   </a>
                 </li>
               ))}
+              {contactEmail && (
+                <li>
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    class="meta hover:text-ink normal-case transition-colors"
+                  >
+                    {contactEmail}{' '}
+                    <span class="arrow-up" aria-hidden="true">
+                      &#8599;
+                    </span>
+                  </a>
+                </li>
+              )}
             </ul>
           </nav>
         )}

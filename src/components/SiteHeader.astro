@@ -1,5 +1,5 @@
 ---
-import { alfredoNav, headerLink, nav, site } from '../config/site';
+import { alfredoNav, nav, site } from '../config/site';
 import { isActive, isExact, url } from '../lib/paths';
 import Container from './Container.astro';
 
@@ -15,10 +15,8 @@ interface Props {}
  * hairline. That is the whole of the effect: no floating pill, no change of
  * height, no layout shift.
  *
- * The nav runs in three groups: the pages of this site, then a hairline slash,
- * then the two pointers out of it, Alfredo and LinkedIn. Only Alfredo takes
- * the accent; the outward link stays muted so the row has one bright thing in
- * it rather than two competing.
+ * The nav runs in two groups: the pages of this site, then a hairline slash
+ * and the accent link to Alfredo. Contact and LinkedIn live in the footer.
  *
  * Desktop (>=768px): wordmark left, the whole nav right, one hairline under
  * the row.
@@ -108,20 +106,6 @@ const isHome = isActive('/', here);
               ]}
             >
               {alfredoNav.label}{' '}
-              <span class="arrow-up" aria-hidden="true">
-                &#8599;
-              </span>
-            </a>
-          </li>
-
-          <li>
-            <a
-              href={headerLink.href}
-              target="_blank"
-              rel="me noopener noreferrer"
-              class="meta text-muted transition-colors hover:text-ink"
-            >
-              {headerLink.label}{' '}
               <span class="arrow-up" aria-hidden="true">
                 &#8599;
               </span>

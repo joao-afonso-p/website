@@ -22,3 +22,6 @@ node_modules
 
 # unsanitised source screenshots (real personal financial data)
 assets/
+
+# local context for Codex sessions
+/AGENTS.md

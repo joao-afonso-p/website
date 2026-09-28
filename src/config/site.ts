@@ -69,19 +69,13 @@ export const alfredoNav = {
 } as const;
 
 /**
- * The LinkedIn profile, named rather than inlined because it is published in
- * four places: the header, the footer's "Elsewhere" list and the Alfredo
- * page's two "follow" links. One constant so those cannot drift apart.
+ * The LinkedIn profile, shared by the footer and Alfredo's follow link so
+ * those destinations cannot drift apart.
  */
 export const linkedinUrl = 'https://www.linkedin.com/in/joao-afonso-pereira/';
 
-/**
- * The one outward link in the header. Sits after Alfredo on wide screens and
- * inside the menu on narrow ones. Deliberately not in `nav`: that list is
- * pages of this site, and this is somewhere else. Rendered muted rather than
- * accent, because the accent in that row belongs to Alfredo alone.
- */
-export const headerLink = { label: 'LinkedIn', href: linkedinUrl } as const;
+/** Direct contact, kept separate from social profiles and their `sameAs` data. */
+export const contactEmail = 'joaoafonsoppereira@gmail.com';
 
 /**
  * Footer links. Add entries as they become real. An empty array is simply not
@@ -92,7 +86,6 @@ export const headerLink = { label: 'LinkedIn', href: linkedinUrl } as const;
  */
 export const social: Array<{ label: string; href: string }> = [
   { label: 'LinkedIn', href: linkedinUrl },
-  // TODO: add email and any other channels worth publishing.
 ];
 
 /**
