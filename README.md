@@ -257,6 +257,14 @@ The site lives at <https://joaoafonsopereira.com>, published from the
 run manually from the Actions tab (`workflow_dispatch`). `.github/workflows/ci.yml` runs the same
 `format:check`, `check` and `build` gate on pull requests without deploying.
 
+### Analytics
+
+Visits are counted by [GoatCounter](https://www.goatcounter.com): no cookies, so no consent banner.
+The dashboard is at <https://joaoafonsopereira.goatcounter.com>. The script is added by
+`BaseLayout.astro` in production builds only (not `pnpm dev`), and the site code lives in
+`src/config/site.ts` as `goatcounterCode`. To stop counting your own visits, open
+`https://joaoafonsopereira.com/#toggle-goatcounter` once in each browser.
+
 ### How GitHub Pages is set up
 
 These live in the repository settings, not in any file:

@@ -46,6 +46,12 @@ const {
     />
     <Font cssVariable="--font-schibsted-grotesk" preload />
     <Font cssVariable="--font-ibm-plex-mono" />
+    {import.meta.env.PROD && site.goatcounterCode && <script
+      is:inline
+      async
+      data-goatcounter={`https://${site.goatcounterCode}.goatcounter.com/count`}
+      src="https://gc.zgo.at/count.js"
+    ></script>}
   </head>
 
   <body class="flex min-h-dvh flex-col">

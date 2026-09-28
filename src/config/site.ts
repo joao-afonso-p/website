@@ -26,6 +26,12 @@ export const site = {
   ogImage: '/og-default.png',
   /** TODO: set once an X/Twitter handle should be advertised. */
   twitterHandle: undefined as string | undefined,
+  /**
+   * GoatCounter site code: the stats live at `<code>.goatcounter.com`. The
+   * counting script is only emitted in production builds, so `pnpm dev` visits
+   * are never counted. Set to `undefined` to drop analytics entirely.
+   */
+  goatcounterCode: 'joaoafonsopereira' as string | undefined,
 } as const;
 
 /**
