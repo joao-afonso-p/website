@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import Analytics from '../components/Analytics.astro';
 import Seo from '../components/Seo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -30,6 +31,9 @@ const {
   updatedDate,
   class: className,
 } = Astro.props;
+
+/** Visits are only counted on the published site, never in `pnpm dev`. */
+const analyticsCode = import.meta.env.PROD ? site.goatcounterCode : undefined;
 ---
 
 <!doctype html>
@@ -46,12 +50,7 @@ const {
     />
     <Font cssVariable="--font-schibsted-grotesk" preload />
     <Font cssVariable="--font-ibm-plex-mono" />
-    {import.meta.env.PROD && site.goatcounterCode && <script
-      is:inline
-      async
-      data-goatcounter={`https://${site.goatcounterCode}.goatcounter.com/count`}
-      src="https://gc.zgo.at/count.js"
-    ></script>}
+    {analyticsCode && <Analytics code={analyticsCode} />}
   </head>
 
   <body class="flex min-h-dvh flex-col">
