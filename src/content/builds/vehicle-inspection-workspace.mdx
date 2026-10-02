@@ -1,0 +1,101 @@
+---
+title: 'Vehicle inspection workspace'
+headline: 'The hard part was never the case management.'
+oneLiner: 'An unfinished workspace for a vehicle-accident inspector, built around the manual work before legacy systems got in the way.'
+description: 'An unfinished workspace for a vehicle-accident inspector, built around the manual work before legacy systems got in the way.'
+role: 'Independent project · Product, engineering & design'
+year: 2025
+status: paused
+featured: false
+order: 6
+cover: './vehicle-inspection-workspace/dashboard.png'
+coverAlt: 'A fictional case dashboard showing a filterable table of vehicle-inspection cases, their status, event type, event date and revenue.'
+tags: []
+draft: false
+#
+# These screenshots were captured from an isolated local copy of the unfinished
+# app. Every case number, person, address, vehicle, document and amount is
+# fictional; the document preview says so as well. They are not redacted source
+# data, and no real inspection file, photo or client detail appears here.
+---
+
+import Figure from '../../components/case/Figure.astro';
+import Numbered from '../../components/case/Numbered.astro';
+import dashboard from './vehicle-inspection-workspace/dashboard.png';
+import caseWorkspace from './vehicle-inspection-workspace/case-workspace.png';
+import ocrPreview from './vehicle-inspection-workspace/ocr-preview.png';
+import tasks from './vehicle-inspection-workspace/tasks.png';
+
+## Why I built it
+
+My father works as a vehicle-accident inspector for insurance companies. A case can mean documents, people, vehicles, notes, costs, reports and a surprising amount of finding the same information in more than one place.
+
+The manual work was obvious from the outside: the shape of a case was clear, but the working context around it was scattered. I wanted to see what a calmer workspace could look like if it put the case, its evidence and the next piece of work together.
+
+## What I built
+
+I started with the ordinary parts of the job, rather than a grand system. There was a searchable case list, a two-step flow for opening a case, and a workspace for the information someone needs while working through it.
+
+<Figure
+  src={dashboard}
+  alt="A fictional vehicle-inspection case dashboard with filters for status, case type and event type, and seven invented cases in a table."
+  caption="The case list: a place to find the work before opening another file."
+/>
+
+Within a case, the app linked the people, vehicles, documents and financial context together. The point was not to make a prettier record. It was to make the relationships between the bits of work visible while they were still useful.
+
+<Figure
+  prominent
+  src={caseWorkspace}
+  alt="A fictional inspection case workspace showing general information, participants, vehicles, recent documents and financial totals for a collision case."
+  caption="A case workspace kept the working context in one place."
+/>
+
+Documents were the part I was most curious about. The prototype supported upload, OCR, editing the extracted text, download and deletion. It also made that text available to the app's knowledge-base work, so a document could become something more useful than a file sitting in a folder.
+
+<Figure
+  src={ocrPreview}
+  alt="A fictional OCR preview open over an inspection document list, showing an invented witness statement with editable extracted text."
+  caption="OCR was there to make the document usable, not just to tick an AI box."
+/>
+
+There was also a lightweight task board. It was deliberately plain: the aim was to make the next action obvious, not to turn an inspection into a project-management ceremony.
+
+<Figure
+  src={tasks}
+  alt="A fictional task board with planned, in-progress and completed columns for inspection work."
+  caption="The work around a case mattered as much as the record of the case itself."
+/>
+
+## Where it stopped making sense
+
+The prototype made the workflow clearer. It did not solve the part that mattered most: it would still have to live alongside the very old systems used by the companies he works with.
+
+We looked at integration and at using a separate tool side by side. Neither was a comfortable answer. Re-entering information or keeping two systems in sync would simply move the manual work somewhere else, and the integration work was beginning to look like the actual product.
+
+So I paused the app. That was not a failure of the interface; it was the answer to the original question.
+
+We did keep going in a different direction, experimenting directly with AI in a more robust, secure setup. That work is separate from this unfinished application, and this page is not a claim that the prototype became a deployed workflow.
+
+## What I learned
+
+<Numbered number="01" title="The workflow is bigger than the screen">
+  The case workspace was useful because it reflected the work around a case, not because it
+  collected lots of fields. But the real workflow also included systems outside the workspace.
+  Ignoring those boundaries would have made the product look more complete than it was.
+</Numbered>
+
+<Numbered number="02" title="Integration is a product decision">
+  It is tempting to leave integration for later because the product can be demonstrated without it.
+  Here, the question of where information starts, moves and has to be entered again was the product
+  question from the beginning.
+</Numbered>
+
+<Numbered number="03" title="A prototype can still give a useful answer">
+  The app was unfinished, but it made the trade-off concrete. That was enough to stop building the
+  wrong thing and focus the next experiments on the work that might actually fit.
+</Numbered>
+
+## Built with
+
+<p class="case-meta">Next.js · React · TypeScript · FastAPI · PostgreSQL · OCR · vector search</p>

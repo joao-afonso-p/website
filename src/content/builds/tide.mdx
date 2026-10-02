@@ -10,9 +10,9 @@ status: live
 url: 'https://glucose-tide.netlify.app/'
 cta: 'Open Tide'
 featured: true
-order: 2
-cover: './tide/chat.png'
-coverAlt: 'The Tide chat screen, turning an everyday message about symptoms into a structured health entry.'
+order: 3
+cover: './tide/monitor-cover.png'
+coverAlt: 'A landscape editorial composition of Tide monitoring, with the current glucose reading and 24-hour chart beside the event history.'
 tags: []
 draft: false
 #
@@ -27,10 +27,14 @@ draft: false
 # `sync.png` are crops of the captures, cropped only to remove empty page or to
 # isolate one control; no pixel inside them was altered.
 #
-# The product is mobile-first, so these are ~393px-wide portrait captures rather
-# than the wide desktop screenshots the other builds use. They are rendered
-# through PhoneFigure, which holds them near their natural size instead of
-# stretching them across the page.
+# The product is mobile-first, so the detailed figures are ~393px-wide portrait
+# captures rather than the wide desktop screenshots the other builds use. They
+# are rendered through PhoneFigure, which holds them near their natural size
+# instead of stretching them across the page. `monitor-cover.png` is an
+# AI-generated, index-only landscape composition based on the same fictional
+# demo state, made so the Builds list can show Tide's monitoring context
+# without turning a phone screenshot into a tiny strip. It is not presented as
+# a separate product screen.
 ---
 
 import PhoneFigure from '../../components/case/PhoneFigure.astro';

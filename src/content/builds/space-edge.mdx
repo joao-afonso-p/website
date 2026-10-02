@@ -1,0 +1,75 @@
+---
+title: 'Space Edge'
+headline: 'Can agents help move a small ML pipeline closer to the hardware?'
+oneLiner: 'An internal prototype for testing whether agents could help take small Python ML pipelines towards constrained edge targets.'
+description: 'An internal prototype for testing whether agents could help take small Python ML pipelines towards constrained edge targets.'
+role: 'Internal prototype at Loka · Product, engineering & design'
+year: 2026
+status: experiment
+url: 'https://lokahq.github.io/tech-blog/blog/watching-a-python-to-rust-rewrite-was-painful-enough-to-build-this/'
+cta: 'Read the Loka tech post'
+featured: false
+order: 5
+cover: './space-edge/cover.png'
+coverAlt: 'An astronaut on the moon beside a blue Loka flag.'
+tags: []
+draft: false
+#
+# The index cover is the image João supplied for this entry. It appears only on
+# the Builds list; the detail page remains focused on the prototype itself.
+---
+
+import Numbered from '../../components/case/Numbered.astro';
+
+## Why I built it
+
+A few months after I joined Loka, I started an internal initiative to explore the applications of AI in the aerospace industry. After some discussions with the engineering team and some sales representatives, we defined three sub-domains to tackle: remote sensing, satellite telemetry and edge computing. I personally started with edge computing.
+
+I wanted to test a fairly practical question: could an agent help move a small Python machine-learning pipeline towards an edge target without pretending that the jump from notebook to hardware is automatic?
+
+The interesting bit was not getting an agent to write a convincing answer in a chat window. It was seeing whether an interface could hold the constraints, intermediate steps and evidence around the work: source code, a target profile, generated output, simulation and a report.
+
+## What I tested
+
+Space Edge accepted a small Python pipeline and a target profile. The prototype used two deliberately different profiles: a constrained Cortex-M4 and a Jetson Nano, where the available compute and the practical output are not the same problem.
+
+The pipeline moved through a fixed sequence:
+
+1. inspect the supplied code;
+2. select the hardware profile;
+3. generate target-oriented output;
+4. run a simulation and collect benchmark information;
+5. assemble the generated code, logs and report as one job.
+
+Some steps were deterministic. Model calls were useful at the parts where code or an explanation had to be produced, and where the resulting artefacts needed to be brought back into a readable whole. That division mattered: the agent was part of a constrained pipeline, not an invitation to execute whatever it felt like suggesting.
+
+The interface made the process inspectable. It showed the input and target selection beside build progress, a code comparison, benchmark output and the final report. I wanted the work to be reviewable rather than hidden behind a successful-looking completion message.
+
+## A prototype, not a deployment claim
+
+This was an internal experiment, not a device deployment system. The targets were simulated, not a substitute for testing on real hardware, and the generated output was not presented as certified or production-ready.
+
+That limit was useful. It kept the prototype focused on the question it was meant to answer: where do agents reduce the tedious translation work, and where does an engineer still need to inspect assumptions, generated code and measured behaviour?
+
+## What I learned
+
+<Numbered number="01" title="The useful interface is around the agent">
+  The chat is the least interesting part once a task has real constraints. Target details, source
+  material, intermediate artefacts and a visible trail of what happened are what make the result
+  possible to review.
+</Numbered>
+
+<Numbered number="02" title="Constraints are part of the prompt">
+  A hardware target is not a label added at the end of a generation step. Memory, runtime, tooling
+  and the way a result will be checked need to shape the process from the start.
+</Numbered>
+
+<Numbered number="03" title="A benchmark is evidence, not a verdict">
+  The simulated results were useful for comparing paths through the prototype. They were not a
+  replacement for real-device testing, and treating them as one would have made the experiment say
+  more than it could.
+</Numbered>
+
+## Built with
+
+<p class="case-meta">React · TypeScript · Vite · Python · FastAPI · Docker · QEMU · Qdrant</p>
