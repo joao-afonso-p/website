@@ -8,9 +8,9 @@
  *
  * Authoring rules, kept deliberately strict:
  *
- * - `date` is machine-readable. Month precision (`'2026-03'`) is the usual case
- *   and prints as `Mar 2026`; add a day (`'2026-11-05'`) only when it is known
- *   and worth showing, and it prints as `5 Nov 2026`.
+ * - `date` is machine-readable when known. Month precision (`'2026-03'`) is the
+ *   usual case and prints as `Mar 2026`; add a day only when it is known and
+ *   worth showing. Use `'TBD'` for an upcoming appearance with no confirmed date.
  * - `subject` is a short English line, only where the source actually states
  *   what the talk was about. Do not invent an official title.
  * - `url` points at a real recording or talk page. Omit it rather than guess.
@@ -30,7 +30,7 @@ export interface Talk {
    * kebab-case and unique.
    */
   slug: string;
-  /** `'YYYY-MM'` or `'YYYY-MM-DD'`. Drives the split, the sort and `<time datetime>`. */
+  /** `'YYYY-MM'`, `'YYYY-MM-DD'` or `'TBD'` when the date is not confirmed. */
   date: string;
   /** The event, series or venue. */
   event: string;
@@ -51,7 +51,7 @@ export interface Talk {
 export const talks: Talk[] = [
   {
     slug: 'vertical-2026',
-    date: '2026-11-05',
+    date: 'TBD',
     event: 'Vertical D. Henrique Cowork',
     location: 'Porto',
     subject:
@@ -102,10 +102,10 @@ export const talks: Talk[] = [
 
 /** A talk with its display label and sort key resolved from `date`. */
 export interface ScheduledTalk extends Talk {
-  /** `Mar 2026`, or `5 Nov 2026` when the date carries a day. */
+  /** `Mar 2026`, `5 Nov 2026`, or `TBD` when the date is unknown. */
   label: string;
   /** A value valid for `<time datetime>`: the `date` string as authored. */
-  datetime: string;
+  datetime?: string;
 }
 
 const monthFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -122,7 +122,8 @@ const dayFormatter = new Intl.DateTimeFormat('en-GB', {
 });
 
 /** `{ time, label }` for a `'YYYY-MM'` or `'YYYY-MM-DD'` string. */
-function resolveDate(date: string): { time: number; label: string } {
+function resolveDate(date: string): { time: number | null; label: string } {
+  if (date.trim().toUpperCase() === 'TBD') return { time: null, label: 'TBD' };
   const month = /^(\d{4})-(\d{2})$/.exec(date.trim());
   if (month) {
     const time = Date.UTC(Number(month[1]), Number(month[2]) - 1, 1);
@@ -152,17 +153,24 @@ export function talkSchedule(now: Date = new Date()): {
 
   const resolved = talks.map((talk) => {
     const { time, label } = resolveDate(talk.date);
-    return { talk: { ...talk, label, datetime: talk.date }, time };
+    return {
+      talk: { ...talk, label, ...(time === null ? {} : { datetime: talk.date }) },
+      time,
+    };
   });
 
   const upcoming = resolved
-    .filter((entry) => entry.time >= startOfToday)
-    .sort((a, b) => a.time - b.time)
+    .filter((entry) => entry.time === null || entry.time >= startOfToday)
+    .sort((a, b) => {
+      if (a.time === null) return b.time === null ? 0 : 1;
+      if (b.time === null) return -1;
+      return a.time - b.time;
+    })
     .map((entry) => entry.talk);
 
   const past = resolved
-    .filter((entry) => entry.time < startOfToday)
-    .sort((a, b) => b.time - a.time)
+    .filter((entry) => entry.time !== null && entry.time < startOfToday)
+    .sort((a, b) => (b.time ?? 0) - (a.time ?? 0))
     .map((entry) => entry.talk);
 
   return { upcoming, past };
