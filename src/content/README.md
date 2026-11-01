@@ -11,7 +11,15 @@ src/content/
   builds/        products and tools        → /builds/<slug>
   side-quests/   smaller, stranger things  → /side-quests/<slug>
   work/          roles                     → chapters of /work
+  notes/         the writing               → /notes/<slug>
 ```
+
+Talks are not content: they are a short list with no body, so they live in
+`src/config/talks.ts` and render in the Talks section of `/notes`. Edit that
+file to add or change a talk. Each talk has a `slug`; drop photos into
+`src/assets/talks/<slug>/` (named `01`, `02`, ... for order) and that talk
+becomes a gallery you can open from `/notes`. No photos means no gallery, and
+nothing else to wire up.
 
 Schemas live in `src/content.config.ts`. Pages never read the collections
 directly: they go through `src/lib/content.ts`, which handles drafts and
@@ -30,6 +38,7 @@ page. Suggested skeletons:
 | builds      | `## Why it exists`, `## What I built`, `## Decisions`, `## What I learned`       |
 | side-quests | `## Context`, `## My involvement`, `## What came out of it`, `## What I learned` |
 | work        | `###` headings only, since each role is a chapter under an `h2` (see below)      |
+| notes       | `##` sections as the piece needs them; no fixed skeleton                         |
 
 Skip a section rather than padding it. Short and true beats complete.
 
@@ -127,6 +136,40 @@ contextual link. `quest/ExternalLink` works for a link inside a sentence.
 Dates are forgiving: `2026-03-12`, `2026-03`, `2026` and `'2026'` are all
 accepted and normalised. A wrong shape fails the build rather than silently
 producing the wrong date.
+
+### notes
+
+The writing. Each file is an article with its own page at `/notes/<slug>`,
+listed newest first on `/notes`. The frontmatter is deliberately tiny: a note
+is mostly body.
+
+| Field      | Notes                                                                        |
+| ---------- | ---------------------------------------------------------------------------- |
+| `title`    | Required. The article's `h1`.                                                |
+| `summary`  | Required. One or two sentences. Serves the list row, the lead, and meta/RSS. |
+| `date`     | Required. Publication date. Orders the list, prints the dateline, feeds RSS. |
+| `updated?` | A later meaningful revision. Shown, and sent to the article's modified time. |
+| `tags`     | Free-form, lowercase. Shown in the detail page's metadata.                   |
+| `draft`    | As everywhere: visible in `pnpm dev`, absent from `pnpm build`.              |
+
+Minimal frontmatter for a new note:
+
+```yaml
+---
+title: 'What I learned feeding Alfredo'
+summary: 'One or two sentences that also become the social card and the RSS entry.'
+date: 2026-10-16
+tags: ['alfredo']
+draft: true
+---
+```
+
+Bodies are `.mdx` with `##` sections, and can use the shared case/quest
+components where a figure or a pull quote earns its place.
+
+Published notes are also served as an RSS feed at `/notes/rss.xml` (linked from
+every page's `<head>` and from `/notes` once the first note is live). The feed
+is generated from this same collection, so a draft is never in it.
 
 ## Drafts
 

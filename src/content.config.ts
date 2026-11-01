@@ -208,4 +208,30 @@ const work = defineCollection({
   }),
 });
 
-export const collections = { builds, sideQuests, work };
+/**
+ * Notes: the site's writing. Unlike every collection above, a note is a dated
+ * article with a real body and its own page, so the frontmatter is the smallest
+ * set a listing row, a dateline and the RSS feed need, and nothing more.
+ *
+ * `date` is the only required date and does three jobs: it orders `/notes`
+ * (newest first), prints as the article's dateline, and becomes the feed's
+ * `pubDate`. `summary` is read in three places too (the listing row, the lead
+ * under the title and the meta description), which is why it is required: a note
+ * with no summary would have no social card and no row text.
+ */
+const notes = defineCollection({
+  loader: glob({ base: './src/content/notes', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    /** One or two sentences. The listing row, the lead, and the meta description. */
+    summary: z.string(),
+    /** Publication date. Orders the list, prints as the dateline, feeds the RSS `pubDate`. */
+    date: looseDate,
+    /** A later meaningful revision. Shown and fed to `article:modified_time` when present. */
+    updated: looseDate.optional(),
+    tags: tagList,
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { builds, sideQuests, work, notes };

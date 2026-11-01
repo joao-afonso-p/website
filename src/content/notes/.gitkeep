@@ -1,0 +1,5 @@
+# Notes articles live here, one MDX file per note. The file name is the URL
+# slug: notes/my-first-note.mdx becomes /notes/my-first-note/. This .gitkeep
+# keeps the empty collection directory in git until the first note lands; the
+# content loader ignores it (it only globs *.md and *.mdx). See the notes
+# section of src/content/README.md for the frontmatter.

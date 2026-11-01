@@ -1,0 +1,288 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { ScheduledTalk } from '../../config/talks';
+
+/**
+ * One talk, as an editorial hairline row: a mono date (and location, when known)
+ * in the left column, the event and its subject in the body, and an optional
+ * outward link. No card, no status dot: a talk is not a project.
+ *
+ * When the talk has photos, its event becomes the trigger for a gallery: a
+ * native `<dialog>`, so focus trapping, `Escape` and returning focus to the
+ * trigger all come from the platform rather than from hand-written JS. One
+ * image or ten, it is the same dialog; the images simply stack and the panel
+ * scrolls. Rows without photos render exactly as before.
+ *
+ * Hairlines are `border-t` on every row with `last:border-b` closing the list,
+ * so rows render as direct `<li>` siblings of one `<ul>`.
+ */
+interface Props {
+  talk: ScheduledTalk;
+  images?: ImageMetadata[];
+}
+
+const { talk, images = [] } = Astro.props;
+
+/** The link's host, when no explicit label is given. Never parses, just trims. */
+const host = (href: string): string => href.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+
+const hasGallery = images.length > 0;
+const dialogId = `gallery-${talk.slug}`;
+const countLabel = `${images.length} ${images.length === 1 ? 'photo' : 'photos'}`;
+---
+
+<li class="border-t border-rule last:border-b">
+  <div class="grid grid-cols-1 gap-x-6 gap-y-1.5 py-5 md:grid-cols-12 md:items-baseline md:py-6">
+    <p class="meta md:col-span-3 md:col-start-1">
+      <time datetime={talk.datetime}>{talk.label}</time>
+      {talk.location && (
+        <>
+          <span aria-hidden="true"> · </span>
+          {talk.location}
+        </>
+      )}
+    </p>
+
+    <div class="md:col-span-9 md:col-start-4">
+      <h3 class="text-h3 text-ink">
+        {hasGallery ? (
+          <button
+            type="button"
+            class="talk-trigger"
+            aria-haspopup="dialog"
+            aria-controls={dialogId}
+            aria-label={`${talk.event}, view ${countLabel}`}
+            data-gallery-open={dialogId}
+          >
+            <span class="talk-trigger-event">{talk.event}</span>
+            <span class="talk-trigger-count meta" aria-hidden="true">
+              {countLabel}
+            </span>
+          </button>
+        ) : (
+          talk.event
+        )}
+      </h3>
+
+      {talk.subject && <p class="text-small text-muted mt-1.5 max-w-text">{talk.subject}</p>}
+
+      {talk.url && (
+        <p class="mt-2.5">
+          <a
+            href={talk.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link font-mono text-small"
+          >
+            {talk.urlLabel ?? host(talk.url)}{' '}
+            <span class="arrow-up" aria-hidden="true">
+              &#8599;
+            </span>
+          </a>
+        </p>
+      )}
+    </div>
+  </div>
+
+  {hasGallery && (
+    <dialog
+      id={dialogId}
+      class="talk-gallery"
+      aria-label={`Photos from ${talk.event}`}
+      data-gallery
+    >
+      <div class="talk-gallery-panel glass-elevated">
+        <div class="talk-gallery-head">
+          <p class="meta text-ink">{talk.event}</p>
+          <button type="button" class="talk-gallery-close meta" data-gallery-close>
+            Close <span aria-hidden="true">&#215;</span>
+          </button>
+        </div>
+
+        <div class="talk-gallery-body">
+          {images.map((image, index) => (
+            <figure class="talk-gallery-figure">
+              <Image
+                src={image}
+                alt={`Photo ${index + 1} from ${talk.event}`}
+                widths={[480, 960, 1440]}
+                sizes="(min-width: 768px) 680px, 90vw"
+                loading="lazy"
+                class="talk-gallery-image"
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </dialog>
+  )}
+</li>
+
+<style>
+  /* The trigger is text, not a button-looking button: the event keeps its
+     heading scale, the underline only appears on hover/focus, and a mono count
+     sits beside it as the affordance. */
+  .talk-trigger {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.7rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .talk-trigger-event {
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: text-decoration-color 180ms var(--ease-editorial);
+  }
+
+  .talk-trigger:hover .talk-trigger-event,
+  .talk-trigger:focus-visible .talk-trigger-event {
+    text-decoration-color: currentColor;
+  }
+
+  .talk-trigger:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  .talk-trigger-count {
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  /* The dialog is only the panel's host; closed, it stays display:none from the
+     UA. Open, it fills the viewport so the area around the panel is the backdrop
+     click target, and centres the panel. */
+  .talk-gallery {
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .talk-gallery[open] {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+  }
+
+  .talk-gallery::backdrop {
+    background-color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .talk-gallery::backdrop {
+      background-color: color-mix(in srgb, var(--color-ink) 30%, transparent);
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+    }
+  }
+
+  .talk-gallery-panel {
+    width: min(760px, 100%);
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .talk-gallery-panel {
+      padding: 1.75rem;
+    }
+  }
+
+  .talk-gallery-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .talk-gallery-close {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+    transition: color 180ms var(--ease-editorial);
+  }
+
+  .talk-gallery-close:hover {
+    color: var(--color-ink);
+  }
+
+  .talk-gallery-close:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  .talk-gallery-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .talk-gallery-figure {
+    margin: 0;
+  }
+
+  .talk-gallery-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+  }
+</style>
+
+<script>
+  // One handler set for every gallery on the page. Astro bundles this module
+  // once no matter how many rows render it, so the queries below find all of
+  // them. The platform does focus trapping, Escape and focus restoration.
+  const dialogs = document.querySelectorAll<HTMLDialogElement>('dialog[data-gallery]');
+
+  document.querySelectorAll<HTMLButtonElement>('[data-gallery-open]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const id = trigger.getAttribute('data-gallery-open');
+      const dialog = id ? document.getElementById(id) : null;
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
+    });
+  });
+
+  dialogs.forEach((dialog) => {
+    dialog
+      .querySelector<HTMLButtonElement>('[data-gallery-close]')
+      ?.addEventListener('click', () => dialog.close());
+
+    // A click that lands on the dialog itself (the padding around the panel) is
+    // a click outside the panel, so it closes. Clicks inside bubble from the
+    // panel and are ignored.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+</script>

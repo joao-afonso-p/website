@@ -1,0 +1,75 @@
+---
+import type { ImageMetadata } from 'astro';
+import { talkSchedule } from '../../config/talks';
+import TalkRow from './TalkRow.astro';
+
+/**
+ * Talks and appearances on the Notes page. Not its own page: a talk is a line,
+ * not an article.
+ *
+ * The section is built to hold upcoming talks first and past talks newest-first,
+ * and `talkSchedule()` decides which is which from the dates. When there is
+ * nothing upcoming the group and its label simply vanish, so the structure is
+ * ready for a future talk without showing an empty "Upcoming" heading until one
+ * exists. The past list carries a "Past" label only when an upcoming group sits
+ * above it; on its own the `Talks` heading is label enough.
+ *
+ * Photos are matched to talks here, once. Every image under
+ * `src/assets/talks/<slug>/` is globbed and grouped by its folder, so a talk
+ * gains a gallery the moment pictures are dropped into its folder, with no field
+ * to wire up. Paths are sorted so filename order (01, 02, ...) is display order.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const { upcoming, past } = talkSchedule();
+
+const photoModules = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/talks/*/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+
+const photosBySlug = new Map<string, ImageMetadata[]>();
+for (const path of Object.keys(photoModules).sort((a, b) => a.localeCompare(b))) {
+  const slug = /\/talks\/([^/]+)\//.exec(path)?.[1];
+  if (!slug) continue;
+  const group = photosBySlug.get(slug) ?? [];
+  group.push(photoModules[path].default);
+  photosBySlug.set(slug, group);
+}
+
+const photosFor = (slug: string): ImageMetadata[] => photosBySlug.get(slug) ?? [];
+---
+
+<section aria-labelledby="talks" class:list={[className]}>
+  <div class="border-b border-rule pb-4">
+    <h2 id="talks" class="text-h2 text-ink">
+      Talks
+    </h2>
+    <p class="text-body text-muted mt-3 max-w-text">
+      Where I’ve spoken. Upcoming talks first, then everything else newest to oldest.
+    </p>
+  </div>
+
+  {upcoming.length > 0 && (
+    <div class="mt-10">
+      <p class="meta">Upcoming</p>
+      <ul class="mt-4">
+        {upcoming.map((talk) => (
+          <TalkRow talk={talk} images={photosFor(talk.slug)} />
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <div class="mt-10">
+    {upcoming.length > 0 && <p class="meta">Past</p>}
+    <ul class:list={[upcoming.length > 0 && 'mt-4']}>
+      {past.map((talk) => (
+        <TalkRow talk={talk} images={photosFor(talk.slug)} />
+      ))}
+    </ul>
+  </div>
+</section>

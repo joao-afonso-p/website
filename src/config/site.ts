@@ -59,6 +59,11 @@ export const nav = [
     href: '/work',
     hint: 'The work history, with considerably more context.',
   },
+  {
+    label: 'Notes',
+    href: '/notes',
+    hint: 'Occasional writing, and a record of talks.',
+  },
 ] as const;
 
 /** Visually separated from the primary nav: Alfredo is its own thing. */

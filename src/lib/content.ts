@@ -17,6 +17,7 @@ import type { EntryStatus } from '../content.config';
 export type BuildEntry = CollectionEntry<'builds'>;
 export type SideQuestEntry = CollectionEntry<'sideQuests'>;
 export type WorkEntry = CollectionEntry<'work'>;
+export type NoteEntry = CollectionEntry<'notes'>;
 
 /** The shape every comparator and filter below actually needs. */
 type SortableEntry = { id: string };
@@ -146,6 +147,21 @@ export async function getWorkEntries(): Promise<WorkEntry[]> {
       byDateDesc(a.data.start ?? a.data.end, b.data.start ?? b.data.end) ||
       byText(a.data.company, b.data.company) ||
       byId(a, b),
+  );
+}
+
+/**
+ * Published notes, newest first by publication date, then title, then id.
+ *
+ * Drafts follow the same rule as every other collection: visible in `astro dev`,
+ * dropped from `astro build`. The RSS feed reads this same list, so a note that
+ * is not on `/notes` is never in the feed either.
+ */
+export async function getNotes(): Promise<NoteEntry[]> {
+  const notes = await getCollection('notes', isPublished);
+  return notes.sort(
+    (a, b) =>
+      byDateDesc(a.data.date, b.data.date) || byText(a.data.title, b.data.title) || byId(a, b),
   );
 }
 

@@ -1,0 +1,122 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+import Container from '../../components/Container.astro';
+import EntryMeta from '../../components/EntryMeta.astro';
+import Prose from '../../components/Prose.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../config/site';
+import { formatDate, getNotes, pageDescription } from '../../lib/content';
+import { url } from '../../lib/paths';
+
+/**
+ * A note.
+ *
+ * The same foundation as a build page, tuned for an article: the eyebrow row
+ * carries the publication date instead of a status and year, the layout emits
+ * `type="article"` with published and modified times for the social card, and
+ * prev/next follow `getNotes()`, so the reading order here is the list order and
+ * drafts stay out of the built site.
+ */
+export async function getStaticPaths() {
+  const notes = await getNotes();
+
+  return notes.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      // Newest first, so the "newer" note is the previous index.
+      newer: notes[index - 1] ?? undefined,
+      older: notes[index + 1] ?? undefined,
+    },
+  }));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, newer, older } = Astro.props as Props;
+const { Content } = await render(entry);
+
+const { data } = entry;
+const metaDescription = pageDescription([data.summary], `${data.title}, a note by ${site.name}.`);
+
+const published = formatDate(data.date);
+const isoDate = data.date.toISOString().slice(0, 10);
+const updated = data.updated ? formatDate(data.updated) : undefined;
+const updatedIso = data.updated ? data.updated.toISOString().slice(0, 10) : undefined;
+
+const list = (values: string[] | undefined): string | undefined =>
+  values && values.length > 0 ? values.join(' · ') : undefined;
+---
+
+<BaseLayout
+  title={data.title}
+  description={metaDescription}
+  type="article"
+  publishedDate={data.date}
+  updatedDate={data.updated}
+>
+  <Container>
+    <article class="max-w-text">
+      <header class="pt-14 pb-12 md:pt-section md:pb-16">
+        <div class="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
+          <p class="meta">Note</p>
+          <p class="meta ml-auto shrink-0">
+            <time datetime={isoDate}>{published}</time>
+          </p>
+        </div>
+
+        <EntryMeta
+          class="mt-8 md:mt-10"
+          items={[
+            { label: 'Tags', value: list(data.tags) },
+            { label: 'Updated', value: updated, datetime: updatedIso },
+          ]}
+        />
+
+        <h1 class="text-h1 text-ink mt-10 md:mt-12">{data.title}</h1>
+        <p class="text-lead text-ink-soft mt-6">{data.summary}</p>
+      </header>
+
+      <Prose>
+        <Content />
+      </Prose>
+
+      <footer class="mt-20 border-t border-rule pt-6 md:mt-24">
+        <a
+          href={url('/notes')}
+          class="meta text-accent inline-flex items-baseline gap-2 transition-colors hover:text-accent-hover"
+        >
+          <span aria-hidden="true">&#8592;</span> All notes
+        </a>
+
+        {(newer || older) && (
+          <nav
+            aria-label="Other notes"
+            class="mt-10 grid gap-8 border-t border-rule pt-8 md:grid-cols-2 md:gap-12"
+          >
+            {newer ? (
+              <a href={url(`/notes/${newer.id}`)} class="group block">
+                <span class="meta text-muted">Newer</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {newer.data.title}
+                </span>
+              </a>
+            ) : (
+              <div class="hidden md:block" />
+            )}
+
+            {older && (
+              <a href={url(`/notes/${older.id}`)} class="group block md:text-right">
+                <span class="meta text-muted">Older</span>
+                <span class="text-h3 text-ink mt-2 block decoration-1 underline-offset-4 group-hover:underline">
+                  {older.data.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
+      </footer>
+    </article>
+  </Container>
+</BaseLayout>

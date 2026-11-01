@@ -77,6 +77,12 @@ const personJsonLd = isHome
 
 <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
 <link rel="sitemap" type="application/xml" href={url('/sitemap-index.xml')} />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`Notes by ${site.name}`}
+  href={url('/notes/rss.xml')}
+/>
 
 <meta property="og:type" content={type} />
 <meta property="og:title" content={pageTitle} />
