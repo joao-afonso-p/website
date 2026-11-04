@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 617 685" role="img" aria-labelledby="title description">
+  <title id="title">Alfredo system architecture</title>
+  <desc id="description">Phone and computer connect through Telegram and GitHub to Alfredo running with OpenClaw on an always-on Windows PC. The local Obsidian vault and Alfredo configuration sync through GitHub, and model requests go to Codex.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#315e99" />
+    </marker>
+    <style>
+      .frame { fill: #f7f6f1; stroke: #dedbd2; stroke-width: 1; }
+      .machine { fill: none; stroke: #c9c6bc; stroke-width: 1.4; }
+      .node { fill: #faf9f5; stroke: #c9c6bc; stroke-width: 1.3; }
+      .primary { fill: #eaf0f7; stroke: #9bb5d5; stroke-width: 1.2; }
+      .link { fill: none; stroke: #315e99; stroke-width: 1.65; marker-end: url(#arrow); }
+      .link-both { fill: none; stroke: #315e99; stroke-width: 1.55; marker-start: url(#arrow); marker-end: url(#arrow); }
+      .title { font: 700 15px Arial, Helvetica, sans-serif; fill: #292925; text-anchor: middle; }
+      .sub { font: 13px Arial, Helvetica, sans-serif; fill: #66665f; text-anchor: middle; }
+      .label { font: 13px 'Courier New', monospace; fill: #57574f; }
+      .machine-label { font: 12px 'Courier New', monospace; letter-spacing: 1px; fill: #57574f; }
+      .label-bg { fill: #f7f6f1; }
+    </style>
+  </defs>
+  <rect class="frame" x="15.5" y="17.5" width="575.5" height="650" />
+
+  <!-- Device and service nodes -->
+  <rect class="node" x="49" y="55" width="123" height="54" rx="3" />
+  <text class="title" x="110.5" y="87">Phone</text>
+  <rect class="node" x="231" y="55" width="132" height="54" rx="3" />
+  <text class="title" x="297" y="87">Telegram</text>
+  <rect class="node" x="434" y="55" width="127" height="54" rx="3" />
+  <text class="title" x="497.5" y="87">Computer</text>
+
+  <rect class="primary" x="226" y="148" width="180" height="57" rx="3" />
+  <text class="title" x="316" y="172">GitHub</text>
+  <text class="sub" x="316" y="190">Vault + Alfredo config</text>
+
+  <!-- Always-on Windows host -->
+  <rect class="machine" x="49" y="258" width="509" height="306" rx="3" />
+  <text class="machine-label" x="66" y="282">OLD WINDOWS PC · LEFT ON</text>
+
+  <rect class="node" x="79" y="309" width="122" height="54" rx="3" />
+  <text class="title" x="140" y="331">WSL2</text>
+  <text class="sub" x="140" y="349">Ubuntu</text>
+
+  <rect class="primary" x="286" y="309" width="220" height="54" rx="3" />
+  <text class="title" x="396" y="331">OpenClaw gateway</text>
+  <text class="sub" x="396" y="349">Alfredo agent runtime</text>
+
+  <rect class="node" x="79" y="462" width="194" height="59" rx="3" />
+  <text class="title" x="176" y="486">Obsidian vault</text>
+  <text class="sub" x="176" y="505">local checkout</text>
+  <rect class="node" x="333" y="462" width="195" height="59" rx="3" />
+  <text class="title" x="430.5" y="486">Alfredo config</text>
+  <text class="sub" x="430.5" y="505">local checkout</text>
+
+  <rect class="node" x="227" y="593" width="178" height="54" rx="3" />
+  <text class="title" x="316" y="615">Codex</text>
+  <text class="sub" x="316" y="633">OpenAI</text>
+
+  <!-- Phone, Telegram, and GitHub routes -->
+  <path class="link" d="M172 82 H229" />
+  <rect class="label-bg" x="172" y="60" width="57" height="18" />
+  <text class="label" x="176" y="73">message</text>
+
+  <path class="link-both" d="M109 111 C109 130 190 134 258 148" />
+  <rect class="label-bg" x="181" y="128" width="36" height="18" />
+  <text class="label" x="185" y="141">sync</text>
+  <path class="link-both" d="M385 148 C412 137 447 136 498 120 L498 111" />
+  <rect class="label-bg" x="414" y="128" width="36" height="18" />
+  <text class="label" x="418" y="141">sync</text>
+
+  <!-- Telegram reaches the agent; GitHub syncs both local checkouts -->
+  <path class="link" d="M363 82 H418 V229 L396 307" />
+  <path class="link" d="M226 177 L31 237 V491 H77" />
+  <rect class="label-bg" x="32" y="396" width="90" height="19" />
+  <text class="label" x="35" y="410">pull / push</text>
+  <path class="link" d="M406 177 L574 237 V491 H530" />
+  <rect class="label-bg" x="485" y="396" width="88" height="19" />
+  <text class="label" x="488" y="410">pull / push</text>
+
+  <!-- Local runtime and context -->
+  <path class="link" d="M201 336 H284" />
+  <path class="link" d="M338 363 L176 460" />
+  <rect class="label-bg" x="224" y="404" width="39" height="18" />
+  <text class="label" x="228" y="417">vault</text>
+  <path class="link" d="M413 363 V460" />
+  <rect class="label-bg" x="420" y="402" width="55" height="18" />
+  <text class="label" x="424" y="415">config</text>
+
+  <!-- Model requests -->
+  <path class="link" d="M506 336 H570 V576 H316 V591" />
+  <rect class="label-bg" x="418" y="566" width="124" height="18" />
+  <text class="label" x="422" y="579">model requests</text>
+</svg>

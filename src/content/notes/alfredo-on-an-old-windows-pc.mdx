@@ -20,7 +20,7 @@ Around then, personal agents like OpenClaw and Hermes were getting a lot of atte
 
 There’s another important part of the architecture: **both the Obsidian vault and Alfredo’s configuration are managed through GitHub**. The PC has local checkouts, while GitHub lets me keep the same material available across my computer and phone, so I can talk to Alfredo through Telegram and also keep using Codex in my computer, all sharing the same memory in Obsidian. The Vault isn’t trapped inside the old PC, and the configuration has a history I can inspect.
 
-![Architecture diagram showing Alfredo running through OpenClaw in WSL2 on an always-on Windows PC, with the Obsidian vault and Alfredo configuration synced through GitHub across devices and model requests sent to Codex via OpenAI.](/images/notes/alfredo-architecture-v2.svg)
+![Architecture diagram showing Alfredo running through OpenClaw in WSL2 on an always-on Windows PC, with the Obsidian vault and Alfredo configuration synced through GitHub across devices and model requests sent to Codex via OpenAI.](/images/notes/alfredo-architecture-card.png)
 
 The Vault sync is not just “GitHub keeps a copy”. The server script uses a lock directory so two sync runs don’t overlap, and it stops if another Git operation is already in progress. If it finds local changes, it commits them with a timestamp, then fetches, rebases on `origin/main`, and pushes:
 
