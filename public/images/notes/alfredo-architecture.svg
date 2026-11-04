@@ -38,8 +38,6 @@
   <text class="label" x="476" y="145">sync</text>
 
   <path class="edge" d="M410 78H475V250L450 345" />
-  <rect x="480" y="218" width="90" height="22" fill="#f8f7f2" />
-  <text class="label" x="486" y="235">messages</text>
 
   <path class="both" d="M260 220L20 260V560H75" />
   <rect x="20" y="447" width="92" height="22" fill="#f4f2ec" />
