@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Troca micorrízica entre uma planta e um fungo</title>
+  <desc id="desc">Diagrama original de uma raiz ligada a hifas no solo. Carbono segue da planta para o fungo; fósforo e azoto seguem do fungo para a raiz.</desc>
+  <defs>
+    <style>
+      .label { font-family: Arial, Helvetica, sans-serif; fill: #151820; }
+      .small { font-size: 25px; font-weight: 600; }
+      .main { font-size: 33px; font-weight: 700; }
+      .note { font-size: 21px; }
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="#f4f3ef"/>
+  <rect y="535" width="1400" height="365" fill="#d8c6a4"/>
+  <path d="M0 535 C165 512 322 555 480 532 S805 550 980 530 S1230 545 1400 520 L1400 560 L0 560 Z" fill="#94a765"/>
+  <text x="70" y="85" class="label main">Uma troca local, não uma dádiva</text>
+  <text x="70" y="122" class="label note">As setas mostram os fluxos medidos numa interface planta-fungo.</text>
+  <path d="M343 78 C357 245 340 376 395 541" fill="none" stroke="#4c7d49" stroke-width="58" stroke-linecap="round"/>
+  <path d="M343 78 C357 245 340 376 395 541" fill="none" stroke="#76a963" stroke-width="30" stroke-linecap="round"/>
+  <path d="M342 237 C242 180 165 193 102 232 M345 185 C440 138 546 158 613 219 M348 324 C246 281 162 301 100 351 M351 290 C445 251 548 276 619 333" fill="none" stroke="#5c914f" stroke-width="34" stroke-linecap="round"/>
+  <path d="M395 515 C356 579 359 647 273 712 M401 518 C437 603 490 659 580 726 M406 520 C481 577 561 580 650 632 M393 521 C345 610 248 619 174 678" fill="none" stroke="#c99862" stroke-width="34" stroke-linecap="round"/>
+  <path d="M395 515 C356 579 359 647 273 712 M401 518 C437 603 490 659 580 726 M406 520 C481 577 561 580 650 632 M393 521 C345 610 248 619 174 678" fill="none" stroke="#eee0bd" stroke-width="12" stroke-linecap="round"/>
+  <path d="M537 632 C680 575 748 610 808 664 S945 730 1035 671 S1165 588 1310 665" fill="none" stroke="#7b478b" stroke-width="15" stroke-linecap="round"/>
+  <path d="M615 679 C721 654 745 735 840 739 S977 655 1100 735 S1237 764 1354 714" fill="none" stroke="#7b478b" stroke-width="11" stroke-linecap="round"/>
+  <path d="M639 610 C688 676 730 639 775 580 M835 672 C887 601 936 623 978 565 M1024 682 C1083 641 1119 653 1163 603" fill="none" stroke="#9f64a9" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="710" cy="607" r="8" fill="#b176b9"/><circle cx="920" cy="717" r="7" fill="#b176b9"/><circle cx="1200" cy="676" r="9" fill="#b176b9"/>
+  <path d="M435 470 C590 450 711 498 806 607" fill="none" stroke="#d65a31" stroke-width="13"/>
+  <polygon points="806,607 777,594 791,578" fill="#d65a31"/>
+  <path d="M904 579 C756 515 620 490 466 505" fill="none" stroke="#345fdc" stroke-width="13"/>
+  <polygon points="466,505 493,488 494,518" fill="#345fdc"/>
+  <rect x="768" y="393" width="510" height="83" rx="14" fill="#fffaf0" stroke="#d65a31" stroke-width="3"/>
+  <line x1="798" y1="434" x2="881" y2="434" stroke="#d65a31" stroke-width="10"/>
+  <polygon points="881,434 862,423 862,445" fill="#d65a31"/>
+  <text x="905" y="444" class="label small">Carbono da planta para o fungo</text>
+  <rect x="768" y="493" width="510" height="83" rx="14" fill="#f5f8ff" stroke="#345fdc" stroke-width="3"/>
+  <line x1="798" y1="534" x2="881" y2="534" stroke="#345fdc" stroke-width="10"/>
+  <polygon points="881,534 862,523 862,545" fill="#345fdc"/>
+  <text x="905" y="544" class="label small">Fósforo e azoto para a raiz</text>
+  <line x1="230" y1="570" x2="130" y2="610" stroke="#151820" stroke-width="3"/>
+  <text x="65" y="642" class="label small">Raiz</text>
+  <line x1="1060" y1="736" x2="1060" y2="803" stroke="#151820" stroke-width="3"/>
+  <text x="920" y="840" class="label small">Hifas fúngicas no solo</text>
+  <text x="70" y="860" class="label note">Esquema original. A intensidade das setas não representa uma proporção fixa.</text>
+</svg>

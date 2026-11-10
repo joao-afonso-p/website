@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Como se forma uma renda tecida</title>
+  <desc id="desc">Diagrama original que mostra fios de base verticais e fios de desenho diagonais. À esquerda, os cruzamentos são densos; à direita, são mais espaçados e deixam passar luz.</desc>
+  <defs>
+    <style>
+      .label { font-family: Arial, Helvetica, sans-serif; fill: #151820; }
+      .title { font-size: 38px; font-weight: 700; }
+      .sub { font-size: 23px; }
+      .main { font-size: 27px; font-weight: 700; }
+      .note { font-size: 21px; }
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="#f4f3ef"/>
+  <rect x="55" y="52" width="1290" height="796" rx="24" fill="#faf9f5" stroke="#d0ccc3" stroke-width="3"/>
+  <text x="105" y="120" class="label title">O desenho nasce do cruzamento dos fios</text>
+  <text x="105" y="158" class="label sub">Esquema simplificado de uma renda tecida. Não representa um tear ou padrão específico.</text>
+
+  <rect x="115" y="245" width="510" height="405" rx="18" fill="#fffdf8" stroke="#345fdc" stroke-width="4"/>
+  <rect x="775" y="245" width="510" height="405" rx="18" fill="#fffdf8" stroke="#d65a31" stroke-width="4"/>
+  <text x="150" y="300" class="label main">Zona densa: mais cruzamentos</text>
+  <text x="810" y="300" class="label main">Zona aberta: mais transparência</text>
+
+  <g stroke="#345fdc" stroke-width="15" stroke-linecap="round">
+    <path d="M190 350V570 M270 350V570 M350 350V570 M430 350V570 M510 350V570 M590 350V570"/>
+  </g>
+  <g stroke="#d65a31" stroke-width="14" stroke-linecap="round">
+    <path d="M165 540L365 350 M230 570L455 350 M310 570L535 350 M390 570L610 365 M470 570L590 455"/>
+  </g>
+  <g fill="#151820">
+    <circle cx="270" cy="450" r="8"/><circle cx="350" cy="465" r="8"/><circle cx="430" cy="440" r="8"/><circle cx="510" cy="430" r="8"/>
+  </g>
+
+  <g stroke="#345fdc" stroke-width="15" stroke-linecap="round">
+    <path d="M850 350V570 M980 350V570 M1110 350V570 M1240 350V570"/>
+  </g>
+  <g stroke="#d65a31" stroke-width="14" stroke-linecap="round">
+    <path d="M805 545L980 375 M965 570L1110 430 M1110 570L1260 420"/>
+  </g>
+
+  <line x1="205" y1="690" x2="350" y2="690" stroke="#345fdc" stroke-width="14" stroke-linecap="round"/>
+  <text x="375" y="699" class="label note">Fios de base, mantêm a estrutura</text>
+  <line x1="205" y1="740" x2="350" y2="740" stroke="#d65a31" stroke-width="14" stroke-linecap="round"/>
+  <text x="375" y="749" class="label note">Fios de desenho, criam o motivo</text>
+  <path d="M916 728H1122" fill="none" stroke="#151820" stroke-width="3"/>
+  <path d="M916 728l20-12v24z M1122 728l-20-12v24z" fill="#151820"/>
+  <text x="859" y="775" class="label note">Intervalos maiores deixam passar mais luz</text>
+  <text x="105" y="814" class="label note">Leitura: não há tinta aplicada no fim. O contraste visual vem da distribuição física dos fios e dos intervalos.</text>
+</svg>

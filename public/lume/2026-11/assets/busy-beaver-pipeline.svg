@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="760" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Da simulação à aceleração formalmente verificada</title>
+  <desc id="desc">Cinco etapas ligadas: máquina de Turing, traço observado, padrão comprimido, regra conjecturada e Lean verifica uma aceleração.</desc>
+  <rect width="1600" height="760" fill="#f4f3ef"/>
+  <text x="90" y="95" fill="#151820" font-family="Arial, sans-serif" font-size="44" font-weight="700">Como uma execução se torna uma regra verificável</text>
+  <text x="90" y="140" fill="#4a4d55" font-family="Georgia, serif" font-size="25">O padrão é uma pista. A prova é o que permite saltar muitos passos sem os simular um a um.</text>
+  <g fill="none" stroke="#345fdc" stroke-width="8" stroke-linecap="round">
+    <path d="M338 372H402"/><path d="M628 372H692"/><path d="M918 372H982"/><path d="M1208 372H1272"/>
+  </g>
+  <g fill="#345fdc"><path d="M402 372l-20-14v28z"/><path d="M692 372l-20-14v28z"/><path d="M982 372l-20-14v28z"/><path d="M1272 372l-20-14v28z"/></g>
+  <g>
+    <rect x="90" y="245" width="248" height="254" rx="18" fill="#dce6ff" stroke="#345fdc" stroke-width="3"/>
+    <rect x="380" y="245" width="248" height="254" rx="18" fill="#e9eef9" stroke="#345fdc" stroke-width="3"/>
+    <rect x="670" y="245" width="248" height="254" rx="18" fill="#fff1d7" stroke="#bd6a20" stroke-width="3"/>
+    <rect x="960" y="245" width="248" height="254" rx="18" fill="#e9eef9" stroke="#345fdc" stroke-width="3"/>
+    <rect x="1250" y="245" width="260" height="254" rx="18" fill="#dff2e7" stroke="#237449" stroke-width="3"/>
+  </g>
+  <g fill="#151820" font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="214" y="291" font-size="25" font-weight="700">1. Máquina</text><text x="214" y="322" font-size="25" font-weight="700">de Turing</text>
+    <text x="504" y="291" font-size="25" font-weight="700">2. Traço</text><text x="504" y="322" font-size="25" font-weight="700">observado</text>
+    <text x="794" y="291" font-size="25" font-weight="700">3. Padrão</text><text x="794" y="322" font-size="25" font-weight="700">comprimido</text>
+    <text x="1084" y="291" font-size="25" font-weight="700">4. Regra</text><text x="1084" y="322" font-size="25" font-weight="700">conjecturada</text>
+    <text x="1380" y="291" font-size="25" font-weight="700">5. Lean verifica</text><text x="1380" y="322" font-size="25" font-weight="700">a aceleração</text>
+  </g>
+  <g stroke="#151820" stroke-width="4" fill="none">
+    <path d="M132 380h38v-34h44v68h44v-34h38"/><path d="M142 442h40m18 0h42m18 0h40"/>
+    <path d="M418 390h170"/><path d="M418 426h170"/><path d="M438 354v36m44-36v36m44-36v36m44-36v36"/>
+    <path d="M718 408h152"/><path d="M738 370h112"/><path d="M758 446h72"/>
+    <path d="M998 418c44-65 107-65 164 0"/><path d="M1022 455h124"/>
+    <path d="M1300 389l43 43 93-103" stroke="#237449" stroke-width="10"/>
+  </g>
+  <g fill="#4a4d55" font-family="Georgia, serif" font-size="20" text-anchor="middle">
+    <text x="214" y="470">executa passos elementares</text>
+    <text x="504" y="470">fita e estados repetem-se</text>
+    <text x="794" y="470">blocos substituem milhões</text>
+    <text x="1084" y="470">hipótese para o salto</text>
+    <text x="1380" y="470">cada salto tem prova</text>
+  </g>
+  <path d="M214 590C480 650 1120 650 1380 590" fill="none" stroke="#bd6a20" stroke-width="4" stroke-dasharray="10 12"/>
+  <text x="800" y="705" fill="#7b4618" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle">A verificação formal valida a regra geral, não decide por si só se toda a máquina acaba por parar.</text>
+</svg>

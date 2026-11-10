@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Corredor marítimo entre Suez e o golfo de Áden</title>
+  <desc id="desc">Diagrama esquemático do Mediterrâneo oriental, canal de Suez, Mar Vermelho, estreito de Bab el-Mandeb e golfo de Áden, com as margens do Egito, Sinai, Israel e Jordânia, Arábia Saudita, Iémen, Eritreia, Djibuti, Somália e o oceano Índico.</desc>
+  <rect width="1400" height="900" fill="#f4f3ef"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#151820">
+    <text x="80" y="82" font-size="42" font-weight="700">UM CORREDOR, DOIS GARGALOS</text>
+    <text x="82" y="120" font-size="22" fill="#43505c">Esquema geográfico, não à escala. O tráfego entre a Europa e a Ásia passa por Suez e Bab el-Mandeb.</text>
+  </g>
+  <g stroke="#151820" stroke-width="4" stroke-linejoin="round">
+    <path d="M110 185 L430 185 L492 238 L474 328 L520 414 L544 668 L420 744 L150 698 L90 550 L130 415 L95 305 Z" fill="#d9b98b"/>
+    <path d="M585 215 L820 188 L965 274 L926 414 L846 468 L894 607 L810 707 L615 680 L568 505 L548 390 Z" fill="#ddb984"/>
+    <path d="M1035 390 L1275 413 L1328 574 L1228 676 L1085 634 L1008 520 Z" fill="#d9b98b"/>
+    <path d="M1050 682 L1270 714 L1325 840 L1100 850 L980 770 Z" fill="#d9b98b"/>
+  </g>
+  <g fill="#5ea9cf" stroke="#345fdc" stroke-width="3">
+    <path d="M285 185 L450 185 L488 238 L450 268 L300 250 Z"/>
+    <path d="M462 255 L510 262 L505 405 L478 410 L466 334 Z"/>
+    <path d="M493 402 L570 386 L610 668 L544 690 L508 575 Z"/>
+    <path d="M573 674 L808 684 L930 635 L1020 650 L1065 714 L1008 770 L820 744 L620 730 Z"/>
+    <path d="M1010 736 L1110 696 L1248 714 L1290 786 L1205 810 L1088 780 Z"/>
+  </g>
+  <g fill="none" stroke="#ef6a4c" stroke-width="10" stroke-linecap="round" stroke-dasharray="18 14">
+    <path d="M340 220 C430 225 463 253 484 320 C498 410 525 520 565 655 C620 700 720 710 830 714 C920 718 1010 745 1120 757"/>
+  </g>
+  <g fill="#ef6a4c" stroke="#151820" stroke-width="3">
+    <circle cx="486" cy="317" r="13"/><circle cx="591" cy="688" r="13"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#151820">
+    <g font-size="26" font-weight="700"><text x="160" y="355">EGITO</text><text x="310" y="306">SINAI</text><text x="638" y="330">ARÁBIA</text><text x="638" y="360">SAUDITA</text><text x="745" y="610">IÉMEN</text><text x="210" y="600">SUDÃO</text><text x="238" y="714">ERITREIA</text><text x="479" y="748">DJIBUTI</text><text x="1110" y="642">SOMÁLIA</text></g>
+    <g font-size="22" font-style="italic" fill="#174e78"><text x="220" y="220">Mediterrâneo</text><text x="520" y="510">Mar Vermelho</text><text x="790" y="735">Golfo de Áden</text><text x="1120" y="840">Oceano Índico</text></g>
+    <text x="402" y="290" font-size="22" font-weight="700">Canal de Suez</text>
+    <text x="610" y="650" font-size="22" font-weight="700">Bab el-Mandeb</text>
+    <text x="100" y="840" font-size="20" fill="#43505c">Linha tracejada: rota marítima esquemática Europa-Ásia. As formas terrestres e distâncias foram simplificadas para explicar o sistema.</text>
+  </g>
+  <g stroke="#151820" stroke-width="3" fill="none"><path d="M490 300 L462 282"/><path d="M605 643 L592 676"/></g>
+</svg>

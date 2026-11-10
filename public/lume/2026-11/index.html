@@ -1,0 +1,1515 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="light" />
+    <title>LUME · 2026-11</title>
+    <style>
+      :root {
+        --paper: #f4f3ef;
+        --ink: #151820;
+        --blue: #345fdc;
+        --muted: #626a75;
+        --line: #d4d5d4;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Georgia, serif;
+      }
+      a {
+        color: inherit;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      .cover {
+        min-height: 100svh;
+        position: relative;
+        color: #fff;
+        background: #172743;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: clamp(22px, 4vw, 54px);
+      }
+      .cover::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(8, 18, 36, 0.68), transparent 72%),
+          linear-gradient(0deg, rgba(8, 18, 36, 0.65), transparent 45%);
+        pointer-events: none;
+      }
+      .cover-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+      .cover > *:not(.cover-image) {
+        position: relative;
+        z-index: 1;
+      }
+      .cover-top {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+      }
+      .publisher {
+        font:
+          600 0.75rem/1.2 Arial,
+          sans-serif;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        padding: 0.55rem 0.7rem;
+        background: rgba(13, 24, 40, 0.35);
+      }
+      .cover-bottom {
+        max-width: min(650px, 75%);
+      }
+      .cover.safe-right .cover-bottom {
+        align-self: flex-end;
+        text-align: right;
+      }
+      .masthead {
+        font:
+          800 clamp(3.6rem, 14vw, 10rem)/0.85 Arial,
+          sans-serif;
+        letter-spacing: -0.085em;
+        margin: 0 0 0.25em;
+      }
+      .edition {
+        font: 600 0.76rem/1.4 monospace;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .cover h1 {
+        font:
+          700 clamp(1.8rem, 4vw, 3.4rem)/1.03 Arial,
+          sans-serif;
+        letter-spacing: -0.04em;
+        margin: 0.4em 0;
+      }
+      .cover .teaser {
+        font:
+          400 clamp(1rem, 2vw, 1.35rem)/1.4 Georgia,
+          serif;
+        max-width: 42ch;
+      }
+      .cover-link {
+        font:
+          600 0.85rem Arial,
+          sans-serif;
+        text-decoration: none;
+        display: inline-block;
+        border-bottom: 2px solid #fff;
+        padding: 0.5rem 0;
+      }
+      main {
+        max-width: 1200px;
+        margin: auto;
+      }
+      .contents {
+        padding: clamp(35px, 7vw, 90px) clamp(24px, 6vw, 70px);
+        border-bottom: 1px solid var(--line);
+      }
+      .section-mark,
+      .kicker,
+      .label {
+        font: 600 0.75rem/1.4 monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--blue);
+      }
+      .contents h2 {
+        font:
+          700 clamp(3rem, 8vw, 6rem)/0.95 Arial,
+          sans-serif;
+        letter-spacing: -0.065em;
+        margin: 0.25em 0 0.7em;
+      }
+      .contents ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 3rem;
+      }
+      .contents li {
+        border-top: 1px solid var(--line);
+      }
+      .contents li a {
+        display: flex;
+        gap: 1.5rem;
+        align-items: baseline;
+        padding: 1rem 0;
+        font:
+          600 clamp(1rem, 2vw, 1.35rem)/1.25 Arial,
+          sans-serif;
+        text-decoration: none;
+      }
+      .contents li span {
+        font: 600 0.8rem monospace;
+        color: var(--blue);
+      }
+      .story {
+        padding: clamp(34px, 7vw, 90px) clamp(24px, 6vw, 70px);
+        border-bottom: 1px solid var(--line);
+        content-visibility: auto;
+        contain-intrinsic-size: 1200px;
+      }
+      .article-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .back {
+        font:
+          0.75rem Arial,
+          sans-serif;
+        color: var(--muted);
+      }
+      .story h2 {
+        max-width: 16ch;
+        font:
+          700 clamp(2.8rem, 7.5vw, 6.5rem)/0.98 Arial,
+          sans-serif;
+        letter-spacing: -0.067em;
+        margin: 0.28em 0;
+      }
+      .deck {
+        max-width: 30ch;
+        font:
+          400 clamp(1.25rem, 2.6vw, 2rem)/1.3 Arial,
+          sans-serif;
+        color: #39434e;
+        margin: 0 0 2rem;
+      }
+      .lead {
+        font-size: clamp(1.25rem, 2vw, 1.6rem);
+        line-height: 1.6;
+        max-width: 67ch;
+      }
+      .story-body {
+        columns: 2 320px;
+        column-gap: clamp(32px, 5vw, 72px);
+        margin-top: 3rem;
+      }
+      .body-section {
+        break-inside: avoid;
+        margin: 0 0 2.4rem;
+      }
+      .body-section h3 {
+        font:
+          700 clamp(1.45rem, 2.4vw, 2rem)/1.1 Arial,
+          sans-serif;
+        letter-spacing: -0.035em;
+        margin: 0 0 0.75rem;
+      }
+      .body-section p,
+      .questions p {
+        font-size: 1.08rem;
+        line-height: 1.68;
+        margin: 0 0 1.1em;
+      }
+      .takeaway,
+      .questions {
+        background: #e3eaf9;
+        padding: clamp(22px, 3vw, 42px);
+        margin: 2.5rem 0;
+        max-width: 760px;
+        overflow-wrap: anywhere;
+      }
+      .takeaway p {
+        font:
+          700 clamp(1.2rem, 2.2vw, 1.65rem)/1.45 Georgia,
+          serif;
+        margin: 1.1rem 0 0;
+      }
+      .questions {
+        background: #172743;
+        color: white;
+      }
+      .questions .label {
+        color: #8caefb;
+      }
+      .questions p {
+        margin: 1.1rem 0 0;
+      }
+      .figure {
+        margin: 2rem 0;
+        break-inside: avoid;
+      }
+      .figure img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        background: #e8e8e4;
+      }
+      .figure figcaption {
+        font:
+          0.8rem/1.45 Arial,
+          sans-serif;
+        color: var(--muted);
+        padding: 0.8rem 0;
+      }
+      .figure figcaption span {
+        display: block;
+      }
+      .sources {
+        border-top: 1px solid var(--line);
+        padding-top: 1.3rem;
+        margin-top: 2rem;
+        font:
+          0.82rem/1.6 Arial,
+          sans-serif;
+      }
+      .sources ul {
+        padding-left: 1.2rem;
+        overflow-wrap: anywhere;
+      }
+      .sources a {
+        color: #234abb;
+      }
+      footer {
+        padding: 2rem clamp(24px, 6vw, 70px);
+        font:
+          0.75rem/1.5 Arial,
+          sans-serif;
+        color: var(--muted);
+      }
+      @media (max-width: 700px) {
+        .cover {
+          min-height: 90svh;
+        }
+        .cover-bottom {
+          max-width: 95%;
+        }
+        .cover-image {
+          object-position: center;
+        }
+        .contents ol {
+          grid-template-columns: 1fr;
+        }
+        .story-body {
+          columns: 1;
+        }
+        .story h2 {
+          max-width: 100%;
+        }
+        .story {
+          content-visibility: visible;
+        }
+      }
+      @media print {
+        .cover {
+          height: 100vh;
+          page-break-after: always;
+        }
+        .story {
+          page-break-before: always;
+          content-visibility: visible;
+        }
+        .back {
+          display: none;
+        }
+        .body-section,
+        .figure,
+        .takeaway {
+          break-inside: avoid;
+        }
+        a {
+          text-decoration: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="cover safe-left">
+      <img
+        class="cover-image"
+        src="assets/cover.png"
+        alt="Ilustração conceptual da sonda MMX a recolher uma amostra na superfície irregular de Phobos, com Marte a dominar o horizonte."
+      />
+      <div class="cover-top"><span class="publisher">Alfredo Editora</span></div>
+      <div class="cover-bottom">
+        <p class="edition">Edição 2026-11</p>
+        <p class="masthead">LUME</p>
+        <h1>Phobos: a pequena lua que pode guardar a história de Marte</h1>
+        <p class="teaser">
+          Lançada em outubro, a missão MMX vai tentar trazer para a Terra pelo menos dez gramas de
+          material de Phobos. A amostra poderá ajudar a distinguir duas histórias muito diferentes
+          para a origem da lua marciana.
+        </p>
+        <a class="cover-link" href="#indice">Abrir edição ↓</a>
+      </div>
+    </header>
+    <main>
+      <nav id="indice" class="contents" aria-label="Índice">
+        <span class="section-mark">Personal Research Radar / Edição 2026-11</span>
+        <h2>Nesta edição</h2>
+        <ol>
+          <li>
+            <a href="#phobos-regresso-a-terra"
+              ><span>01</span>Phobos: a pequena lua que pode guardar a história de Marte</a
+            >
+          </li>
+          <li>
+            <a href="#pepinos-do-mar-e-carbono"
+              ><span>02</span>O pepino-do-mar que intercepta a neve de carbono</a
+            >
+          </li>
+          <li>
+            <a href="#busy-beaver-na-fronteira"
+              ><span>03</span>O castor que nenhum algoritmo consegue apanhar</a
+            >
+          </li>
+          <li>
+            <a href="#paisagens-submersas-de-murujuga"
+              ><span>04</span>A costa que o mar apagou em Murujuga</a
+            >
+          </li>
+          <li>
+            <a href="#mercados-debaixo-da-terra"
+              ><span>05</span>O mercado silencioso debaixo das raízes</a
+            >
+          </li>
+          <li>
+            <a href="#um-mar-varias-guerras"><span>06</span>Um mar, várias guerras</a>
+          </li>
+          <li>
+            <a href="#o-ultimo-tear-de-renda"><span>07</span>O último tear de renda</a>
+          </li>
+        </ol>
+      </nav>
+      <article id="phobos-regresso-a-terra" class="story">
+        <div class="article-top">
+          <span class="kicker">01 / Espaço</span><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>Phobos: a pequena lua que pode guardar a história de Marte</h2>
+        <p class="deck">
+          Lançada em outubro, a missão MMX vai tentar trazer para a Terra pelo menos dez gramas de
+          material de Phobos. A amostra poderá ajudar a distinguir duas histórias muito diferentes
+          para a origem da lua marciana.
+        </p>
+        <div class="lead">
+          <p>
+            Phobos parece pouco mais do que uma pedra escura, irregular e demasiado próxima de
+            Marte. É precisamente essa aparência modesta que a torna interessante. Não sabemos se
+            nasceu como um asteróide capturado pela gravidade marciana ou se é o que sobrou de um
+            impacto colossal em Marte. As duas hipóteses prevêem materiais, idades e misturas
+            diferentes. Uma fotografia orbital ajuda a descrever a superfície, mas uma amostra
+            permite medir átomos, minerais e compostos orgânicos com instrumentos que não cabem numa
+            sonda.
+          </p>
+          <p>
+            A Martian Moons eXploration, MMX, é uma missão japonesa com participação europeia e
+            norte-americana que fará essa passagem da imagem para a matéria. Foi lançada com sucesso
+            a 20 de outubro de 2026. A JAXA planeia cerca de cinco anos de missão, com observação de
+            Phobos e Deimos, duas descidas a Phobos e o regresso de pelo menos dez gramas à Terra. O
+            calendário comunicado pela ESA aponta para entrada em órbita de Marte em 2027, operações
+            de superfície em 2030 e chegada da cápsula à Terra em 2031. Estas datas são metas de
+            missão, não garantias: navegação, aterragem e o próprio regresso continuam a ser fases
+            de risco.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            Uma amostra de Phobos pode ligar a história dos pequenos corpos ricos em carbono à
+            evolução de Marte, incluindo a água e o material ejectado da superfície marciana. Também
+            testa uma cadeia tecnológica essencial para futuras missões de ida e volta ao sistema
+            marciano.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>Duas origens, duas assinaturas</h3>
+            <p>
+              A hipótese da captura diz que Phobos era um pequeno corpo do Sistema Solar exterior ou
+              da cintura de asteróides que ficou preso pela gravidade de Marte. A hipótese do
+              impacto diz o contrário: matéria de Marte, possivelmente misturada com o impactor, foi
+              lançada para órbita e agregou-se numa lua. A órbita quase circular e muito próxima do
+              equador de Marte costuma favorecer uma origem em disco de detritos, mas a reflectância
+              escura e a semelhança espectral com corpos carbonáceos mantêm a captura em jogo.
+              Nenhum destes indícios, isoladamente, fecha o caso. Isótopos de oxigénio, minerais
+              hidratados, grãos ricos em carbono e a proporção de material marciano numa amostra
+              podem pesar muito mais do que uma cor observada à distância.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/phobos-hirise.jpg"
+                alt="Phobos, a lua maior de Marte, fotografada pela câmara HiRISE da Mars Reconnaissance Orbiter."
+                loading="lazy"
+              />
+              <figcaption>
+                Phobos visto a cerca de 6800 quilómetros pela HiRISE. A imagem mostra a superfície
+                irregular que a MMX irá estudar antes de escolher um local de amostragem.
+                <span
+                  >© NASA/JPL-Caltech/University of Arizona, HiRISE · Domínio público dos EUA,
+                  imagem NASA. Crédito obrigatório conforme as diretrizes de utilização de media da
+                  NASA.</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Como pousar onde quase não há peso</h3>
+            <p>
+              Phobos tem gravidade tão fraca que a questão não é apenas pousar sem partir, mas não
+              voltar a sair da superfície. A ESA calcula que o rover europeu Idefix, com 25
+              quilogramas na Terra, terá ali um peso equivalente a cerca de 15 gramas. A MMX começa
+              por observar a lua numa órbita quase-satélite, uma trajectória que acompanha Phobos em
+              torno de Marte e permite estudar muitos locais antes de escolher. O rover deve medir
+              textura e composição do regolito, ajudando a preparar a descida principal. Só depois a
+              nave mãe tenta tocar a superfície, recolher grãos e rocha, e acondicioná-los na
+              cápsula de retorno. A recolha não é um detalhe logístico: uma amostra contaminada,
+              perdida ou demasiado alterada perde parte do valor científico.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/mmx-amostra.svg"
+                alt="Esquema do percurso da MMX: Terra, órbita de Marte, observação de Phobos, rover Idefix, recolha de amostra e cápsula de regresso."
+                loading="lazy"
+              />
+              <figcaption>
+                Esquema editorial original baseado no perfil de missão da JAXA e no calendário
+                comunicado pela ESA. As datas são metas planeadas.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Um arquivo misturado por Marte</h3>
+            <p>
+              Mesmo que Phobos não seja um pedaço de Marte, a sua superfície pode conter uma pequena
+              biblioteca marciana. Impactos em Marte ejectam material para o espaço; parte dele pode
+              ter caído sobre as luas ao longo de milhares de milhões de anos. A JAXA descreve a
+              missão como uma forma de estudar a evolução da esfera marciana e a origem de água e
+              matéria orgânica nos planetas terrestres. Essa promessa exige prudência: encontrar uma
+              assinatura marciana não equivale a encontrar vida, nem uma amostra de superfície
+              representa automaticamente o interior de Phobos. Mas, em laboratórios terrestres, será
+              possível separar grãos, datar eventos, procurar compostos voláteis e comparar a
+              química com meteoritos e rochas marcianas. É uma medição com resolução
+              incomparavelmente superior à de um espectrómetro em órbita.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>A colaboração também é um instrumento</h3>
+            <p>
+              A MMX é liderada pela JAXA e reúne NASA, CNES, DLR e ESA. A Europa fornece o rover
+              Idefix, que funcionará como reconhecimento no terreno antes da amostragem principal. A
+              arquitectura da missão é deliberadamente exigente: viajar até Marte, operar
+              repetidamente junto de uma lua irregular, descer com segurança e enviar uma cápsula de
+              volta à Terra. A experiência do Japão com Hayabusa2 ajuda, mas Phobos não é o
+              asteróide Ryugu: está num ambiente dominado pela gravidade de Marte e tem uma história
+              geológica própria. Se a cadeia funcionar, o resultado será mais do que uma resposta
+              sobre uma lua. Será uma demonstração concreta de que material do sistema marciano pode
+              ser trazido para análise aberta, repetível e independente.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            A amostra poderá distinguir claramente captura de impacto, ou revelar uma mistura
+            difícil de separar? Que fracção do regolito de Phobos veio de Marte? E como terá a lua
+            evoluído enquanto a sua órbita desce lentamente em direcção ao planeta? A resposta
+            dependerá da composição, do local escolhido e de a cápsula regressar intacta.
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a href="https://www.mmx.jaxa.jp/en/" rel="noopener noreferrer">JAXA, MMX Mission</a>
+            </li>
+            <li>
+              <a
+                href="https://www.esa.int/Science_Exploration/Space_Science/Mars_moon_lander_set_to_launch_on_19_October"
+                rel="noopener noreferrer"
+                >ESA, Mars moon lander set to launch on 19 October</a
+              >
+            </li>
+            <li>
+              <a href="https://images.nasa.gov/details/PIA10368" rel="noopener noreferrer"
+                >NASA, Phobos from 6,800 kilometers</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+      <article id="pepinos-do-mar-e-carbono" class="story">
+        <div class="article-top">
+          <span class="kicker">02 / Oceano</span><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>O pepino-do-mar que intercepta a neve de carbono</h2>
+        <p class="deck">
+          Nas águas médias das Galápagos, Pelagothuria natatrix apanha partículas que desciam para o
+          abismo. A observação obriga a olhar para a bomba biológica como uma cadeia viva, e não
+          como uma simples queda.
+        </p>
+        <div class="lead">
+          <p>
+            À primeira vista, parece uma medusa rosada, quase transparente, suspensa no azul. Mas
+            Pelagothuria natatrix é um pepino-do-mar, um equinoderme aparentado com estrelas-do-mar.
+            E faz algo extraordinariamente pouco comum no seu grupo: vive toda a vida afastado do
+            fundo, abrindo um véu gelatinoso como um funil na água profunda.
+          </p>
+          <p>
+            Esse funil apanha a chamada neve marinha, a chuva lenta de restos orgânicos, células,
+            agregados e partículas que saem das camadas iluminadas do oceano. Um estudo de Bruce H.
+            Robison, publicado em setembro na Ecology, reuniu observações de submersíveis nas
+            Galápagos e mostra que estes animais são abundantes entre os 250 e os 650 metros. A
+            descoberta não prova que alterem sozinhos o clima, mas torna visível uma escala
+            intermédia que os esquemas simples do carbono costumam omitir: antes de chegar ao fundo,
+            o carbono passa por muitos consumidores.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            A capacidade do oceano de transportar carbono orgânico para as profundezas depende não
+            só de quanto material afunda, mas também de quem o interceta pelo caminho. Mapear estes
+            consumidores melhora a interpretação da bomba biológica e ajuda a separar observação
+            local de estimativas globais.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>Uma chuva que começa à superfície</h3>
+            <p>
+              O ponto de partida é o fitoplâncton. À luz do sol, estas algas microscópicas usam
+              dióxido de carbono dissolvido e produzem matéria orgânica. Parte é comida perto da
+              superfície; outra parte agrega-se, morre ou é embalada em partículas fecais e começa a
+              afundar. Chama-se bomba biológica porque este transporte pode deslocar carbono da
+              atmosfera e da superfície para águas profundas durante muito tempo. Mas não é um
+              elevador selado. Quanto mais longa for a viagem, mais oportunidades há para micróbios
+              e animais respirarem, fragmentarem ou reempacotarem esse material. O que chega ao
+              fundo abissal é apenas a fracção sobrevivente de uma cadeia de transformações.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/pelagothuria-noaa.jpg"
+                alt="Um pepino-do-mar Pelagothuria natatrix translúcido e rosado flutua em água azul, com o véu alimentar aberto."
+                loading="lazy"
+              />
+              <figcaption>
+                Pelagothuria natatrix vive na coluna de água e abre o véu membranoso para recolher
+                neve marinha. A imagem publicada pelo MBARI é creditada à NOAA Ocean Exploration.
+                <span
+                  >© NOAA Ocean Exploration · Domínio público dos EUA, imagem de agência federal;
+                  crédito exigido</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>O coleccionador da zona mesopelágica</h3>
+            <p>
+              Mais de 1.700 espécies de pepino-do-mar vivem associadas ao leito marinho, onde
+              recolhem matéria orgânica já depositada. Pelagothuria natatrix é a excepção conhecida:
+              as suas estruturas tubulares evoluíram para um véu membranoso que ajuda a nadar e a
+              alimentar-se. O animal orienta o véu para cima, de frente para as partículas que caem,
+              e usa uma coroa de tentáculos junto da boca para as ingerir. Robison analisou 23
+              mergulhos de submersível nas Galápagos. Encontrar o animal repetidamente, e em
+              densidades relativamente elevadas entre 250 e 650 metros, sugere que não é uma
+              curiosidade isolada: é um consumidor regular do trânsito vertical de matéria numa zona
+              que ainda observamos mal.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/trajeto-carbono-pelagothuria.svg"
+                alt="Esquema da superfície iluminada ao fundo abissal, mostrando neve marinha a descer e Pelagothuria a intercetar partículas entre 250 e 650 metros."
+                loading="lazy"
+              />
+              <figcaption>
+                Esquema original: o animal altera o destino das partículas na zona mesopelágica; não
+                representa uma quantificação global do efeito.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Desviar não é fazer desaparecer</h3>
+            <p>
+              A palavra decisiva do estudo é short-circuit, ou atalho. Ao comer neve marinha a meio
+              da descida, o pepino encurta o percurso directo entre superfície e fundo. O carbono
+              ingerido pode ser respirado e voltar a dióxido de carbono dissolvido, transformar-se
+              em biomassa, ser eliminado noutro tipo de partícula ou passar para predadores. Cada
+              destino tem uma profundidade e uma duração diferentes. Por isso, a conclusão prudente
+              não é que a espécie tenha sido quantificada como uma nova bomba climática global. É
+              que os modelos que tratam o fluxo de partículas como uma linha descendente podem
+              falhar a ecologia que o modifica. Nos trópicos, onde este animal é observado, a
+              diferença pode importar para estimar quanto carbono escapa à reciclagem nas águas
+              médias.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>O que falta medir</h3>
+            <p>
+              As imagens de submersível são uma força e uma limitação. Permitem contar animais
+              frágeis sem os destruir e situá-los na coluna de água, mas não medem directamente, em
+              cada observação, quantos gramas de carbono cada indivíduo captura nem o destino
+              químico de cada refeição. Falta ligar abundância, tamanho, alimentação, respiração e
+              variação sazonal a medições de fluxo de partículas. Também falta saber se outras
+              regiões tropicais têm populações comparáveis. A lição é metodológica: o oceano
+              profundo não começa no fundo. Para perceber o seu papel no carbono, é preciso seguir
+              as partículas através das comunidades que vivem entre a luz e o abismo.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            Qual é a taxa real de ingestão de carbono por indivíduo, que fracção é respirada ou
+            exportada novamente e até que ponto este padrão das Galápagos se repete noutros oceanos
+            tropicais? O estudo documenta uma ligação plausível e importante, não um balanço global
+            fechado.
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a href="https://doi.org/10.1002/ecy.70536" rel="noopener noreferrer"
+                >Robison, B. H. (2026), Pelagic sea cucumbers in the Galapagos: Midwater grazers
+                that short-circuit deep-sea carbon flux, Ecology 107(9), e70536</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.mbari.org/news/new-research-reveals-surprising-link-in-ocean-carbon-cycle-swimming-sea-cucumbers/"
+                rel="noopener noreferrer"
+                >MBARI, notícia e contexto das observações nas Galápagos</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+      <article id="busy-beaver-na-fronteira" class="story">
+        <div class="article-top">
+          <span class="kicker">03 / Matemática e IA</span
+          ><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>O castor que nenhum algoritmo consegue apanhar</h2>
+        <p class="deck">
+          Máquinas de Turing minúsculas, execuções gigantescas e uma IA que transforma padrões
+          observados em teoremas verificados.
+        </p>
+        <div class="lead">
+          <p>
+            Imagine uma máquina com seis estados, uma cabeça que só lê e escreve zeros e uns numa
+            fita infinita, e um programa que cabe numa linha compacta. Parece um brinquedo. No
+            problema Busy Beaver, porém, alguns destes brinquedos podem trabalhar durante um número
+            de passos tão colossal que a simulação deixa de ser uma resposta e passa a ser apenas
+            uma espera sem garantia de fim. Saber qual delas pára é, em geral, uma pergunta que
+            ultrapassa o que qualquer algoritmo pode decidir.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            O interesse não é apenas uma curiosidade sobre computadores antigos. Este é um teste
+            particularmente duro para a IA matemática: o sistema tem de encontrar uma descrição
+            geral do comportamento, separar uma conjetura de uma demonstração e deixar a parte
+            decisiva ser fiscalizada por um verificador formal.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>Um máximo que cresce mais depressa do que qualquer receita</h3>
+            <p>
+              Para um número fixo de estados, o Busy Beaver procura, entre as máquinas que acabam
+              por parar quando começam numa fita em branco, a que escreve mais uns ou a que demora
+              mais passos. A definição é simples, mas a função resultante não é computável: se
+              existisse um programa capaz de dar esse máximo para todos os tamanhos, poderíamos
+              usá-lo para resolver o problema da paragem. E isso contradiz a prova de Turing de que
+              não há um método universal para decidir se qualquer programa pára. A ironia é
+              instrutiva: cada máquina concreta pode ser simulada, mas não há um procedimento que
+              determine sempre quanto tempo basta simular. Para tamanhos pequenos, a comunidade
+              esgota casos por enumeração, reduções e provas. Para seis estados e dois símbolos, a
+              paisagem ainda tem máquinas resistentes, os chamados holdouts.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/alan-turing-1936.jpg"
+                alt="Retrato a preto e branco de Alan Turing, sentado ao ar livre quando era estudante."
+                loading="lazy"
+              />
+              <figcaption>
+                Alan Turing em 1936. A formulação da máquina de Turing tornou possível definir, com
+                precisão, os limites do que um procedimento automático pode decidir.
+                <span
+                  >© Arquivo de Alan Turing, King&#x27;s College, Cambridge · Domínio público,
+                  reprodução disponibilizada no Wikimedia Commons</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Da fita caótica a uma regra curta</h3>
+            <p>
+              O novo preprint de Marco Dos Santos e colaboradores usa essas máquinas como
+              laboratório para descoberta autónoma. Primeiro, o sistema simula uma máquina e procura
+              configurações recorrentes na fita, descritas por blocos e expoentes em vez de milhões
+              de células individuais. Depois pede a um modelo de linguagem uma regra que salte de
+              uma configuração para a seguinte. É uma aceleração: em vez de acompanhar cada
+              movimento da cabeça, uma transformação compacta resume muitos passos. Algumas regras
+              têm um sabor de Collatz, com ramos que dependem de paridade e que podem expandir ou
+              contrair parâmetros. O ponto delicado é que dados observados não cobrem
+              necessariamente os casos raros. Uma regra pode acertar em todas as execuções vistas e
+              falhar precisamente numa fronteira que só aparece muito mais tarde. Por isso a equipa
+              testa, refina e tenta uma prova informal antes de formalizar a afirmação.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/busy-beaver-pipeline.svg"
+                alt="Diagrama do processo: uma máquina de Turing gera traços, que levam a padrões, uma conjetura, uma prova em Lean e uma aceleração verificada."
+                loading="lazy"
+              />
+              <figcaption>
+                Da execução observada ao teorema: cada passagem reduz a distância entre padrões na
+                fita e uma regra geral cuja correcção é verificada formalmente. Diagrama original da
+                LUME.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Lean não recompensa confiança</h3>
+            <p>
+              A última etapa é o que dá substância ao resultado. Os autores traduzem as regras para
+              Lean 4, um assistente de prova que aceita apenas passos que respeitem as definições e
+              teoremas já disponíveis. O agente pode descobrir que faltava uma condição de fronteira
+              ou que uma regra precisa de ser dividida; mas a máquina de Turing inicial e a
+              configuração de partida ficam fixas. Para uma aceleração valer, cada regra tem de ser
+              provada e o sistema tem de ser fechado: a configuração inicial e cada saída têm de
+              conduzir a uma paragem ou à entrada de outra regra do conjunto. O artigo relata
+              acelerações novas e verificadas para onze máquinas do domínio BB(6), e disponibiliza
+              os ficheiros Lean no repositório Cryptids. Isto prova as regras de longo alcance, não
+              resolve automaticamente se todas essas máquinas param. Os autores usam por isso o
+              termo provisório Cryptids para comportamentos descritos de forma exacta mas cujo
+              destino final permanece em aberto.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>Descobrir, conjeturar, provar</h3>
+            <p>
+              Há uma distinção saudável a preservar quando se fala de IA que faz matemática. Uma
+              simulação descobre um padrão possível. Uma conjetura dá-lhe uma forma geral e permite
+              fazer previsões. Uma prova formal verifica que essa forma não esconde uma excepção,
+              dadas as definições assumidas. O sistema descrito no preprint atravessa as três fases,
+              mas a reivindicação mais forte deve ser lida com precisão: o trabalho foi colocado no
+              arXiv a 19 de outubro de 2026 e aguarda escrutínio independente. A própria noção de
+              novidade depende de comparar cuidadosamente com análises comunitárias anteriores.
+              Ainda assim, o desenho é promissor porque torna a divisão de trabalho auditável:
+              modelos generativos propõem estruturas onde a procura bruta é cega, enquanto Lean
+              funciona como travão mecânico contra uma explicação elegante mas falsa. O ganho pode
+              não ser uma resposta final ao Busy Beaver. Pode ser uma nova maneira de transformar
+              comportamento computacional em matemática verificável.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            As acelerações agora formalizadas bastarão para decidir a paragem de alguma destas
+            máquinas? Que partes do método resistem a replicação independente e a outras famílias de
+            problemas? E como medir descoberta genuína quando uma comunidade já tinha pistas ou
+            regras parciais?
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a href="https://arxiv.org/html/2610.22603v2" rel="noopener noreferrer"
+                >Dos Santos et al., At the Limits of Computability, preprint e texto integral</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/google-deepmind/cryptids" rel="noopener noreferrer"
+                >Repositório público Cryptids, provas Lean e código associado</a
+              >
+            </li>
+            <li>
+              <a href="https://bbchallenge.org/" rel="noopener noreferrer"
+                >Busy Beaver Challenge, registo comunitário de máquinas e análises</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+      <article id="paisagens-submersas-de-murujuga" class="story">
+        <div class="article-top">
+          <span class="kicker">04 / Arqueologia</span><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>A costa que o mar apagou em Murujuga</h2>
+        <p class="deck">
+          No noroeste da Austrália, ferramentas de pedra e uma nascente hoje submersa ajudam a
+          reconstruir paisagens onde os Primeiros Povos viveram antes da subida do mar.
+        </p>
+        <div class="lead">
+          <p>
+            Há paisagens que não desapareceram: mudaram apenas de elemento. Ao largo de Murujuga, na
+            Austrália Ocidental, mergulhadores e arqueólogos estão a procurar uma costa que, no
+            início do Holoceno, ainda tinha rios, colinas e fontes de água doce. Hoje está sob o
+            Índico. A pergunta não é só se há objectos no fundo: é como demonstrar que eles
+            pertencem a uma paisagem humana antiga, e não a pedras deslocadas pelo mar.
+          </p>
+          <p>
+            O estudo recente liga ferramentas líticas, formas do relevo e rotas de transporte de
+            matéria-prima a uma reconstituição da plataforma continental. É uma arqueologia exigente
+            porque a evidência chega filtrada por milhares de anos de ondas, sedimentos e subida do
+            nível do mar. E é uma arqueologia que não começa com um mapa vazio: Murujuga é Country
+            Ngarda-Ngarli, cuidado por comunidades indígenas há pelo menos 50 mil anos.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            Grande parte das zonas costeiras ocupadas durante a última glaciação está hoje submersa.
+            Encontrar métodos credíveis para as estudar altera o mapa possível das primeiras
+            populações e reforça que a gestão do património marinho deve incluir conhecimento e
+            autoridade indígena.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>Uma linha de costa em movimento</h3>
+            <p>
+              Há cerca de 20 mil anos, no máximo da última glaciação, uma enorme quantidade de água
+              estava retida em mantos de gelo. O nível médio do mar era muito mais baixo e a
+              plataforma de Murujuga era terra exposta. À medida que o clima aqueceu, o mar avançou,
+              inundando vales e isolando elevações. A escala importa: a área hoje coberta na
+              plataforma noroeste australiana mede-se em centenas de milhares de milhas quadradas.
+              Não se trata de um único sítio arqueológico perdido, mas de uma antiga região
+              costeira. Para a reconstruir, os investigadores cruzam batimetria, geologia do fundo e
+              modelos de nível do mar. Assim podem perguntar onde faria sentido haver água doce,
+              abrigo, passagem e acesso a pedra própria para talhar, antes de descerem com
+              mergulhadores ou instrumentos de prospecção.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/murujuga-national-park.jpg"
+                alt="Vista ampla do Parque Nacional de Murujuga, com afloramentos rochosos junto à costa da Austrália Ocidental."
+                loading="lazy"
+              />
+              <figcaption>
+                Murujuga conserva uma paisagem cultural em terra e no mar. A fotografia mostra o
+                parque nacional, não os sítios arqueológicos submersos descritos no estudo.
+                <span
+                  >© Marius Fenger · CC BY-SA 4.0, verificada na página do ficheiro Wikimedia
+                  Commons</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Quando uma pedra passa a ser evidência</h3>
+            <p>
+              A pedra é simultaneamente a matéria-prima e o problema. Uma lasca pode ser produto de
+              talhe humano, mas também há rochas fracturadas naturalmente. A atribuição não assenta
+              numa aparência isolada: procura-se uma sequência de negativos de remoção, plataformas
+              de percussão, arestas e padrões coerentes com uma técnica de fabrico. Em Murujuga, uma
+              das áreas identificadas inclui uma nascente de água doce e artefactos cuja
+              matéria-prima foi associada a uma ilha situada a cerca de 23 quilómetros. Esse
+              transporte é particularmente informativo, pois sugere escolha e circulação num
+              território organizado. Outro local conserva uma elevação rochosa orientada para um
+              antigo canal fluvial. A disposição espacial liga objectos, topografia e recursos,
+              tornando mais forte a leitura de uma paisagem habitada.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/murujuga-costa-submersa.svg"
+                alt="Esquema de corte que compara a costa exposta durante a glaciação com a plataforma continental submersa após a subida do nível do mar."
+                loading="lazy"
+              />
+              <figcaption>
+                Esquema original: a subida pós-glacial do mar inundou vales e planícies costeiras,
+                preservando parte da paisagem arqueológica no fundo marinho. Não está à escala.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Mergulhar não é escavar no seco</h3>
+            <p>
+              Debaixo de água, a posição actual de um objecto pode enganar. Correntes, tempestades,
+              crescimento biológico e deposição de areia podem enterrá-lo, expô-lo ou movê-lo. Por
+              isso, a arqueologia submersa começa por documentar contexto: fotografia e vídeo com
+              escala, coordenadas, profundidade, tipo de sedimento e relação com o relevo. Depois
+              compara o conjunto com modelos de erosão e com sítios terrestres conhecidos. A
+              confirmação pode incluir análises petrográficas para identificar a origem da rocha e
+              datações dos sedimentos ou materiais associados, quando disponíveis. O resultado
+              raramente é uma certeza simples. É uma cadeia de inferências, mais robusta quando
+              várias linhas de evidência apontam na mesma direcção e quando as interpretações
+              alternativas são explicitamente testadas.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>Património, conhecimento e limites</h3>
+            <p>
+              A colaboração com a Murujuga Aboriginal Corporation não é um adorno institucional.
+              Define perguntas, nomes, acesso e responsabilidades sobre um património que continua
+              vivo. O termo Country reúne terra, mar, antepassados e obrigação de cuidado, uma
+              escala de relação que a divisão administrativa entre património terrestre e marítimo
+              nem sempre reconhece. Ainda assim, este é um campo jovem e vulnerável: nem todos os
+              locais podem ser datados directamente, e uma ferramenta no fundo não revela por si a
+              época exacta nem a história inteira de quem a usou. O valor do novo trabalho está em
+              tornar verificável a procura, não em prometer um arquivo intacto. Cada local bem
+              contextualizado ajuda a proteger uma parte da costa pré-inundação antes que obras,
+              dragagens ou alterações ambientais a destruam.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            Que cronologia exacta têm os diferentes conjuntos submersos, quantos foram deslocados
+            após a inundação e como deve ser desenhada a protecção legal de uma paisagem cultural
+            que se estende entre terra e mar? Estudos futuros terão de combinar datação, amostragem
+            prudente e decisão partilhada com os detentores tradicionais do conhecimento.
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a href="https://doi.org/10.1016/j.quascirev.2026.110307" rel="noopener noreferrer"
+                >Quaternary Science Reviews, estudo original sobre selecção e transporte de
+                artefactos em Murujuga</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://archaeology.org/news/2026/10/16/submerged-sites-identified-off-australias-northwestern-coastline/"
+                rel="noopener noreferrer"
+                >Archaeology Magazine, notícia e ligações ao estudo e ao contexto da descoberta</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+      <article id="mercados-debaixo-da-terra" class="story">
+        <div class="article-top">
+          <span class="kicker">05 / Biologia</span><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>O mercado silencioso debaixo das raízes</h2>
+        <p class="deck">
+          Plantas e fungos micorrízicos trocam carbono por nutrientes sem cérebro nem contrato. Os
+          ensaios revelam uma negociação biológica real, mas não uma floresta altruísta.
+        </p>
+        <div class="lead">
+          <p>
+            Uma árvore não come terra. Para obter fósforo, azoto e água, cresce raízes finas até ao
+            limite do que consegue explorar. Aí encontra um parceiro muito mais filamentoso: o fungo
+            micorrízico. As suas hifas, filamentos com espessura microscópica, penetram por poros do
+            solo que a raiz não alcança e ligam-se à planta numa interface onde ambos entregam
+            moléculas. A planta envia compostos de carbono produzidos pela fotossíntese; o fungo
+            entrega nutrientes minerais que recolheu ou libertou do solo.
+          </p>
+          <p>
+            A imagem popular de uma floresta ligada por uma internet generosa é sedutora, mas
+            confunde uma rede física com uma intenção. A bióloga evolutiva Toby Kiers e colegas
+            tratam esta relação como um mercado: participantes com interesses próprios ajustam o que
+            fornecem conforme o retorno. Num ensaio clássico com plantas e fungos micorrízicos
+            arbusculares, tanto os fungos como as plantas dirigiram recursos para os parceiros que
+            lhes davam a melhor recompensa. É uma negociação sem consciência, construída por
+            evolução, transporte químico e crescimento diferencial.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            As micorrizas são uma das interfaces mais extensas entre plantas e solo. Perceber quem
+            retém ou devolve carbono, e em que condições, melhora a ecologia dos ecossistemas e
+            evita promessas simplistas de sequestrar carbono apenas plantando árvores ou adicionando
+            fungos.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>A moeda muda de mão na interface</h3>
+            <p>
+              Há vários tipos de micorriza. Nas micorrizas arbusculares, comuns em muitas culturas e
+              plantas herbáceas, o fungo entra no córtex da raiz e forma arbúsculos, estruturas
+              muito ramificadas que aumentam a área de troca sem fundir as células dos dois
+              parceiros. O fungo pode transportar fósforo inorgânico e azoto até à raiz; a planta
+              fornece açúcares e lípidos derivados do carbono fixado no ar. Noutras plantas,
+              sobretudo árvores de florestas temperadas e boreais, fungos ectomicorrízicos envolvem
+              as pontas das raízes e crescem entre células. A regra geral não é uma dádiva: cada
+              lado paga um custo para obter algo que consegue adquirir melhor através do outro. O
+              resultado depende da espécie, da fertilidade do solo, da luz e dos restantes
+              micróbios, não de uma fórmula universal.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/micorriza-arbuscular-pecan.jpg"
+                alt="Microfotografias de raízes de nogueira-pecã colonizadas por fungos micorrízicos arbusculares, com arbúsculos e hifas visíveis."
+                loading="lazy"
+              />
+              <figcaption>
+                Microfotografias de colonização intrarradicular em raízes de nogueira-pecã. Os
+                arbúsculos são os ramos microscópicos onde ocorre a grande área de troca entre fungo
+                e planta.
+                <span
+                  >© Bidondo LF, Colombo RP, Recchi M, Silvani VA, Pérgola M, Martínez A e Godeas AM
+                  · CC BY 4.0, com atribuição e ligação à licença</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Preços sem cérebro</h3>
+            <p>
+              Kiers e colaboradores separaram compartimentos de solo num sistema experimental e
+              variaram o acesso do fungo ao fósforo. Quando esse nutriente era mais escasso para a
+              planta, os fungos que o podiam fornecer recebiam mais carbono; por sua vez, os fungos
+              canalizavam mais fósforo para raízes que lhes davam mais carbono. O artigo de 2011
+              chama a isto recompensa recíproca. Não quer dizer que um fungo calcule preços. Quer
+              dizer que diferenças locais no fluxo de moléculas e no crescimento fazem prosperar as
+              ligações que devolvem melhor retorno. Esta observação é mais forte do que uma
+              metáfora: mede fluxos e compara tratamentos. Mas é também mais limitada, porque um
+              vaso controlado não reproduz a concorrência, a diversidade e as estações de uma
+              floresta adulta.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/troca-micorrizica.svg"
+                alt="Esquema original de uma raiz, hifas fúngicas e solo, mostrando carbono a seguir da planta para o fungo e fósforo e azoto a seguirem no sentido inverso."
+                loading="lazy"
+              />
+              <figcaption>
+                Esquema original da troca local: a seta não indica altruísmo nem uma quantidade
+                fixa, mas os fluxos que os estudos experimentais medem.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Rede não é sinónimo de cooperação</h3>
+            <p>
+              As hifas podem ligar raízes de plantas distintas, e há experiências que detectaram
+              transferência de carbono ou nutrientes através dessas redes. A existência da passagem,
+              porém, não demonstra que uma árvore esteja a ajudar outra, nem que o efeito seja
+              importante à escala de uma floresta. Material pode mover-se por gradientes físicos,
+              por micróbios associados ou porque o fungo favorece a fonte de carbono que mais lhe
+              convém. Plantas e fungos também têm conflitos: uma planta pode reduzir o carbono
+              entregue a um parceiro pouco útil e diferentes fungos competem pela mesma raiz. A
+              forma mais segura de ler a rede é como infra-estrutura de trocas com regras
+              evolutivas, não como uma comunidade moral escondida no solo.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>Carbono no solo, com muitas saídas</h3>
+            <p>
+              Parte do carbono que a planta envia para o fungo torna-se biomassa fúngica, compostos
+              libertados no solo ou dióxido de carbono respirado de volta para a atmosfera. Outra
+              parte pode contribuir para matéria orgânica do solo, sobretudo quando restos
+              microbianos se associam a minerais e ficam protegidos da decomposição. Estudos
+              comparativos ligam a dominância de árvores com ectomicorrizas a taxas mais lentas de
+              decomposição e a maiores reservas de carbono orgânico em certos solos. Isso não
+              autoriza uma conta simples do tipo mais fungos igual a mais carbono armazenado. Clima,
+              mineralogia, uso do solo, humidade e perturbação podem inverter ou reduzir o efeito. A
+              pergunta científica útil é onde, durante quanto tempo e por que mecanismo o carbono
+              fica, não apenas se entrou numa hifa.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            Quanto carbono transferido para fungos permanece protegido no solo durante décadas, em
+            vez de ser respirado em semanas ou meses? Até que ponto experiências de pares
+            planta-fungo prevêem comunidades naturais com dezenas de espécies? E como mudam estas
+            trocas quando secas, fertilização e aquecimento alteram simultaneamente a planta, o
+            fungo e os micróbios do solo?
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a href="https://doi.org/10.1126/science.1208473" rel="noopener noreferrer"
+                >Kiers et al. (2011), Reciprocal rewards stabilize cooperation in the mycorrhizal
+                symbiosis, Science</a
+              >
+            </li>
+            <li>
+              <a href="https://doi.org/10.1038/nature12901" rel="noopener noreferrer"
+                >Averill, Turner e Finzi (2014), Mycorrhiza-mediated competition between plants and
+                decomposers drives soil carbon storage, Nature</a
+              >
+            </li>
+            <li>
+              <a href="https://doi.org/10.3897/mycokeys.42.26118" rel="noopener noreferrer"
+                >Bidondo et al. (2018), Detection of arbuscular mycorrhizal fungi associated with
+                pecan trees, MycoKeys</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+      <article id="um-mar-varias-guerras" class="story">
+        <div class="article-top">
+          <span class="kicker">06 / Geopolítica</span><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>Um mar, várias guerras</h2>
+        <p class="deck">
+          O Mar Vermelho deixou de ser apenas a passagem entre o Mediterrâneo e o Índico: tornou-se
+          o lugar onde crises de três regiões se alimentam mutuamente.
+        </p>
+        <div class="lead">
+          <p>
+            Um navio que sai de Suez rumo ao Índico atravessa um corredor estreito, mas não
+            atravessa uma fronteira política simples. À esquerda ficam Egipto, Sudão e Eritreia; à
+            direita, a Arábia Saudita e o Iémen; no extremo sul, Djibuti, Somália e Etiópia estão a
+            poucas horas de mar. Durante décadas foi tentador tratar estas margens como dossiês
+            separados. A guerra em Gaza, a guerra civil sudanesa, a rivalidade no Golfo e a
+            insegurança no Corno de África mudaram isso. Hoje, uma decisão tomada em Sanaã pode
+            alterar rotas de contentores, seguros marítimos e a diplomacia em Bruxelas.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            O corredor Suez-Mar Vermelho-Bab el-Mandeb liga a Europa à Ásia por uma das rotas
+            comerciais mais usadas do mundo. Quando a passagem se torna perigosa, desviar navios
+            pelo Cabo da Boa Esperança acrescenta tempo, combustível, emissões e pressão sobre
+            cadeias de abastecimento. Mais importante, a segurança da navegação já não pode ser
+            separada da estabilidade política nas duas margens.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>O gargalo que junta continentes</h3>
+            <p>
+              A geografia explica a intensidade do problema. A norte, o canal de Suez concentra a
+              ligação ao Mediterrâneo. A sul, o estreito de Bab el-Mandeb é a porta para o golfo de
+              Áden e o oceano Índico. Entre ambos, o Mar Vermelho é relativamente longo e estreito,
+              com portos, bases e cabos submarinos sob a influência de Estados que vivem crises
+              muito diferentes. Um incidente não precisa de fechar formalmente a via para produzir
+              efeito económico: basta que armadores, tripulações e seguradoras considerem o risco
+              inaceitável. A Organização Marítima Internacional tem acompanhado ataques e
+              perturbações desde o fim de 2023 e recorda que a liberdade de navegação e a segurança
+              das equipas civis são obrigações centrais, não um detalhe logístico. A resposta
+              europeia, a operação EUNAVFOR ASPIDES, foi criada precisamente para proteger navios
+              mercantes, sem ser uma campanha terrestre no Iémen.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/red-sea-replenishment.jpg"
+                alt="O contratorpedeiro USS Mason recebe mantimentos do navio de abastecimento USNS Supply no Mar Vermelho."
+                loading="lazy"
+              />
+              <figcaption>
+                O USS Mason e o USNS Supply numa operação de reabastecimento no Mar Vermelho, em
+                janeiro de 2024. A imagem mostra a logística que sustenta uma presença naval
+                prolongada no corredor.
+                <span
+                  >© U.S. Navy, Petty Officer 3rd Class Nicholas Rodriguez · Domínio público, obra
+                  do Governo dos Estados Unidos, verificada no Wikimedia Commons e no registo DVIDS
+                  240127-N-HE057-1239.</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Da guerra em Gaza ao Corno de África</h3>
+            <p>
+              Os ataques dos Houthis contra navios associados, segundo os próprios, a Israel ou aos
+              seus aliados deram à guerra em Gaza uma extensão marítima. Mas reduzi-los a uma seta
+              simples entre Iémen e Palestina perde a arquitectura maior. O Iémen está perto da
+              Arábia Saudita, recebe atenção iraniana e fica diante de Djibuti, onde se concentram
+              instalações militares estrangeiras. Mais a oeste, a guerra no Sudão deslocou
+              populações e tornou portos e apoios externos ainda mais importantes. Na Somália e na
+              Etiópia, as disputas por acesso ao mar e por acordos portuários acrescentam outro
+              nível de tensão. A análise do International Crisis Group chama a este conjunto um
+              teatro interligado: armas, financiamento, parceiros políticos e riscos de navegação
+              circulam entre conflitos que costumavam ser estudados em separado. Isso não significa
+              que exista um comando único. Significa que cada crise altera os incentivos das
+              restantes.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/red-sea-system.svg"
+                alt="Diagrama esquemático do corredor entre Suez, Mar Vermelho, Bab el-Mandeb e golfo de Áden, com as regiões políticas que se cruzam."
+                loading="lazy"
+              />
+              <figcaption>
+                Esquema original: duas passagens estreitas ligam a rota Europa-Ásia a conflitos e
+                portos em ambas as margens. Não é um mapa de fronteiras nem uma escala náutica.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Portos são poder, não apenas infraestrutura</h3>
+            <p>
+              Um porto oferece receitas, abastecimento, emprego e uma ligação física a redes
+              comerciais. Oferece também influência: quem gere terminais, acesso a combustível,
+              vigilância costeira ou ancoradouros pode facilitar comércio, acolher forças
+              estrangeiras ou pressionar um vizinho. Djibuti é o caso mais visível, com instalações
+              de vários países junto à entrada do Mar Vermelho, mas não é o único. Berbera, Port
+              Sudan, Assab, Jidá e os portos iemenitas são peças de estratégias nacionais e de
+              investidores do Golfo. Esta competição não é automaticamente uma guerra. Pode trazer
+              investimento e ligações úteis. Torna-se perigosa quando acordos portuários substituem
+              negociação política, ou quando autoridades frágeis usam parceiros externos para
+              sobreviver. Para a Europa, a lição é desconfortável: escoltar navios reduz um sintoma;
+              apoiar acordos políticos, instituições costeiras e ajuda humanitária procura mexer nas
+              causas que fazem do corredor um amplificador de conflitos.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>O que uma escolta naval consegue, e o que não consegue</h3>
+            <p>
+              Fragatas, radares e equipas de proteção podem reduzir a probabilidade de um ataque
+              bem-sucedido e dar confiança a uma rota. Não conseguem, porém, decidir a guerra no
+              Iémen, reconstruir o Sudão ou resolver a relação entre Etiópia e Somália. Também há um
+              limite jurídico e político: proteger a navegação é diferente de transformar uma missão
+              defensiva numa intervenção regional. A utilidade de olhar para o Mar Vermelho como um
+              sistema está em evitar duas ilusões ao mesmo tempo: a de que tudo tem a mesma causa e
+              a de que cada foco pode ser isolado. O mapa mostra ligações; não apaga as diferenças
+              locais. A melhor política combina proteção imediata das pessoas no mar, informação
+              transparente para a navegação e diplomacia paciente nas margens.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            A redução temporária de ataques não resolveria por si só as guerras e rivalidades que os
+            tornaram possíveis. Resta saber se os atores externos aceitarão coordenar esforços
+            diplomáticos entre Médio Oriente e Corno de África, e se as comunidades costeiras terão
+            voz nos acordos sobre portos, segurança e reconstrução. É também incerto quanto tempo os
+            armadores manterão desvios caros depois de o risco parecer menor.
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a
+                href="https://www.imo.org/en/mediacentre/hottopics/pages/red-sea.aspx"
+                rel="noopener noreferrer"
+                >Organização Marítima Internacional, segurança marítima no Mar Vermelho</a
+              >
+            </li>
+            <li>
+              <a href="https://www.eeas.europa.eu/eunavfor-aspides_en" rel="noopener noreferrer"
+                >EEAS, EUNAVFOR ASPIDES: missão e mandato defensivo</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.foreignaffairs.com/middle-east/new-red-sea-wars"
+                rel="noopener noreferrer"
+                >Alan Boswell, Foreign Affairs, The New Red Sea Wars (6 October 2026)</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+      <article id="o-ultimo-tear-de-renda" class="story">
+        <div class="article-top">
+          <span class="kicker">07 / Indústria e património</span
+          ><a class="back" href="#indice">Índice ↑</a>
+        </div>
+        <h2>O último tear de renda</h2>
+        <p class="deck">
+          Na Escócia, uma fábrica preserva a técnica de fazer renda Nottingham padronizada em
+          máquinas que exigem tanto mecânica como memória humana.
+        </p>
+        <div class="lead">
+          <p>
+            Uma renda parece um objecto delicado, quase imóvel. Mas, antes de se tornar cortina,
+            figurino ou tecido de cena, é o resultado de centenas de fios coordenados num mecanismo
+            ruidoso. Em Newmilns, no vale do Irvine, a MYB Textiles mantém em funcionamento uma
+            família de teares que produz renda e madras de padrão. A empresa apresenta-se como a
+            última produtora restante desta especialidade no vale, uma sobrevivência industrial cuja
+            matéria-prima decisiva não é apenas algodão: é conhecimento de oficina.
+          </p>
+          <p>
+            A notícia não é que uma máquina antiga ainda exista. É que ela ainda faz um produto para
+            o qual há clientes, ao mesmo tempo que depende de operadores capazes de a preparar,
+            observar e corrigir. A reportagem fotográfica publicada este mês pelo The Guardian
+            voltou a tornar visível esse trabalho. Vale a pena olhar para lá da nostalgia: a fábrica
+            ajuda a perceber porque uma tecnologia pode continuar relevante quando o seu ritmo, a
+            sua precisão e a sua linguagem material não são facilmente substituídos.
+          </p>
+        </div>
+        <aside class="takeaway">
+          <span class="label">Porque importa</span>
+          <p>
+            A história mostra que património industrial não é só conservar edifícios ou expor uma
+            máquina parada. Quando o fabrico continua, preservam-se gestos, diagnósticos e escolhas
+            técnicas que dificilmente cabem num manual. Também esclarece porque certos sectores
+            culturais ainda procuram materiais feitos em processos lentos e especializados.
+          </p>
+        </aside>
+        <div class="story-body">
+          <section class="body-section">
+            <h3>Não é renda feita à mão, mas também não é impressão</h3>
+            <p>
+              A renda Nottingham é produzida por máquina, o que não a torna uma simples superfície
+              impressa. Num tear de renda, conjuntos de fios formam a base e outros fios desenham o
+              motivo, cruzando-se segundo uma sequência mecânica. O resultado combina zonas abertas
+              e zonas densas, criando desenho e transparência no próprio tecido. A expressão renda
+              de Nottingham designa uma tradição técnica e comercial ligada à mecanização britânica
+              da renda, não uma garantia de que cada metro tenha sido feito em Nottingham. O que
+              importa aqui é a arquitectura do tecido: o desenho nasce da relação entre fios, tensão
+              e movimento, não de tinta aplicada depois.
+            </p>
+            <p>
+              Essa diferença explica a dificuldade de reprodução. Uma fotografia pode copiar o
+              aspecto de um padrão, mas não a profundidade, a queda ou a maneira como a luz
+              atravessa os intervalos entre fios. Para cenografia, guarda-roupa e interiores, essas
+              propriedades materiais contam. A MYB descreve a sua produção como renda e madras
+              artesanais para interiores e produções de ecrã, uma utilização contemporânea que dá à
+              maquinaria uma razão económica para continuar activa.
+            </p>
+            <figure class="figure photo">
+              <img
+                src="assets/former-lace-mill-newmilns.jpg"
+                alt="Fachada de uma antiga fábrica de renda no vale de Irvine, na Escócia."
+                loading="lazy"
+              />
+              <figcaption>
+                Uma antiga fábrica de renda em Newmilns. A imagem situa a continuidade da MYB numa
+                paisagem industrial que perdeu muitas das suas fábricas de renda.
+                <span
+                  >© Gordon Brown, Geograph · CC BY-SA 2.0, verificada na página do ficheiro
+                  Wikimedia Commons</span
+                >
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Uma máquina só funciona dentro de uma rede de saber</h3>
+            <p>
+              Chamar tradicional a um tear pode sugerir que ele trabalha sozinho, por inércia. É o
+              contrário. O funcionamento exige preparar urdiduras, montar e vigiar fios, interpretar
+              falhas no desenho e ajustar o conjunto quando a tensão se afasta do equilíbrio. Em
+              processos deste tipo, o operador não observa apenas um alarme: lê sinais físicos, como
+              um fio que cede, uma repetição que perde nitidez ou uma vibração fora do padrão. Parte
+              desse diagnóstico é formalizável; outra parte é aprendizagem acumulada junto da
+              máquina.
+            </p>
+            <p>
+              A cronologia da empresa ajuda a situar a fragilidade dessa cadeia. Segundo a sua
+              história institucional, Morton Young and Borland foi fundada em 1900 no vale do
+              Irvine. A empresa liga a tradição local a tecelões flamengos e à expansão das fábricas
+              de renda em Newmilns e Darvel. A mesma fonte descreve a redução drástica do sector a
+              partir do fim dos anos 1970, com competição internacional, investimento insuficiente e
+              falhas na formação de sucessores. É uma explicação da sobrevivência, não uma medição
+              independente de todo o mercado, mas identifica o ponto central: máquinas e pessoas
+              envelhecem em conjunto.
+            </p>
+            <figure class="figure diagram">
+              <img
+                src="assets/como-se-forma-a-renda.svg"
+                alt="Esquema simplificado de fios de base e fios de desenho que se cruzam para formar zonas abertas e densas numa renda tecida."
+                loading="lazy"
+              />
+              <figcaption>
+                Esquema original, não à escala: a transparência e o motivo resultam do cruzamento
+                coordenado de fios, não de uma impressão sobre tecido.
+              </figcaption>
+            </figure>
+          </section>
+          <section class="body-section">
+            <h3>Porque o cinema ainda procura o irregular controlado</h3>
+            <p>
+              A vantagem de uma fábrica assim não é vencer uma linha de produção de grande escala no
+              preço por metro. É oferecer pequenas séries, padrões específicos e uma textura com
+              consequências visuais reais. Sob luz lateral, uma renda tecida produz sombras
+              minúsculas e variações que uma malha sintética ou uma estampa podem não reproduzir. É
+              precisamente o tipo de pormenor que interessa a cenógrafos, figurinistas e designers
+              de interiores, mesmo quando o público não sabe nomear a técnica.
+            </p>
+            <p>
+              Há também um paradoxo útil. Quanto mais a produção cultural trabalha com imagens
+              digitais e pós-produção, mais alguns objectos físicos tornam-se valiosos como prova
+              material no enquadramento. Um tecido não é apenas um adereço: reage ao movimento, à
+              luz e à proximidade da câmara. A reportagem do Guardian regista esta continuidade
+              através de imagens da fábrica e refere que a maior parte do negócio vem de cinema,
+              teatro, televisão e entretenimento. É uma fonte jornalística, portanto deve ser lida
+              como descrição reportada do momento, mas coincide com o posicionamento comercial da
+              própria MYB.
+            </p>
+          </section>
+          <section class="body-section">
+            <h3>Preservar não é congelar</h3>
+            <p>
+              Existe o risco de transformar qualquer oficina antiga numa fábula de resistência. A
+              continuidade da MYB não prova que todas as tecnologias históricas devam ser mantidas,
+              nem elimina os custos de energia, manutenção ou formação. Mostra, isso sim, que a
+              escolha entre automatizar e preservar raramente é binária. Uma fábrica pode usar
+              logística e comércio digital actuais enquanto mantém um núcleo de produção cuja
+              vantagem está na perícia humana.
+            </p>
+            <p>
+              Para quem visita uma fotografia de um tear, a pergunta mais interessante talvez seja
+              esta: que parte do objecto estamos a ver? Ferro, correias e fios são a parte visível.
+              O método de afinação, a capacidade de reconhecer uma falha e a relação com clientes
+              que sabem pedir um determinado efeito são a infraestrutura invisível. Se essa
+              transmissão parar, guardar a máquina será importante, mas não será o mesmo que manter
+              a técnica viva.
+            </p>
+          </section>
+        </div>
+        <aside class="questions">
+          <span class="label">Em aberto</span>
+          <p>
+            A designação de última deve ser tratada com cuidado: a MYB e a reportagem referem-se à
+            produção de renda Nottingham padronizada em teares tradicionais e ao contexto do vale do
+            Irvine, não a toda a produção mundial de tecidos rendados. Ficam por conhecer dados
+            independentes sobre volumes, idade dos equipamentos e plano de sucessão. A questão
+            decisiva é se haverá formação e procura suficientes para que a técnica seja transmitida,
+            em vez de apenas documentada.
+          </p>
+        </aside>
+        <div class="sources">
+          <span class="label">Fontes e leitura adicional</span>
+          <ul>
+            <li>
+              <a href="https://mybtextiles.com/pages/about" rel="noopener noreferrer"
+                >MYB Textiles, History</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.theguardian.com/artanddesign/gallery/2026/oct/18/the-last-lace-mill-in-pictures"
+                rel="noopener noreferrer"
+                >The Guardian, The last lace mill in pictures, 18 de Outubro de 2026</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://commons.wikimedia.org/wiki/File:Former_lace_mill._-_geograph.org.uk_-_88249.jpg"
+                rel="noopener noreferrer"
+                >Wikimedia Commons, Former lace mill, Newmilns</a
+              >
+            </li>
+          </ul>
+        </div>
+      </article>
+    </main>
+    <footer>
+      LUME · Alfredo Editora · Feita para ler ao longo do mês. Fotografias e fontes creditadas em
+      cada artigo.
+    </footer>
+  </body>
+</html>

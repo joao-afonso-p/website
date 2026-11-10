@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">A costa de Murujuga antes e depois da subida do mar</title>
+  <desc id="desc">Esquema original em dois painéis. À esquerda, a plataforma continental está exposta durante a glaciação, com vale fluvial, nascente e área de circulação humana. À direita, a subida pós-glacial do nível do mar cobre a mesma paisagem, deixando vestígios arqueológicos no fundo.</desc>
+  <rect width="1200" height="800" fill="#f4f3ef"/>
+  <text x="70" y="70" fill="#151820" font-family="Arial, sans-serif" font-size="34" font-weight="700">Murujuga: a mesma paisagem, dois níveis do mar</text>
+  <text x="70" y="108" fill="#4d5665" font-family="Arial, sans-serif" font-size="21">Esquema conceptual, não à escala. A subida pós-glacial inundou vales e planícies da plataforma continental.</text>
+  <rect x="60" y="150" width="510" height="570" rx="18" fill="#eadfbc"/>
+  <rect x="630" y="150" width="510" height="570" rx="18" fill="#d9eef5"/>
+  <text x="95" y="200" fill="#342d20" font-family="Arial, sans-serif" font-size="28" font-weight="700">1. Máximo da glaciação</text>
+  <text x="95" y="232" fill="#5c523c" font-family="Arial, sans-serif" font-size="20">mar mais baixo, plataforma exposta</text>
+  <text x="665" y="200" fill="#163d53" font-family="Arial, sans-serif" font-size="28" font-weight="700">2. Após a subida do mar</text>
+  <text x="665" y="232" fill="#31596d" font-family="Arial, sans-serif" font-size="20">a antiga costa fica submersa</text>
+  <path d="M75 530 C160 475 240 505 305 446 C365 392 432 430 555 350 L555 685 L75 685Z" fill="#bb9d64"/>
+  <path d="M75 530 C160 475 240 505 305 446 C365 392 432 430 555 350" fill="none" stroke="#75613c" stroke-width="7"/>
+  <path d="M115 395 C200 418 278 386 360 420 C438 452 490 410 535 395" fill="none" stroke="#5e9bc5" stroke-width="16" stroke-linecap="round"/>
+  <path d="M115 395 C200 418 278 386 360 420 C438 452 490 410 535 395" fill="none" stroke="#e4f5fa" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="335" cy="429" r="21" fill="#d9eff4" stroke="#397b94" stroke-width="5"/>
+  <path d="M325 430 Q335 414 345 430 Q335 446 325 430Z" fill="#397b94"/>
+  <circle cx="205" cy="460" r="13" fill="#4e4030"/><circle cx="235" cy="450" r="13" fill="#4e4030"/><circle cx="265" cy="463" r="13" fill="#4e4030"/>
+  <path d="M190 510 l34 -20 32 16 -36 25z" fill="#6e7680" stroke="#303840" stroke-width="3"/>
+  <path d="M399 494 l34 -20 32 16 -36 25z" fill="#6e7680" stroke="#303840" stroke-width="3"/>
+  <line x1="205" y1="460" x2="120" y2="325" stroke="#51452f" stroke-width="3"/><text x="92" y="302" fill="#342d20" font-family="Arial, sans-serif" font-size="20" font-weight="700">circulação humana</text><text x="92" y="328" fill="#5c523c" font-family="Arial, sans-serif" font-size="18">e locais de actividade</text>
+  <line x1="335" y1="429" x2="410" y2="315" stroke="#397b94" stroke-width="3"/><text x="390" y="292" fill="#24546a" font-family="Arial, sans-serif" font-size="20" font-weight="700">nascente</text><text x="390" y="318" fill="#31596d" font-family="Arial, sans-serif" font-size="18">de água doce</text>
+  <line x1="418" y1="500" x2="470" y2="570" stroke="#303840" stroke-width="3"/><text x="332" y="615" fill="#343a41" font-family="Arial, sans-serif" font-size="19" font-weight="700">ferramentas de pedra</text>
+  <path d="M645 530 C730 475 810 505 875 446 C935 392 1002 430 1125 350 L1125 685 L645 685Z" fill="#b99f70"/>
+  <path d="M645 530 C730 475 810 505 875 446 C935 392 1002 430 1125 350" fill="none" stroke="#6f6042" stroke-width="7"/>
+  <path d="M645 300 C755 288 845 320 940 298 C1020 280 1075 300 1125 280 L1125 530 C1002 430 935 392 875 446 C810 505 730 475 645 530Z" fill="#4d9fc4" opacity=".9"/>
+  <path d="M645 300 C755 288 845 320 940 298 C1020 280 1075 300 1125 280" fill="none" stroke="#eafcff" stroke-width="8"/>
+  <path d="M645 300 C755 288 845 320 940 298 C1020 280 1075 300 1125 280" fill="none" stroke="#0f5f87" stroke-width="3" stroke-dasharray="10 9"/>
+  <path d="M760 415 l34 -20 32 16 -36 25z" fill="#6e7680" stroke="#303840" stroke-width="3"/><path d="M960 480 l34 -20 32 16 -36 25z" fill="#6e7680" stroke="#303840" stroke-width="3"/>
+  <path d="M844 318 C880 360 880 410 832 450" fill="none" stroke="#f07d45" stroke-width="7" stroke-linecap="round"/><path d="M832 450 l8 -24 17 17z" fill="#f07d45"/>
+  <text x="748" y="370" fill="#7c321b" font-family="Arial, sans-serif" font-size="20" font-weight="700">subida do nível do mar</text>
+  <line x1="978" y1="480" x2="1058" y2="565" stroke="#303840" stroke-width="3"/><text x="890" y="614" fill="#343a41" font-family="Arial, sans-serif" font-size="19" font-weight="700">vestígios no fundo marinho</text>
+  <text x="85" y="758" fill="#4d5665" font-family="Arial, sans-serif" font-size="18">Leitura: a inundação altera o contexto, mas não elimina necessariamente as relações entre relevo, água, matéria-prima e artefactos.</text>
+</svg>
