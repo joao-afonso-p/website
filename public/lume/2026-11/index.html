@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="pt-PT">
+
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="color-scheme" content="light" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <meta content="noindex, nofollow" name="robots" />
+    <meta content="light" name="color-scheme" />
     <title>LUME · 2026-11</title>
     <style>
       :root {
@@ -338,203 +339,223 @@
           text-decoration: none;
         }
       }
+
+      .language-switch {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        margin-right: 1rem;
+        color: #fff;
+        font: 600 0.72rem/1.2 monospace;
+        letter-spacing: 0.12em;
+      }
+      .language-switch a {
+        padding: 0.42rem 0.08rem;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+      }
+      .language-switch a[aria-current='page'] {
+        border-color: #fff;
+      }
+      .cover-top {
+        gap: 0.7rem;
+      }
     </style>
   </head>
   <body>
     <header class="cover safe-left">
       <img
+        alt="Conceptual illustration of the MMX spacecraft collecting a sample from Phobos’s uneven surface, with Mars dominating the horizon."
         class="cover-image"
         src="assets/cover.png"
-        alt="Ilustração conceptual da sonda MMX a recolher uma amostra na superfície irregular de Phobos, com Marte a dominar o horizonte."
       />
-      <div class="cover-top"><span class="publisher">Alfredo Editora</span></div>
+      <div class="cover-top">
+        <nav aria-label="Language" class="language-switch">
+          <a aria-current="page" href="./" lang="en">EN</a><a href="pt/" lang="pt-PT">PT</a>
+        </nav>
+        <span class="publisher">Alfredo Editora</span>
+      </div>
       <div class="cover-bottom">
-        <p class="edition">Edição 2026-11</p>
+        <p class="edition">Issue 2026-11</p>
         <p class="masthead">LUME</p>
-        <h1>Phobos: a pequena lua que pode guardar a história de Marte</h1>
+        <h1>Phobos: the small moon that may hold the story of Mars</h1>
         <p class="teaser">
-          Lançada em outubro, a missão MMX vai tentar trazer para a Terra pelo menos dez gramas de
-          material de Phobos. A amostra poderá ajudar a distinguir duas histórias muito diferentes
-          para a origem da lua marciana.
+          Launched in October, the MMX mission will try to bring at least ten grams of material from
+          Phobos back to Earth. The sample could help distinguish between two very different stories
+          about the origin of the Martian moon.
         </p>
-        <a class="cover-link" href="#indice">Abrir edição ↓</a>
+        <a class="cover-link" href="#indice">Open the issue ↓</a>
       </div>
     </header>
     <main>
-      <nav id="indice" class="contents" aria-label="Índice">
-        <span class="section-mark">Personal Research Radar / Edição 2026-11</span>
-        <h2>Nesta edição</h2>
+      <nav aria-label="Contents" class="contents" id="indice">
+        <span class="section-mark">Personal Research Radar / Issue 2026-11</span>
+        <h2>In this issue</h2>
         <ol>
           <li>
             <a href="#phobos-regresso-a-terra"
-              ><span>01</span>Phobos: a pequena lua que pode guardar a história de Marte</a
+              ><span>01</span>Phobos: the small moon that may hold the story of Mars</a
             >
           </li>
           <li>
             <a href="#pepinos-do-mar-e-carbono"
-              ><span>02</span>O pepino-do-mar que intercepta a neve de carbono</a
+              ><span>02</span>The sea cucumber that intercepts carbon snow</a
             >
           </li>
           <li>
-            <a href="#busy-beaver-na-fronteira"
-              ><span>03</span>O castor que nenhum algoritmo consegue apanhar</a
-            >
+            <a href="#busy-beaver-na-fronteira"><span>03</span>The beaver no algorithm can catch</a>
           </li>
           <li>
             <a href="#paisagens-submersas-de-murujuga"
-              ><span>04</span>A costa que o mar apagou em Murujuga</a
+              ><span>04</span>The coast the sea erased at Murujuga</a
             >
           </li>
           <li>
             <a href="#mercados-debaixo-da-terra"
-              ><span>05</span>O mercado silencioso debaixo das raízes</a
+              ><span>05</span>The quiet market beneath our feet</a
             >
           </li>
           <li>
-            <a href="#um-mar-varias-guerras"><span>06</span>Um mar, várias guerras</a>
+            <a href="#um-mar-varias-guerras"><span>06</span>One sea, many wars</a>
           </li>
           <li>
-            <a href="#o-ultimo-tear-de-renda"><span>07</span>O último tear de renda</a>
+            <a href="#o-ultimo-tear-de-renda"><span>07</span>The last lace loom</a>
           </li>
         </ol>
       </nav>
-      <article id="phobos-regresso-a-terra" class="story">
+      <article class="story" id="phobos-regresso-a-terra">
         <div class="article-top">
-          <span class="kicker">01 / Espaço</span><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">01 / Space</span><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>Phobos: a pequena lua que pode guardar a história de Marte</h2>
+        <h2>Phobos: the small moon that may hold the story of Mars</h2>
         <p class="deck">
-          Lançada em outubro, a missão MMX vai tentar trazer para a Terra pelo menos dez gramas de
-          material de Phobos. A amostra poderá ajudar a distinguir duas histórias muito diferentes
-          para a origem da lua marciana.
+          Launched in October, the MMX mission will try to bring at least ten grams of material from
+          Phobos back to Earth. The sample could help distinguish between two very different stories
+          about the origin of the Martian moon.
         </p>
         <div class="lead">
           <p>
-            Phobos parece pouco mais do que uma pedra escura, irregular e demasiado próxima de
-            Marte. É precisamente essa aparência modesta que a torna interessante. Não sabemos se
-            nasceu como um asteróide capturado pela gravidade marciana ou se é o que sobrou de um
-            impacto colossal em Marte. As duas hipóteses prevêem materiais, idades e misturas
-            diferentes. Uma fotografia orbital ajuda a descrever a superfície, mas uma amostra
-            permite medir átomos, minerais e compostos orgânicos com instrumentos que não cabem numa
-            sonda.
+            Phobos looks like little more than a dark, irregular rock, much too close to Mars. That
+            modest appearance is precisely what makes it interesting. We do not know whether it
+            began as an asteroid captured by Martian gravity or is what remains of a colossal impact
+            on Mars. The two hypotheses predict different materials, ages and mixtures. An orbital
+            photograph helps describe the surface, but a sample lets us measure atoms, minerals and
+            organic compounds with instruments that cannot fit on a probe.
           </p>
           <p>
-            A Martian Moons eXploration, MMX, é uma missão japonesa com participação europeia e
-            norte-americana que fará essa passagem da imagem para a matéria. Foi lançada com sucesso
-            a 20 de outubro de 2026. A JAXA planeia cerca de cinco anos de missão, com observação de
-            Phobos e Deimos, duas descidas a Phobos e o regresso de pelo menos dez gramas à Terra. O
-            calendário comunicado pela ESA aponta para entrada em órbita de Marte em 2027, operações
-            de superfície em 2030 e chegada da cápsula à Terra em 2031. Estas datas são metas de
-            missão, não garantias: navegação, aterragem e o próprio regresso continuam a ser fases
-            de risco.
+            The Martian Moons eXploration (MMX) is a Japanese mission with European and North
+            American participation, making the leap from images to physical material. It launched
+            successfully on 20 October 2026. JAXA plans a mission of about five years, observing
+            Phobos and Deimos, making two descents to Phobos and returning at least ten grams to
+            Earth. ESA’s published schedule points to arrival in Mars orbit in 2027, surface
+            operations in 2030 and the return capsule reaching Earth in 2031. These are mission
+            targets, not guarantees: navigation, landing and the return itself remain risky phases.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            Uma amostra de Phobos pode ligar a história dos pequenos corpos ricos em carbono à
-            evolução de Marte, incluindo a água e o material ejectado da superfície marciana. Também
-            testa uma cadeia tecnológica essencial para futuras missões de ida e volta ao sistema
-            marciano.
+            A sample from Phobos could connect the history of small carbon-rich bodies with the
+            evolution of Mars, including water and material ejected from the Martian surface. It
+            would also test technology essential to future round trips to the Martian system.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>Duas origens, duas assinaturas</h3>
+            <h3>Two origins, two signatures</h3>
             <p>
-              A hipótese da captura diz que Phobos era um pequeno corpo do Sistema Solar exterior ou
-              da cintura de asteróides que ficou preso pela gravidade de Marte. A hipótese do
-              impacto diz o contrário: matéria de Marte, possivelmente misturada com o impactor, foi
-              lançada para órbita e agregou-se numa lua. A órbita quase circular e muito próxima do
-              equador de Marte costuma favorecer uma origem em disco de detritos, mas a reflectância
-              escura e a semelhança espectral com corpos carbonáceos mantêm a captura em jogo.
-              Nenhum destes indícios, isoladamente, fecha o caso. Isótopos de oxigénio, minerais
-              hidratados, grãos ricos em carbono e a proporção de material marciano numa amostra
-              podem pesar muito mais do que uma cor observada à distância.
+              The capture hypothesis says Phobos was a small body from the outer Solar System or
+              asteroid belt that became trapped by Mars’s gravity. The impact hypothesis says the
+              opposite: Martian material, perhaps mixed with the impactor, was thrown into orbit and
+              gathered into a moon. Phobos’s nearly circular orbit, close to Mars’s equator, often
+              favours an origin in a debris disc, but its dark reflectance and spectral similarity
+              to carbonaceous bodies keep capture in the running. None of these clues settles the
+              case on its own. Oxygen isotopes, hydrated minerals, carbon-rich grains and the
+              proportion of Martian material in a sample could carry far more weight than a colour
+              seen from a distance.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/phobos-hirise.jpg"
-                alt="Phobos, a lua maior de Marte, fotografada pela câmara HiRISE da Mars Reconnaissance Orbiter."
+                alt="Phobos, Mars’s larger moon, photographed by the HiRISE camera aboard the Mars Reconnaissance Orbiter."
                 loading="lazy"
+                src="assets/phobos-hirise.jpg"
               />
               <figcaption>
-                Phobos visto a cerca de 6800 quilómetros pela HiRISE. A imagem mostra a superfície
-                irregular que a MMX irá estudar antes de escolher um local de amostragem.
-                <span
-                  >© NASA/JPL-Caltech/University of Arizona, HiRISE · Domínio público dos EUA,
-                  imagem NASA. Crédito obrigatório conforme as diretrizes de utilização de media da
-                  NASA.</span
+                Phobos photographed from about 6,800 kilometres away by HiRISE. The image shows the
+                irregular surface MMX will study before choosing a sampling site.<span
+                  >© NASA/JPL-Caltech/University of Arizona, HiRISE · US public domain, NASA image.
+                  Credit required under NASA’s media usage guidelines.</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Como pousar onde quase não há peso</h3>
+            <h3>How to land where almost nothing weighs anything</h3>
             <p>
-              Phobos tem gravidade tão fraca que a questão não é apenas pousar sem partir, mas não
-              voltar a sair da superfície. A ESA calcula que o rover europeu Idefix, com 25
-              quilogramas na Terra, terá ali um peso equivalente a cerca de 15 gramas. A MMX começa
-              por observar a lua numa órbita quase-satélite, uma trajectória que acompanha Phobos em
-              torno de Marte e permite estudar muitos locais antes de escolher. O rover deve medir
-              textura e composição do regolito, ajudando a preparar a descida principal. Só depois a
-              nave mãe tenta tocar a superfície, recolher grãos e rocha, e acondicioná-los na
-              cápsula de retorno. A recolha não é um detalhe logístico: uma amostra contaminada,
-              perdida ou demasiado alterada perde parte do valor científico.
+              Phobos has such weak gravity that the challenge is not just to land without breaking
+              anything, but to avoid bouncing back off the surface. ESA estimates that the European
+              Idefix rover, weighing 25 kilograms on Earth, will weigh the equivalent of about 15
+              grams there. MMX will first observe the moon from a quasi-satellite orbit, a
+              trajectory that follows Phobos around Mars and allows many sites to be studied before
+              one is chosen. The rover should measure the texture and composition of the regolith,
+              helping prepare for the main descent. Only then will the mothership attempt to touch
+              down, collect grains and rock, and pack them into the return capsule. Sampling is not
+              a logistical detail: a contaminated, lost or overly altered sample loses some of its
+              scientific value.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/mmx-amostra.svg"
-                alt="Esquema do percurso da MMX: Terra, órbita de Marte, observação de Phobos, rover Idefix, recolha de amostra e cápsula de regresso."
+                alt="Diagram of the MMX journey: Earth, Mars orbit, Phobos observation, the Idefix rover, sample collection and the return capsule."
                 loading="lazy"
+                src="assets/mmx-amostra.svg"
               />
               <figcaption>
-                Esquema editorial original baseado no perfil de missão da JAXA e no calendário
-                comunicado pela ESA. As datas são metas planeadas.
+                Original editorial diagram based on JAXA’s mission profile and the schedule
+                published by ESA. Dates are planned targets.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Um arquivo misturado por Marte</h3>
+            <h3>A mixed archive, courtesy of Mars</h3>
             <p>
-              Mesmo que Phobos não seja um pedaço de Marte, a sua superfície pode conter uma pequena
-              biblioteca marciana. Impactos em Marte ejectam material para o espaço; parte dele pode
-              ter caído sobre as luas ao longo de milhares de milhões de anos. A JAXA descreve a
-              missão como uma forma de estudar a evolução da esfera marciana e a origem de água e
-              matéria orgânica nos planetas terrestres. Essa promessa exige prudência: encontrar uma
-              assinatura marciana não equivale a encontrar vida, nem uma amostra de superfície
-              representa automaticamente o interior de Phobos. Mas, em laboratórios terrestres, será
-              possível separar grãos, datar eventos, procurar compostos voláteis e comparar a
-              química com meteoritos e rochas marcianas. É uma medição com resolução
-              incomparavelmente superior à de um espectrómetro em órbita.
+              Even if Phobos is not a piece of Mars, its surface may hold a small Martian library.
+              Impacts on Mars eject material into space; some of it may have fallen onto the moons
+              over billions of years. JAXA describes the mission as a way to study the evolution of
+              the Martian sphere and the origins of water and organic matter on terrestrial planets.
+              That promise calls for caution: finding a Martian signature is not the same as finding
+              life, and a surface sample does not automatically represent Phobos’s interior. But in
+              laboratories on Earth, researchers will be able to separate grains, date events, look
+              for volatile compounds and compare the chemistry with meteorites and Martian rocks.
+              That is a measurement with incomparably higher resolution than an orbital spectrometer
+              can provide.
             </p>
           </section>
           <section class="body-section">
-            <h3>A colaboração também é um instrumento</h3>
+            <h3>Collaboration is an instrument too</h3>
             <p>
-              A MMX é liderada pela JAXA e reúne NASA, CNES, DLR e ESA. A Europa fornece o rover
-              Idefix, que funcionará como reconhecimento no terreno antes da amostragem principal. A
-              arquitectura da missão é deliberadamente exigente: viajar até Marte, operar
-              repetidamente junto de uma lua irregular, descer com segurança e enviar uma cápsula de
-              volta à Terra. A experiência do Japão com Hayabusa2 ajuda, mas Phobos não é o
-              asteróide Ryugu: está num ambiente dominado pela gravidade de Marte e tem uma história
-              geológica própria. Se a cadeia funcionar, o resultado será mais do que uma resposta
-              sobre uma lua. Será uma demonstração concreta de que material do sistema marciano pode
-              ser trazido para análise aberta, repetível e independente.
+              MMX is led by JAXA and brings together NASA, CNES, DLR and ESA. Europe is providing
+              the Idefix rover, which will scout the terrain before the main sampling attempt. The
+              mission architecture is deliberately demanding: travel to Mars, operate repeatedly
+              beside an irregular moon, descend safely and send a capsule back to Earth. Japan’s
+              experience with Hayabusa2 helps, but Phobos is not the asteroid Ryugu: it sits in an
+              environment dominated by Mars’s gravity and has its own geological history. If the
+              chain works, the result will be more than an answer about one moon. It will be a
+              concrete demonstration that material from the Martian system can be brought back for
+              open, repeatable and independent analysis.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            A amostra poderá distinguir claramente captura de impacto, ou revelar uma mistura
-            difícil de separar? Que fracção do regolito de Phobos veio de Marte? E como terá a lua
-            evoluído enquanto a sua órbita desce lentamente em direcção ao planeta? A resposta
-            dependerá da composição, do local escolhido e de a cápsula regressar intacta.
+            Will the sample clearly distinguish capture from impact, or reveal a mixture that is
+            hard to separate? What fraction of Phobos’s regolith came from Mars? And how did the
+            moon evolve as its orbit slowly descends towards the planet? The answer will depend on
+            the composition, the chosen site and whether the capsule makes it back intact.
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a href="https://www.mmx.jaxa.jp/en/" rel="noopener noreferrer">JAXA, MMX Mission</a>
@@ -554,136 +575,135 @@
           </ul>
         </div>
       </article>
-      <article id="pepinos-do-mar-e-carbono" class="story">
+      <article class="story" id="pepinos-do-mar-e-carbono">
         <div class="article-top">
-          <span class="kicker">02 / Oceano</span><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">02 / Ocean</span><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>O pepino-do-mar que intercepta a neve de carbono</h2>
+        <h2>The sea cucumber that intercepts carbon snow</h2>
         <p class="deck">
-          Nas águas médias das Galápagos, Pelagothuria natatrix apanha partículas que desciam para o
-          abismo. A observação obriga a olhar para a bomba biológica como uma cadeia viva, e não
-          como uma simples queda.
+          In the midwaters around the Galápagos, Pelagothuria natatrix catches particles drifting
+          down into the abyss. The observation suggests we should see the biological pump as a
+          living chain, not a simple fall.
         </p>
         <div class="lead">
           <p>
-            À primeira vista, parece uma medusa rosada, quase transparente, suspensa no azul. Mas
-            Pelagothuria natatrix é um pepino-do-mar, um equinoderme aparentado com estrelas-do-mar.
-            E faz algo extraordinariamente pouco comum no seu grupo: vive toda a vida afastado do
-            fundo, abrindo um véu gelatinoso como um funil na água profunda.
+            At first glance, it looks like a pink, almost transparent jellyfish suspended in blue.
+            But Pelagothuria natatrix is a sea cucumber, an echinoderm related to starfish. It does
+            something extraordinarily unusual for its group: it spends its entire life away from the
+            seafloor, opening a gelatinous veil like a funnel in deep water.
           </p>
           <p>
-            Esse funil apanha a chamada neve marinha, a chuva lenta de restos orgânicos, células,
-            agregados e partículas que saem das camadas iluminadas do oceano. Um estudo de Bruce H.
-            Robison, publicado em setembro na Ecology, reuniu observações de submersíveis nas
-            Galápagos e mostra que estes animais são abundantes entre os 250 e os 650 metros. A
-            descoberta não prova que alterem sozinhos o clima, mas torna visível uma escala
-            intermédia que os esquemas simples do carbono costumam omitir: antes de chegar ao fundo,
-            o carbono passa por muitos consumidores.
+            That funnel catches what is known as marine snow: the slow rain of organic remains,
+            cells, aggregates and particles leaving the ocean’s sunlit layers. A study by Bruce H.
+            Robison, published in September in Ecology, brought together submersible observations in
+            the Galápagos and found these animals to be abundant between 250 and 650 metres. The
+            discovery does not prove that they change the climate on their own, but it makes a
+            middle layer visible that simple carbon diagrams often leave out: before reaching the
+            seafloor, carbon passes through many consumers.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            A capacidade do oceano de transportar carbono orgânico para as profundezas depende não
-            só de quanto material afunda, mas também de quem o interceta pelo caminho. Mapear estes
-            consumidores melhora a interpretação da bomba biológica e ajuda a separar observação
-            local de estimativas globais.
+            The ocean’s ability to transport organic carbon into the deep depends not only on how
+            much material sinks, but also on what intercepts it along the way. Mapping these
+            consumers improves our understanding of the biological pump and helps distinguish local
+            observations from global estimates.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>Uma chuva que começa à superfície</h3>
+            <h3>A rain that starts at the surface</h3>
             <p>
-              O ponto de partida é o fitoplâncton. À luz do sol, estas algas microscópicas usam
-              dióxido de carbono dissolvido e produzem matéria orgânica. Parte é comida perto da
-              superfície; outra parte agrega-se, morre ou é embalada em partículas fecais e começa a
-              afundar. Chama-se bomba biológica porque este transporte pode deslocar carbono da
-              atmosfera e da superfície para águas profundas durante muito tempo. Mas não é um
-              elevador selado. Quanto mais longa for a viagem, mais oportunidades há para micróbios
-              e animais respirarem, fragmentarem ou reempacotarem esse material. O que chega ao
-              fundo abissal é apenas a fracção sobrevivente de uma cadeia de transformações.
+              It starts with phytoplankton. In sunlight, these microscopic algae use dissolved
+              carbon dioxide to produce organic matter. Some is eaten near the surface; the rest
+              clumps together, dies or is packaged into faecal particles and begins to sink. It is
+              called the biological pump because this transport can move carbon from the atmosphere
+              and surface waters into the deep ocean for a long time. But it is not a sealed lift.
+              The longer the journey, the more chances microbes and animals have to respire,
+              fragment or repackage the material. What reaches the abyssal seafloor is only the
+              surviving fraction of a chain of transformations.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/pelagothuria-noaa.jpg"
-                alt="Um pepino-do-mar Pelagothuria natatrix translúcido e rosado flutua em água azul, com o véu alimentar aberto."
+                alt="A translucent pink Pelagothuria natatrix sea cucumber floats in blue water with its feeding veil open."
                 loading="lazy"
+                src="assets/pelagothuria-noaa.jpg"
               />
               <figcaption>
-                Pelagothuria natatrix vive na coluna de água e abre o véu membranoso para recolher
-                neve marinha. A imagem publicada pelo MBARI é creditada à NOAA Ocean Exploration.
-                <span
-                  >© NOAA Ocean Exploration · Domínio público dos EUA, imagem de agência federal;
-                  crédito exigido</span
+                Pelagothuria natatrix lives in the water column and opens its membranous veil to
+                collect marine snow. The image published by MBARI is credited to NOAA Ocean
+                Exploration.<span
+                  >© NOAA Ocean Exploration · US public domain, federal agency image; credit
+                  required</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>O coleccionador da zona mesopelágica</h3>
+            <h3>The collector in the mesopelagic zone</h3>
             <p>
-              Mais de 1.700 espécies de pepino-do-mar vivem associadas ao leito marinho, onde
-              recolhem matéria orgânica já depositada. Pelagothuria natatrix é a excepção conhecida:
-              as suas estruturas tubulares evoluíram para um véu membranoso que ajuda a nadar e a
-              alimentar-se. O animal orienta o véu para cima, de frente para as partículas que caem,
-              e usa uma coroa de tentáculos junto da boca para as ingerir. Robison analisou 23
-              mergulhos de submersível nas Galápagos. Encontrar o animal repetidamente, e em
-              densidades relativamente elevadas entre 250 e 650 metros, sugere que não é uma
-              curiosidade isolada: é um consumidor regular do trânsito vertical de matéria numa zona
-              que ainda observamos mal.
+              More than 1,700 sea cucumber species live on the seafloor, where they collect organic
+              matter that has already settled. Pelagothuria natatrix is the known exception: its
+              tubular structures evolved into a membranous veil that helps it swim and feed. The
+              animal points the veil upwards, facing the falling particles, and uses a crown of
+              tentacles near its mouth to ingest them. Robison analysed 23 submersible dives in the
+              Galápagos. Finding the animal repeatedly, and at relatively high densities between 250
+              and 650 metres, suggests it is not an isolated curiosity: it is a regular consumer in
+              the vertical movement of matter through a zone we still observe poorly.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/trajeto-carbono-pelagothuria.svg"
-                alt="Esquema da superfície iluminada ao fundo abissal, mostrando neve marinha a descer e Pelagothuria a intercetar partículas entre 250 e 650 metros."
+                alt="Diagram from the sunlit surface to the abyssal seafloor, showing marine snow sinking and Pelagothuria intercepting particles between 250 and 650 metres."
                 loading="lazy"
+                src="assets/trajeto-carbono-pelagothuria.svg"
               />
               <figcaption>
-                Esquema original: o animal altera o destino das partículas na zona mesopelágica; não
-                representa uma quantificação global do efeito.
+                Original diagram: the animal changes the fate of particles in the mesopelagic zone;
+                it does not quantify the global effect.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Desviar não é fazer desaparecer</h3>
+            <h3>Diverting is not making it disappear</h3>
             <p>
-              A palavra decisiva do estudo é short-circuit, ou atalho. Ao comer neve marinha a meio
-              da descida, o pepino encurta o percurso directo entre superfície e fundo. O carbono
-              ingerido pode ser respirado e voltar a dióxido de carbono dissolvido, transformar-se
-              em biomassa, ser eliminado noutro tipo de partícula ou passar para predadores. Cada
-              destino tem uma profundidade e uma duração diferentes. Por isso, a conclusão prudente
-              não é que a espécie tenha sido quantificada como uma nova bomba climática global. É
-              que os modelos que tratam o fluxo de partículas como uma linha descendente podem
-              falhar a ecologia que o modifica. Nos trópicos, onde este animal é observado, a
-              diferença pode importar para estimar quanto carbono escapa à reciclagem nas águas
-              médias.
+              The study’s key word is “short-circuit”. By eating marine snow halfway down, the
+              cucumber shortens the direct journey from surface to seafloor. The carbon it ingests
+              may be respired and return as dissolved carbon dioxide, become biomass, be released as
+              another kind of particle or pass to predators. Each outcome happens at a different
+              depth and lasts for a different amount of time. So the cautious conclusion is not that
+              this species has been measured as a new global climate pump. It is that models
+              treating particle flow as a downward line may miss the ecology that changes it. In the
+              tropics, where this animal has been observed, that difference may matter when
+              estimating how much carbon escapes recycling in midwater.
             </p>
           </section>
           <section class="body-section">
-            <h3>O que falta medir</h3>
+            <h3>What still needs measuring</h3>
             <p>
-              As imagens de submersível são uma força e uma limitação. Permitem contar animais
-              frágeis sem os destruir e situá-los na coluna de água, mas não medem directamente, em
-              cada observação, quantos gramas de carbono cada indivíduo captura nem o destino
-              químico de cada refeição. Falta ligar abundância, tamanho, alimentação, respiração e
-              variação sazonal a medições de fluxo de partículas. Também falta saber se outras
-              regiões tropicais têm populações comparáveis. A lição é metodológica: o oceano
-              profundo não começa no fundo. Para perceber o seu papel no carbono, é preciso seguir
-              as partículas através das comunidades que vivem entre a luz e o abismo.
+              Submersible images are both a strength and a limitation. They let researchers count
+              fragile animals without destroying them and place them in the water column, but they
+              do not directly measure, in every observation, how many grams of carbon each
+              individual catches or the chemical fate of each meal. Abundance, size, feeding,
+              respiration and seasonal variation still need to be linked to measurements of particle
+              flux. We also do not know whether other tropical regions have comparable populations.
+              The methodological lesson is that the deep ocean does not begin at the seafloor. To
+              understand its role in the carbon cycle, we need to follow particles through the
+              communities living between sunlight and the abyss.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            Qual é a taxa real de ingestão de carbono por indivíduo, que fracção é respirada ou
-            exportada novamente e até que ponto este padrão das Galápagos se repete noutros oceanos
-            tropicais? O estudo documenta uma ligação plausível e importante, não um balanço global
-            fechado.
+            What is the actual rate of carbon intake per individual, what fraction is respired or
+            exported again, and how widely does this Galápagos pattern occur in other tropical
+            oceans? The study documents a plausible and important connection, not a closed global
+            budget.
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a href="https://doi.org/10.1002/ecy.70536" rel="noopener noreferrer"
@@ -695,452 +715,440 @@
               <a
                 href="https://www.mbari.org/news/new-research-reveals-surprising-link-in-ocean-carbon-cycle-swimming-sea-cucumbers/"
                 rel="noopener noreferrer"
-                >MBARI, notícia e contexto das observações nas Galápagos</a
+                >MBARI, report and context for the Galápagos observations</a
               >
             </li>
           </ul>
         </div>
       </article>
-      <article id="busy-beaver-na-fronteira" class="story">
+      <article class="story" id="busy-beaver-na-fronteira">
         <div class="article-top">
-          <span class="kicker">03 / Matemática e IA</span
-          ><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">03 / Mathematics &amp; AI</span
+          ><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>O castor que nenhum algoritmo consegue apanhar</h2>
+        <h2>The beaver no algorithm can catch</h2>
         <p class="deck">
-          Máquinas de Turing minúsculas, execuções gigantescas e uma IA que transforma padrões
-          observados em teoremas verificados.
+          Tiny Turing machines, enormous runtimes, and an AI that turns observed patterns into
+          verified theorems.
         </p>
         <div class="lead">
           <p>
-            Imagine uma máquina com seis estados, uma cabeça que só lê e escreve zeros e uns numa
-            fita infinita, e um programa que cabe numa linha compacta. Parece um brinquedo. No
-            problema Busy Beaver, porém, alguns destes brinquedos podem trabalhar durante um número
-            de passos tão colossal que a simulação deixa de ser uma resposta e passa a ser apenas
-            uma espera sem garantia de fim. Saber qual delas pára é, em geral, uma pergunta que
-            ultrapassa o que qualquer algoritmo pode decidir.
+            Imagine a machine with six states, a head that only reads and writes zeroes and ones on
+            an infinite tape, and a program compact enough to fit on one line. It sounds like a toy.
+            In the Busy Beaver problem, though, some of these toys can run for such an enormous
+            number of steps that simulation stops being an answer and becomes a wait with no
+            guaranteed end. In general, knowing which machines halt is a question no algorithm can
+            decide.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            O interesse não é apenas uma curiosidade sobre computadores antigos. Este é um teste
-            particularmente duro para a IA matemática: o sistema tem de encontrar uma descrição
-            geral do comportamento, separar uma conjetura de uma demonstração e deixar a parte
-            decisiva ser fiscalizada por um verificador formal.
+            This is more than a curiosity about early computers. It is an especially hard test for
+            mathematical AI: the system has to find a general description of behaviour, separate a
+            conjecture from a proof, and let a formal verifier inspect the decisive part.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>Um máximo que cresce mais depressa do que qualquer receita</h3>
+            <h3>A maximum that grows faster than any recipe</h3>
             <p>
-              Para um número fixo de estados, o Busy Beaver procura, entre as máquinas que acabam
-              por parar quando começam numa fita em branco, a que escreve mais uns ou a que demora
-              mais passos. A definição é simples, mas a função resultante não é computável: se
-              existisse um programa capaz de dar esse máximo para todos os tamanhos, poderíamos
-              usá-lo para resolver o problema da paragem. E isso contradiz a prova de Turing de que
-              não há um método universal para decidir se qualquer programa pára. A ironia é
-              instrutiva: cada máquina concreta pode ser simulada, mas não há um procedimento que
-              determine sempre quanto tempo basta simular. Para tamanhos pequenos, a comunidade
-              esgota casos por enumeração, reduções e provas. Para seis estados e dois símbolos, a
-              paisagem ainda tem máquinas resistentes, os chamados holdouts.
+              For a fixed number of states, Busy Beaver looks among machines that eventually halt
+              when started on a blank tape and asks which writes the most ones or runs for the most
+              steps. The definition is simple, but the resulting function is not computable: if a
+              program could give us that maximum for every size, we could use it to solve the
+              halting problem. That would contradict Turing’s proof that there is no universal
+              method for deciding whether any program halts. The irony is instructive: we can
+              simulate any individual machine, but there is no procedure that always tells us how
+              long is long enough. For small sizes, the community exhausts cases through
+              enumeration, reductions and proofs. At six states and two symbols, some stubborn
+              machines remain: the so-called holdouts.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/alan-turing-1936.jpg"
-                alt="Retrato a preto e branco de Alan Turing, sentado ao ar livre quando era estudante."
+                alt="Black-and-white portrait of Alan Turing sitting outdoors as a student."
                 loading="lazy"
+                src="assets/alan-turing-1936.jpg"
               />
               <figcaption>
-                Alan Turing em 1936. A formulação da máquina de Turing tornou possível definir, com
-                precisão, os limites do que um procedimento automático pode decidir.
-                <span
-                  >© Arquivo de Alan Turing, King&#x27;s College, Cambridge · Domínio público,
-                  reprodução disponibilizada no Wikimedia Commons</span
+                Alan Turing in 1936. The Turing machine made it possible to define precisely the
+                limits of what an automatic procedure can decide.<span
+                  >© Alan Turing Archive, King’s College, Cambridge · Public domain, reproduction
+                  made available via Wikimedia Commons</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Da fita caótica a uma regra curta</h3>
+            <h3>From a chaotic tape to a short rule</h3>
             <p>
-              O novo preprint de Marco Dos Santos e colaboradores usa essas máquinas como
-              laboratório para descoberta autónoma. Primeiro, o sistema simula uma máquina e procura
-              configurações recorrentes na fita, descritas por blocos e expoentes em vez de milhões
-              de células individuais. Depois pede a um modelo de linguagem uma regra que salte de
-              uma configuração para a seguinte. É uma aceleração: em vez de acompanhar cada
-              movimento da cabeça, uma transformação compacta resume muitos passos. Algumas regras
-              têm um sabor de Collatz, com ramos que dependem de paridade e que podem expandir ou
-              contrair parâmetros. O ponto delicado é que dados observados não cobrem
-              necessariamente os casos raros. Uma regra pode acertar em todas as execuções vistas e
-              falhar precisamente numa fronteira que só aparece muito mais tarde. Por isso a equipa
-              testa, refina e tenta uma prova informal antes de formalizar a afirmação.
+              The new preprint by Marco Dos Santos and colleagues uses these machines as a
+              laboratory for autonomous discovery. First, the system simulates a machine and looks
+              for recurring tape configurations, described with blocks and exponents instead of
+              millions of individual cells. Then it asks a language model for a rule that jumps from
+              one configuration to the next. This is an acceleration: instead of following every
+              head movement, a compact transformation summarises many steps. Some rules have a
+              Collatz-like flavour, with branches depending on parity that can expand or contract
+              parameters. The delicate point is that observed data does not necessarily cover rare
+              cases. A rule can fit every run we have seen and fail precisely at a boundary that
+              only appears much later. So the team tests, refines and attempts an informal proof
+              before formalising the claim.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/busy-beaver-pipeline.svg"
-                alt="Diagrama do processo: uma máquina de Turing gera traços, que levam a padrões, uma conjetura, uma prova em Lean e uma aceleração verificada."
+                alt="Process diagram: a Turing machine produces traces that lead to patterns, a conjecture, a Lean proof and a verified acceleration."
                 loading="lazy"
+                src="assets/busy-beaver-pipeline.svg"
               />
               <figcaption>
-                Da execução observada ao teorema: cada passagem reduz a distância entre padrões na
-                fita e uma regra geral cuja correcção é verificada formalmente. Diagrama original da
-                LUME.
+                From an observed run to a theorem: each step narrows the gap between tape patterns
+                and a general rule whose correctness is checked formally. Original LUME diagram.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Lean não recompensa confiança</h3>
+            <h3>Lean does not reward confidence</h3>
             <p>
-              A última etapa é o que dá substância ao resultado. Os autores traduzem as regras para
-              Lean 4, um assistente de prova que aceita apenas passos que respeitem as definições e
-              teoremas já disponíveis. O agente pode descobrir que faltava uma condição de fronteira
-              ou que uma regra precisa de ser dividida; mas a máquina de Turing inicial e a
-              configuração de partida ficam fixas. Para uma aceleração valer, cada regra tem de ser
-              provada e o sistema tem de ser fechado: a configuração inicial e cada saída têm de
-              conduzir a uma paragem ou à entrada de outra regra do conjunto. O artigo relata
-              acelerações novas e verificadas para onze máquinas do domínio BB(6), e disponibiliza
-              os ficheiros Lean no repositório Cryptids. Isto prova as regras de longo alcance, não
-              resolve automaticamente se todas essas máquinas param. Os autores usam por isso o
-              termo provisório Cryptids para comportamentos descritos de forma exacta mas cujo
-              destino final permanece em aberto.
+              The final step is what gives the result substance. The authors translate the rules
+              into Lean 4, a proof assistant that accepts only steps consistent with the definitions
+              and theorems already available. The agent may discover that a boundary condition is
+              missing or that a rule needs to be split, but the original Turing machine and starting
+              configuration stay fixed. For an acceleration to count, every rule must be proved and
+              the system must be closed: the initial configuration and every output must either halt
+              or match another rule in the set. The paper reports new, verified accelerations for
+              eleven machines in the BB(6) domain and makes the Lean files available in the Cryptids
+              repository. This proves the long-range rules; it does not automatically resolve
+              whether all those machines halt. The authors therefore use the provisional term
+              “Cryptids” for behaviours described exactly but whose final destination remains open.
             </p>
           </section>
           <section class="body-section">
-            <h3>Descobrir, conjeturar, provar</h3>
+            <h3>Discover, conjecture, prove</h3>
             <p>
-              Há uma distinção saudável a preservar quando se fala de IA que faz matemática. Uma
-              simulação descobre um padrão possível. Uma conjetura dá-lhe uma forma geral e permite
-              fazer previsões. Uma prova formal verifica que essa forma não esconde uma excepção,
-              dadas as definições assumidas. O sistema descrito no preprint atravessa as três fases,
-              mas a reivindicação mais forte deve ser lida com precisão: o trabalho foi colocado no
-              arXiv a 19 de outubro de 2026 e aguarda escrutínio independente. A própria noção de
-              novidade depende de comparar cuidadosamente com análises comunitárias anteriores.
-              Ainda assim, o desenho é promissor porque torna a divisão de trabalho auditável:
-              modelos generativos propõem estruturas onde a procura bruta é cega, enquanto Lean
-              funciona como travão mecânico contra uma explicação elegante mas falsa. O ganho pode
-              não ser uma resposta final ao Busy Beaver. Pode ser uma nova maneira de transformar
-              comportamento computacional em matemática verificável.
+              There is a healthy distinction to preserve when talking about AI doing mathematics. A
+              simulation discovers a possible pattern. A conjecture gives it a general form and
+              allows predictions. A formal proof checks that the form hides no exception, given the
+              assumed definitions. The system described in the preprint goes through all three
+              stages, but the strongest claim should be read precisely: the work was posted to arXiv
+              on 19 October 2026 and is awaiting independent scrutiny. Whether it is genuinely new
+              also depends on careful comparison with earlier community analyses. Still, the design
+              is promising because it makes the division of labour auditable: generative models
+              propose structures where brute-force search is blind, while Lean acts as a mechanical
+              brake on elegant but false explanations. The gain may not be a final answer to Busy
+              Beaver. It may be a new way to turn computational behaviour into verifiable
+              mathematics.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            As acelerações agora formalizadas bastarão para decidir a paragem de alguma destas
-            máquinas? Que partes do método resistem a replicação independente e a outras famílias de
-            problemas? E como medir descoberta genuína quando uma comunidade já tinha pistas ou
-            regras parciais?
+            Will the accelerations now formalised be enough to decide whether any of these machines
+            halt? Which parts of the method survive independent replication and other problem
+            families? And how do we measure genuine discovery when a community already had clues or
+            partial rules?
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a href="https://arxiv.org/html/2610.22603v2" rel="noopener noreferrer"
-                >Dos Santos et al., At the Limits of Computability, preprint e texto integral</a
+                >Dos Santos et al., At the Limits of Computability, preprint and full text</a
               >
             </li>
             <li>
               <a href="https://github.com/google-deepmind/cryptids" rel="noopener noreferrer"
-                >Repositório público Cryptids, provas Lean e código associado</a
+                >Public Cryptids repository, Lean proofs and related code</a
               >
             </li>
             <li>
               <a href="https://bbchallenge.org/" rel="noopener noreferrer"
-                >Busy Beaver Challenge, registo comunitário de máquinas e análises</a
+                >Busy Beaver Challenge, community registry of machines and analyses</a
               >
             </li>
           </ul>
         </div>
       </article>
-      <article id="paisagens-submersas-de-murujuga" class="story">
+      <article class="story" id="paisagens-submersas-de-murujuga">
         <div class="article-top">
-          <span class="kicker">04 / Arqueologia</span><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">04 / Archaeology</span><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>A costa que o mar apagou em Murujuga</h2>
+        <h2>The coast the sea erased at Murujuga</h2>
         <p class="deck">
-          No noroeste da Austrália, ferramentas de pedra e uma nascente hoje submersa ajudam a
-          reconstruir paisagens onde os Primeiros Povos viveram antes da subida do mar.
+          In north-western Australia, stone tools and a spring now underwater help reconstruct
+          landscapes where First Peoples lived before sea levels rose.
         </p>
         <div class="lead">
           <p>
-            Há paisagens que não desapareceram: mudaram apenas de elemento. Ao largo de Murujuga, na
-            Austrália Ocidental, mergulhadores e arqueólogos estão a procurar uma costa que, no
-            início do Holoceno, ainda tinha rios, colinas e fontes de água doce. Hoje está sob o
-            Índico. A pergunta não é só se há objectos no fundo: é como demonstrar que eles
-            pertencem a uma paisagem humana antiga, e não a pedras deslocadas pelo mar.
+            Some landscapes have not disappeared; they have simply changed element. Off Murujuga in
+            Western Australia, divers and archaeologists are looking for a coastline that, in the
+            early Holocene, still had rivers, hills and freshwater springs. Today it lies beneath
+            the Indian Ocean. The question is not just whether there are objects on the seafloor,
+            but how to show that they belong to an ancient human landscape rather than being stones
+            moved by the sea.
           </p>
           <p>
-            O estudo recente liga ferramentas líticas, formas do relevo e rotas de transporte de
-            matéria-prima a uma reconstituição da plataforma continental. É uma arqueologia exigente
-            porque a evidência chega filtrada por milhares de anos de ondas, sedimentos e subida do
-            nível do mar. E é uma arqueologia que não começa com um mapa vazio: Murujuga é Country
-            Ngarda-Ngarli, cuidado por comunidades indígenas há pelo menos 50 mil anos.
+            The recent study connects stone tools, landforms and raw-material routes to a
+            reconstruction of the continental shelf. It is demanding archaeology because the
+            evidence has been filtered through thousands of years of waves, sediment and rising sea
+            levels. And it does not begin with an empty map: Murujuga is Ngarda-Ngarli Country,
+            cared for by Indigenous communities for at least 50,000 years.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            Grande parte das zonas costeiras ocupadas durante a última glaciação está hoje submersa.
-            Encontrar métodos credíveis para as estudar altera o mapa possível das primeiras
-            populações e reforça que a gestão do património marinho deve incluir conhecimento e
-            autoridade indígena.
+            Much of the coastline occupied during the last glaciation is now underwater. Finding
+            credible ways to study it changes what we can map about early populations and reinforces
+            that marine heritage management must include Indigenous knowledge and authority.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>Uma linha de costa em movimento</h3>
+            <h3>A moving coastline</h3>
             <p>
-              Há cerca de 20 mil anos, no máximo da última glaciação, uma enorme quantidade de água
-              estava retida em mantos de gelo. O nível médio do mar era muito mais baixo e a
-              plataforma de Murujuga era terra exposta. À medida que o clima aqueceu, o mar avançou,
-              inundando vales e isolando elevações. A escala importa: a área hoje coberta na
-              plataforma noroeste australiana mede-se em centenas de milhares de milhas quadradas.
-              Não se trata de um único sítio arqueológico perdido, mas de uma antiga região
-              costeira. Para a reconstruir, os investigadores cruzam batimetria, geologia do fundo e
-              modelos de nível do mar. Assim podem perguntar onde faria sentido haver água doce,
-              abrigo, passagem e acesso a pedra própria para talhar, antes de descerem com
-              mergulhadores ou instrumentos de prospecção.
+              Around 20,000 years ago, at the height of the last glaciation, enormous amounts of
+              water were locked up in ice sheets. Mean sea level was much lower and the Murujuga
+              shelf was exposed land. As the climate warmed, the sea advanced, flooding valleys and
+              isolating high ground. The scale matters: the area now covered on Australia’s
+              north-western shelf spans hundreds of thousands of square miles. This is not one lost
+              archaeological site, but an ancient coastal region. To reconstruct it, researchers
+              combine bathymetry, seabed geology and sea-level models. That lets them ask where
+              freshwater, shelter, passage and workable stone might have been found before sending
+              divers or survey equipment down.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/murujuga-national-park.jpg"
-                alt="Vista ampla do Parque Nacional de Murujuga, com afloramentos rochosos junto à costa da Austrália Ocidental."
+                alt="Wide view of Murujuga National Park, with rocky outcrops along the coast of Western Australia."
                 loading="lazy"
+                src="assets/murujuga-national-park.jpg"
               />
               <figcaption>
-                Murujuga conserva uma paisagem cultural em terra e no mar. A fotografia mostra o
-                parque nacional, não os sítios arqueológicos submersos descritos no estudo.
-                <span
-                  >© Marius Fenger · CC BY-SA 4.0, verificada na página do ficheiro Wikimedia
-                  Commons</span
+                Murujuga preserves a cultural landscape on land and at sea. The photograph shows the
+                national park, not the submerged archaeological sites described in the study.<span
+                  >© Marius Fenger · CC BY-SA 4.0, verified on the Wikimedia Commons file page</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Quando uma pedra passa a ser evidência</h3>
+            <h3>When a stone becomes evidence</h3>
             <p>
-              A pedra é simultaneamente a matéria-prima e o problema. Uma lasca pode ser produto de
-              talhe humano, mas também há rochas fracturadas naturalmente. A atribuição não assenta
-              numa aparência isolada: procura-se uma sequência de negativos de remoção, plataformas
-              de percussão, arestas e padrões coerentes com uma técnica de fabrico. Em Murujuga, uma
-              das áreas identificadas inclui uma nascente de água doce e artefactos cuja
-              matéria-prima foi associada a uma ilha situada a cerca de 23 quilómetros. Esse
-              transporte é particularmente informativo, pois sugere escolha e circulação num
-              território organizado. Outro local conserva uma elevação rochosa orientada para um
-              antigo canal fluvial. A disposição espacial liga objectos, topografia e recursos,
-              tornando mais forte a leitura de uma paisagem habitada.
+              Stone is both the raw material and the problem. A flake may be the result of human
+              toolmaking, but rocks also fracture naturally. Attribution does not rest on appearance
+              alone: researchers look for a sequence of removals, striking platforms, edges and
+              patterns consistent with a manufacturing technique. In Murujuga, one of the identified
+              areas includes a freshwater spring and artefacts whose raw material has been linked to
+              an island about 23 kilometres away. That transport is especially informative because
+              it suggests choice and movement through an organised territory. Another site preserves
+              a rocky rise facing an ancient river channel. The spatial arrangement connects
+              objects, topography and resources, strengthening the interpretation of an inhabited
+              landscape.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/murujuga-costa-submersa.svg"
-                alt="Esquema de corte que compara a costa exposta durante a glaciação com a plataforma continental submersa após a subida do nível do mar."
+                alt="Cross-section comparing the coastline exposed during the glaciation with the submerged continental shelf after sea levels rose."
                 loading="lazy"
+                src="assets/murujuga-costa-submersa.svg"
               />
               <figcaption>
-                Esquema original: a subida pós-glacial do mar inundou vales e planícies costeiras,
-                preservando parte da paisagem arqueológica no fundo marinho. Não está à escala.
+                Original diagram: post-glacial sea-level rise flooded valleys and coastal plains,
+                preserving part of the archaeological landscape on the seabed. Not to scale.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Mergulhar não é escavar no seco</h3>
+            <h3>Diving is not dry-land excavation</h3>
             <p>
-              Debaixo de água, a posição actual de um objecto pode enganar. Correntes, tempestades,
-              crescimento biológico e deposição de areia podem enterrá-lo, expô-lo ou movê-lo. Por
-              isso, a arqueologia submersa começa por documentar contexto: fotografia e vídeo com
-              escala, coordenadas, profundidade, tipo de sedimento e relação com o relevo. Depois
-              compara o conjunto com modelos de erosão e com sítios terrestres conhecidos. A
-              confirmação pode incluir análises petrográficas para identificar a origem da rocha e
-              datações dos sedimentos ou materiais associados, quando disponíveis. O resultado
-              raramente é uma certeza simples. É uma cadeia de inferências, mais robusta quando
-              várias linhas de evidência apontam na mesma direcção e quando as interpretações
-              alternativas são explicitamente testadas.
+              Underwater, an object’s current position can mislead. Currents, storms, biological
+              growth and deposited sand can bury, expose or move it. That is why underwater
+              archaeology starts by documenting context: photographs and video with scale,
+              coordinates, depth, sediment type and relation to the landform. Researchers then
+              compare the assemblage with erosion models and known terrestrial sites. Confirmation
+              may include petrographic analysis to identify the rock’s origin and dating of
+              associated sediments or materials, where available. The result is rarely simple
+              certainty. It is a chain of inferences, stronger when several lines of evidence point
+              in the same direction and alternative interpretations are explicitly tested.
             </p>
           </section>
           <section class="body-section">
-            <h3>Património, conhecimento e limites</h3>
+            <h3>Heritage, knowledge and limits</h3>
             <p>
-              A colaboração com a Murujuga Aboriginal Corporation não é um adorno institucional.
-              Define perguntas, nomes, acesso e responsabilidades sobre um património que continua
-              vivo. O termo Country reúne terra, mar, antepassados e obrigação de cuidado, uma
-              escala de relação que a divisão administrativa entre património terrestre e marítimo
-              nem sempre reconhece. Ainda assim, este é um campo jovem e vulnerável: nem todos os
-              locais podem ser datados directamente, e uma ferramenta no fundo não revela por si a
-              época exacta nem a história inteira de quem a usou. O valor do novo trabalho está em
-              tornar verificável a procura, não em prometer um arquivo intacto. Cada local bem
-              contextualizado ajuda a proteger uma parte da costa pré-inundação antes que obras,
-              dragagens ou alterações ambientais a destruam.
+              Collaboration with the Murujuga Aboriginal Corporation is not institutional
+              decoration. It shapes questions, names, access and responsibilities for a heritage
+              that is still alive. The term “Country” brings together land, sea, ancestors and the
+              duty of care, a relationship that the administrative divide between terrestrial and
+              marine heritage does not always recognise. Still, this is a young and vulnerable
+              field: not every site can be dated directly, and a tool on the seafloor cannot by
+              itself reveal exactly when it was used or the full story of its maker. The new work’s
+              value is making the search verifiable, not promising an intact archive. Every
+              well-contextualised site helps protect part of the pre-inundation coast before
+              construction, dredging or environmental change destroys it.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            Que cronologia exacta têm os diferentes conjuntos submersos, quantos foram deslocados
-            após a inundação e como deve ser desenhada a protecção legal de uma paisagem cultural
-            que se estende entre terra e mar? Estudos futuros terão de combinar datação, amostragem
-            prudente e decisão partilhada com os detentores tradicionais do conhecimento.
+            What is the precise chronology of the different submerged assemblages, how many were
+            moved after inundation, and how should legal protection be designed for a cultural
+            landscape that stretches between land and sea? Future studies will need to combine
+            dating, careful sampling and shared decisions with traditional knowledge holders.
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a href="https://doi.org/10.1016/j.quascirev.2026.110307" rel="noopener noreferrer"
-                >Quaternary Science Reviews, estudo original sobre selecção e transporte de
-                artefactos em Murujuga</a
+                >Quaternary Science Reviews, original study on artefact selection and transport at
+                Murujuga</a
               >
             </li>
             <li>
               <a
                 href="https://archaeology.org/news/2026/10/16/submerged-sites-identified-off-australias-northwestern-coastline/"
                 rel="noopener noreferrer"
-                >Archaeology Magazine, notícia e ligações ao estudo e ao contexto da descoberta</a
+                >Archaeology Magazine, report and links to the study and discovery context</a
               >
             </li>
           </ul>
         </div>
       </article>
-      <article id="mercados-debaixo-da-terra" class="story">
+      <article class="story" id="mercados-debaixo-da-terra">
         <div class="article-top">
-          <span class="kicker">05 / Biologia</span><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">05 / Biology</span><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>O mercado silencioso debaixo das raízes</h2>
+        <h2>The quiet market beneath our feet</h2>
         <p class="deck">
-          Plantas e fungos micorrízicos trocam carbono por nutrientes sem cérebro nem contrato. Os
-          ensaios revelam uma negociação biológica real, mas não uma floresta altruísta.
+          Mycorrhizal fungi and plants trade carbon for nutrients without brains or contracts. The
+          experiments show a real biological negotiation, not an altruistic forest.
         </p>
         <div class="lead">
           <p>
-            Uma árvore não come terra. Para obter fósforo, azoto e água, cresce raízes finas até ao
-            limite do que consegue explorar. Aí encontra um parceiro muito mais filamentoso: o fungo
-            micorrízico. As suas hifas, filamentos com espessura microscópica, penetram por poros do
-            solo que a raiz não alcança e ligam-se à planta numa interface onde ambos entregam
-            moléculas. A planta envia compostos de carbono produzidos pela fotossíntese; o fungo
-            entrega nutrientes minerais que recolheu ou libertou do solo.
+            A tree does not eat soil. To get phosphorus, nitrogen and water, it grows fine roots to
+            the edge of what it can explore. There it meets a much more threadlike partner: a
+            mycorrhizal fungus. Its hyphae, filaments just micrometres thick, enter soil pores the
+            root cannot reach and connect with the plant at an interface where both exchange
+            molecules. The plant sends carbon compounds made through photosynthesis; the fungus
+            delivers mineral nutrients it has collected or released from the soil.
           </p>
           <p>
-            A imagem popular de uma floresta ligada por uma internet generosa é sedutora, mas
-            confunde uma rede física com uma intenção. A bióloga evolutiva Toby Kiers e colegas
-            tratam esta relação como um mercado: participantes com interesses próprios ajustam o que
-            fornecem conforme o retorno. Num ensaio clássico com plantas e fungos micorrízicos
-            arbusculares, tanto os fungos como as plantas dirigiram recursos para os parceiros que
-            lhes davam a melhor recompensa. É uma negociação sem consciência, construída por
-            evolução, transporte químico e crescimento diferencial.
+            The popular image of a forest connected by a generous internet is appealing, but it
+            confuses a physical network with intention. Evolutionary biologist Toby Kiers and
+            colleagues describe this relationship as a market: participants with their own interests
+            adjust what they supply according to the return. In a classic experiment with plants and
+            arbuscular mycorrhizal fungi, both fungi and plants directed resources towards partners
+            that gave them the better reward. It is a negotiation without awareness, shaped by
+            evolution, chemical transport and differential growth.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            As micorrizas são uma das interfaces mais extensas entre plantas e solo. Perceber quem
-            retém ou devolve carbono, e em que condições, melhora a ecologia dos ecossistemas e
-            evita promessas simplistas de sequestrar carbono apenas plantando árvores ou adicionando
-            fungos.
+            Mycorrhizas are among the broadest interfaces between plants and soil. Understanding who
+            retains or returns carbon, and under what conditions, improves ecosystem ecology and
+            avoids simplistic promises of sequestering carbon just by planting trees or adding
+            fungi.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>A moeda muda de mão na interface</h3>
+            <h3>The currency changes hands at the interface</h3>
             <p>
-              Há vários tipos de micorriza. Nas micorrizas arbusculares, comuns em muitas culturas e
-              plantas herbáceas, o fungo entra no córtex da raiz e forma arbúsculos, estruturas
-              muito ramificadas que aumentam a área de troca sem fundir as células dos dois
-              parceiros. O fungo pode transportar fósforo inorgânico e azoto até à raiz; a planta
-              fornece açúcares e lípidos derivados do carbono fixado no ar. Noutras plantas,
-              sobretudo árvores de florestas temperadas e boreais, fungos ectomicorrízicos envolvem
-              as pontas das raízes e crescem entre células. A regra geral não é uma dádiva: cada
-              lado paga um custo para obter algo que consegue adquirir melhor através do outro. O
-              resultado depende da espécie, da fertilidade do solo, da luz e dos restantes
-              micróbios, não de uma fórmula universal.
+              There are several kinds of mycorrhiza. In arbuscular mycorrhizas, common in many crops
+              and herbaceous plants, the fungus enters the root cortex and forms arbuscules, highly
+              branched structures that increase the exchange area without merging the cells of the
+              two partners. The fungus can carry inorganic phosphorus and nitrogen to the root; the
+              plant supplies sugars and lipids derived from carbon fixed from the air. In other
+              plants, especially trees in temperate and boreal forests, ectomycorrhizal fungi wrap
+              around root tips and grow between cells. The general rule is not a gift: each side
+              pays a cost to obtain something it can get more effectively through the other. The
+              outcome depends on the species, soil fertility, light and other microbes, not a
+              universal formula.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/micorriza-arbuscular-pecan.jpg"
-                alt="Microfotografias de raízes de nogueira-pecã colonizadas por fungos micorrízicos arbusculares, com arbúsculos e hifas visíveis."
+                alt="Micrographs of pecan roots colonised by arbuscular mycorrhizal fungi, showing arbuscules and hyphae."
                 loading="lazy"
+                src="assets/micorriza-arbuscular-pecan.jpg"
               />
               <figcaption>
-                Microfotografias de colonização intrarradicular em raízes de nogueira-pecã. Os
-                arbúsculos são os ramos microscópicos onde ocorre a grande área de troca entre fungo
-                e planta.
-                <span
-                  >© Bidondo LF, Colombo RP, Recchi M, Silvani VA, Pérgola M, Martínez A e Godeas AM
-                  · CC BY 4.0, com atribuição e ligação à licença</span
+                Micrographs of intraradical colonisation in pecan roots. Arbuscules are the
+                microscopic branches where much of the exchange between fungus and plant takes
+                place.<span
+                  >© Bidondo LF, Colombo RP, Recchi M, Silvani VA, Pérgola M, Martínez A and Godeas
+                  AM · CC BY 4.0, with attribution and a link to the licence</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Preços sem cérebro</h3>
+            <h3>Prices without a brain</h3>
             <p>
-              Kiers e colaboradores separaram compartimentos de solo num sistema experimental e
-              variaram o acesso do fungo ao fósforo. Quando esse nutriente era mais escasso para a
-              planta, os fungos que o podiam fornecer recebiam mais carbono; por sua vez, os fungos
-              canalizavam mais fósforo para raízes que lhes davam mais carbono. O artigo de 2011
-              chama a isto recompensa recíproca. Não quer dizer que um fungo calcule preços. Quer
-              dizer que diferenças locais no fluxo de moléculas e no crescimento fazem prosperar as
-              ligações que devolvem melhor retorno. Esta observação é mais forte do que uma
-              metáfora: mede fluxos e compara tratamentos. Mas é também mais limitada, porque um
-              vaso controlado não reproduz a concorrência, a diversidade e as estações de uma
-              floresta adulta.
+              Kiers and colleagues separated soil compartments in an experiment and varied the
+              fungus’s access to phosphorus. When that nutrient was scarcer for the plant, fungi
+              able to supply it received more carbon; in turn, fungi channelled more phosphorus
+              towards roots that gave them more carbon. The 2011 paper calls this reciprocal reward.
+              It does not mean a fungus calculates prices. It means local differences in molecular
+              flows and growth favour the connections that return more. This observation is stronger
+              than a metaphor: it measures flows and compares treatments. But it is also more
+              limited, because a controlled pot does not reproduce the competition, diversity and
+              seasons of a mature forest.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/troca-micorrizica.svg"
-                alt="Esquema original de uma raiz, hifas fúngicas e solo, mostrando carbono a seguir da planta para o fungo e fósforo e azoto a seguirem no sentido inverso."
+                alt="Original diagram of a root, fungal hyphae and soil, showing carbon moving from plant to fungus, and phosphorus and nitrogen moving in the opposite direction."
                 loading="lazy"
+                src="assets/troca-micorrizica.svg"
               />
               <figcaption>
-                Esquema original da troca local: a seta não indica altruísmo nem uma quantidade
-                fixa, mas os fluxos que os estudos experimentais medem.
+                Original diagram of local exchange: the arrow does not indicate altruism or a fixed
+                quantity, but the flows measured in experimental studies.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Rede não é sinónimo de cooperação</h3>
+            <h3>A network is not the same as cooperation</h3>
             <p>
-              As hifas podem ligar raízes de plantas distintas, e há experiências que detectaram
-              transferência de carbono ou nutrientes através dessas redes. A existência da passagem,
-              porém, não demonstra que uma árvore esteja a ajudar outra, nem que o efeito seja
-              importante à escala de uma floresta. Material pode mover-se por gradientes físicos,
-              por micróbios associados ou porque o fungo favorece a fonte de carbono que mais lhe
-              convém. Plantas e fungos também têm conflitos: uma planta pode reduzir o carbono
-              entregue a um parceiro pouco útil e diferentes fungos competem pela mesma raiz. A
-              forma mais segura de ler a rede é como infra-estrutura de trocas com regras
-              evolutivas, não como uma comunidade moral escondida no solo.
+              Hyphae can connect roots from different plants, and experiments have detected carbon
+              or nutrient transfer through these networks. But the existence of that transfer does
+              not show that one tree is helping another, or that the effect matters at forest scale.
+              Material may move along physical gradients, through associated microbes or because the
+              fungus favours whichever carbon source suits it best. Plants and fungi also conflict:
+              a plant can reduce the carbon it gives to an unhelpful partner, and different fungi
+              compete for the same root. The safest way to read the network is as an exchange
+              infrastructure with evolutionary rules, not a moral community hidden in the soil.
             </p>
           </section>
           <section class="body-section">
-            <h3>Carbono no solo, com muitas saídas</h3>
+            <h3>Carbon in soil, with many exits</h3>
             <p>
-              Parte do carbono que a planta envia para o fungo torna-se biomassa fúngica, compostos
-              libertados no solo ou dióxido de carbono respirado de volta para a atmosfera. Outra
-              parte pode contribuir para matéria orgânica do solo, sobretudo quando restos
-              microbianos se associam a minerais e ficam protegidos da decomposição. Estudos
-              comparativos ligam a dominância de árvores com ectomicorrizas a taxas mais lentas de
-              decomposição e a maiores reservas de carbono orgânico em certos solos. Isso não
-              autoriza uma conta simples do tipo mais fungos igual a mais carbono armazenado. Clima,
-              mineralogia, uso do solo, humidade e perturbação podem inverter ou reduzir o efeito. A
-              pergunta científica útil é onde, durante quanto tempo e por que mecanismo o carbono
-              fica, não apenas se entrou numa hifa.
+              Some of the carbon a plant sends to a fungus becomes fungal biomass, compounds
+              released into the soil or carbon dioxide respired back into the atmosphere. Another
+              portion may contribute to soil organic matter, especially when microbial remains bind
+              to minerals and are protected from decomposition. Comparative studies link the
+              dominance of ectomycorrhizal trees with slower decomposition and larger stores of
+              organic carbon in some soils. That does not justify a simple equation of more fungi
+              with more stored carbon. Climate, mineralogy, land use, moisture and disturbance can
+              reverse or reduce the effect. The useful scientific question is where, for how long
+              and by what mechanism carbon stays, not just whether it entered a hypha.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            Quanto carbono transferido para fungos permanece protegido no solo durante décadas, em
-            vez de ser respirado em semanas ou meses? Até que ponto experiências de pares
-            planta-fungo prevêem comunidades naturais com dezenas de espécies? E como mudam estas
-            trocas quando secas, fertilização e aquecimento alteram simultaneamente a planta, o
-            fungo e os micróbios do solo?
+            How much carbon transferred to fungi stays protected in soil for decades rather than
+            being respired within weeks or months? How well do plant-fungus pair experiments predict
+            natural communities with dozens of species? And how do these exchanges change when
+            drought, fertilisation and warming alter the plant, fungus and soil microbes at the same
+            time?
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a href="https://doi.org/10.1126/science.1208473" rel="noopener noreferrer"
@@ -1150,8 +1158,8 @@
             </li>
             <li>
               <a href="https://doi.org/10.1038/nature12901" rel="noopener noreferrer"
-                >Averill, Turner e Finzi (2014), Mycorrhiza-mediated competition between plants and
-                decomposers drives soil carbon storage, Nature</a
+                >Averill, Turner and Finzi (2014), Mycorrhiza-mediated competition between plants
+                and decomposers drives soil carbon storage, Nature</a
               >
             </li>
             <li>
@@ -1163,153 +1171,148 @@
           </ul>
         </div>
       </article>
-      <article id="um-mar-varias-guerras" class="story">
+      <article class="story" id="um-mar-varias-guerras">
         <div class="article-top">
-          <span class="kicker">06 / Geopolítica</span><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">06 / Geopolitics</span><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>Um mar, várias guerras</h2>
+        <h2>One sea, many wars</h2>
         <p class="deck">
-          O Mar Vermelho deixou de ser apenas a passagem entre o Mediterrâneo e o Índico: tornou-se
-          o lugar onde crises de três regiões se alimentam mutuamente.
+          The Red Sea is no longer just the passage between the Mediterranean and the Indian Ocean:
+          it has become a place where crises from three regions feed into one another.
         </p>
         <div class="lead">
           <p>
-            Um navio que sai de Suez rumo ao Índico atravessa um corredor estreito, mas não
-            atravessa uma fronteira política simples. À esquerda ficam Egipto, Sudão e Eritreia; à
-            direita, a Arábia Saudita e o Iémen; no extremo sul, Djibuti, Somália e Etiópia estão a
-            poucas horas de mar. Durante décadas foi tentador tratar estas margens como dossiês
-            separados. A guerra em Gaza, a guerra civil sudanesa, a rivalidade no Golfo e a
-            insegurança no Corno de África mudaram isso. Hoje, uma decisão tomada em Sanaã pode
-            alterar rotas de contentores, seguros marítimos e a diplomacia em Bruxelas.
+            A ship leaving Suez for the Indian Ocean crosses a narrow corridor, but not a simple
+            political boundary. Egypt, Sudan and Eritrea lie to the west; Saudi Arabia and Yemen to
+            the east; Djibouti, Somalia and Ethiopia are only a short sail away at the southern end.
+            For decades it was tempting to treat these shores as separate files. The Gaza war,
+            Sudan’s civil war, Gulf rivalries and insecurity in the Horn of Africa changed that.
+            Today, a decision in Sana’a can alter container routes, maritime insurance and diplomacy
+            in Brussels.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            O corredor Suez-Mar Vermelho-Bab el-Mandeb liga a Europa à Ásia por uma das rotas
-            comerciais mais usadas do mundo. Quando a passagem se torna perigosa, desviar navios
-            pelo Cabo da Boa Esperança acrescenta tempo, combustível, emissões e pressão sobre
-            cadeias de abastecimento. Mais importante, a segurança da navegação já não pode ser
-            separada da estabilidade política nas duas margens.
+            The Suez–Red Sea–Bab el-Mandeb corridor links Europe and Asia along one of the world’s
+            busiest trade routes. When passage becomes dangerous, diverting ships around the Cape of
+            Good Hope adds time, fuel, emissions and pressure on supply chains. More importantly,
+            safe navigation can no longer be separated from political stability on both shores.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>O gargalo que junta continentes</h3>
+            <h3>The bottleneck that brings continents together</h3>
             <p>
-              A geografia explica a intensidade do problema. A norte, o canal de Suez concentra a
-              ligação ao Mediterrâneo. A sul, o estreito de Bab el-Mandeb é a porta para o golfo de
-              Áden e o oceano Índico. Entre ambos, o Mar Vermelho é relativamente longo e estreito,
-              com portos, bases e cabos submarinos sob a influência de Estados que vivem crises
-              muito diferentes. Um incidente não precisa de fechar formalmente a via para produzir
-              efeito económico: basta que armadores, tripulações e seguradoras considerem o risco
-              inaceitável. A Organização Marítima Internacional tem acompanhado ataques e
-              perturbações desde o fim de 2023 e recorda que a liberdade de navegação e a segurança
-              das equipas civis são obrigações centrais, não um detalhe logístico. A resposta
-              europeia, a operação EUNAVFOR ASPIDES, foi criada precisamente para proteger navios
-              mercantes, sem ser uma campanha terrestre no Iémen.
+              Geography explains the intensity of the problem. To the north, the Suez Canal
+              concentrates the link to the Mediterranean. To the south, the Bab el-Mandeb Strait is
+              the gateway to the Gulf of Aden and Indian Ocean. Between them, the Red Sea is
+              relatively long and narrow, with ports, bases and submarine cables influenced by
+              states facing very different crises. An incident does not have to formally close the
+              route to cause economic damage: it is enough for shipowners, crews and insurers to
+              consider the risk unacceptable. The International Maritime Organization has tracked
+              attacks and disruption since late 2023 and reminds us that freedom of navigation and
+              the safety of civilian crews are central obligations, not logistical details. The
+              European response, Operation EUNAVFOR ASPIDES, was created specifically to protect
+              merchant ships, not to conduct a land campaign in Yemen.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/red-sea-replenishment.jpg"
-                alt="O contratorpedeiro USS Mason recebe mantimentos do navio de abastecimento USNS Supply no Mar Vermelho."
+                alt="The destroyer USS Mason receives supplies from the replenishment ship USNS Supply in the Red Sea."
                 loading="lazy"
+                src="assets/red-sea-replenishment.jpg"
               />
               <figcaption>
-                O USS Mason e o USNS Supply numa operação de reabastecimento no Mar Vermelho, em
-                janeiro de 2024. A imagem mostra a logística que sustenta uma presença naval
-                prolongada no corredor.
-                <span
-                  >© U.S. Navy, Petty Officer 3rd Class Nicholas Rodriguez · Domínio público, obra
-                  do Governo dos Estados Unidos, verificada no Wikimedia Commons e no registo DVIDS
+                The USS Mason and USNS Supply during a replenishment operation in the Red Sea in
+                January 2024. The image shows the logistics that sustain a prolonged naval presence
+                in the corridor.<span
+                  >© U.S. Navy, Petty Officer 3rd Class Nicholas Rodriguez · Public domain, U.S.
+                  government work, verified on Wikimedia Commons and DVIDS record
                   240127-N-HE057-1239.</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Da guerra em Gaza ao Corno de África</h3>
+            <h3>From the Gaza war to the Horn of Africa</h3>
             <p>
-              Os ataques dos Houthis contra navios associados, segundo os próprios, a Israel ou aos
-              seus aliados deram à guerra em Gaza uma extensão marítima. Mas reduzi-los a uma seta
-              simples entre Iémen e Palestina perde a arquitectura maior. O Iémen está perto da
-              Arábia Saudita, recebe atenção iraniana e fica diante de Djibuti, onde se concentram
-              instalações militares estrangeiras. Mais a oeste, a guerra no Sudão deslocou
-              populações e tornou portos e apoios externos ainda mais importantes. Na Somália e na
-              Etiópia, as disputas por acesso ao mar e por acordos portuários acrescentam outro
-              nível de tensão. A análise do International Crisis Group chama a este conjunto um
-              teatro interligado: armas, financiamento, parceiros políticos e riscos de navegação
-              circulam entre conflitos que costumavam ser estudados em separado. Isso não significa
-              que exista um comando único. Significa que cada crise altera os incentivos das
-              restantes.
+              Houthi attacks on ships they say are associated with Israel or its allies gave the
+              Gaza war a maritime extension. But reducing them to a simple arrow between Yemen and
+              Palestine misses the wider architecture. Yemen is close to Saudi Arabia, draws Iranian
+              attention and faces Djibouti, where foreign military facilities cluster. Further west,
+              war in Sudan has displaced people and made ports and external support even more
+              important. In Somalia and Ethiopia, disputes over sea access and port agreements add
+              another layer of tension. The International Crisis Group calls this an interconnected
+              theatre: weapons, funding, political partners and navigation risks move between
+              conflicts once studied separately. That does not mean there is a single command. It
+              means each crisis changes the incentives in the others.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/red-sea-system.svg"
-                alt="Diagrama esquemático do corredor entre Suez, Mar Vermelho, Bab el-Mandeb e golfo de Áden, com as regiões políticas que se cruzam."
+                alt="Schematic diagram of the corridor between Suez, the Red Sea, Bab el-Mandeb and the Gulf of Aden, with the intersecting political regions."
                 loading="lazy"
+                src="assets/red-sea-system.svg"
               />
               <figcaption>
-                Esquema original: duas passagens estreitas ligam a rota Europa-Ásia a conflitos e
-                portos em ambas as margens. Não é um mapa de fronteiras nem uma escala náutica.
+                Original diagram: two narrow passages connect the Europe–Asia route to conflicts and
+                ports on both shores. It is not a border map or a nautical chart.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Portos são poder, não apenas infraestrutura</h3>
+            <h3>Ports are power, not just infrastructure</h3>
             <p>
-              Um porto oferece receitas, abastecimento, emprego e uma ligação física a redes
-              comerciais. Oferece também influência: quem gere terminais, acesso a combustível,
-              vigilância costeira ou ancoradouros pode facilitar comércio, acolher forças
-              estrangeiras ou pressionar um vizinho. Djibuti é o caso mais visível, com instalações
-              de vários países junto à entrada do Mar Vermelho, mas não é o único. Berbera, Port
-              Sudan, Assab, Jidá e os portos iemenitas são peças de estratégias nacionais e de
-              investidores do Golfo. Esta competição não é automaticamente uma guerra. Pode trazer
-              investimento e ligações úteis. Torna-se perigosa quando acordos portuários substituem
-              negociação política, ou quando autoridades frágeis usam parceiros externos para
-              sobreviver. Para a Europa, a lição é desconfortável: escoltar navios reduz um sintoma;
-              apoiar acordos políticos, instituições costeiras e ajuda humanitária procura mexer nas
-              causas que fazem do corredor um amplificador de conflitos.
+              A port offers revenue, supplies, jobs and a physical link to trade networks. It also
+              offers influence: whoever manages terminals, fuel access, coastal surveillance or
+              anchorages can facilitate trade, host foreign forces or pressure a neighbour. Djibouti
+              is the most visible case, with several countries’ facilities near the entrance to the
+              Red Sea, but it is not the only one. Berbera, Port Sudan, Assab, Jeddah and Yemeni
+              ports are pieces in national strategies and Gulf investment. This competition is not
+              automatically war. It can bring investment and useful connections. It becomes
+              dangerous when port deals replace political negotiation, or when fragile authorities
+              use external partners to survive. For Europe, the lesson is uncomfortable: escorting
+              ships reduces a symptom; supporting political agreements, coastal institutions and
+              humanitarian aid addresses the causes that make the corridor amplify conflict.
             </p>
           </section>
           <section class="body-section">
-            <h3>O que uma escolta naval consegue, e o que não consegue</h3>
+            <h3>What a naval escort can and cannot do</h3>
             <p>
-              Fragatas, radares e equipas de proteção podem reduzir a probabilidade de um ataque
-              bem-sucedido e dar confiança a uma rota. Não conseguem, porém, decidir a guerra no
-              Iémen, reconstruir o Sudão ou resolver a relação entre Etiópia e Somália. Também há um
-              limite jurídico e político: proteger a navegação é diferente de transformar uma missão
-              defensiva numa intervenção regional. A utilidade de olhar para o Mar Vermelho como um
-              sistema está em evitar duas ilusões ao mesmo tempo: a de que tudo tem a mesma causa e
-              a de que cada foco pode ser isolado. O mapa mostra ligações; não apaga as diferenças
-              locais. A melhor política combina proteção imediata das pessoas no mar, informação
-              transparente para a navegação e diplomacia paciente nas margens.
+              Frigates, radar and protection teams can reduce the chance of a successful attack and
+              reassure a shipping route. They cannot decide the war in Yemen, rebuild Sudan or
+              resolve relations between Ethiopia and Somalia. There is also a legal and political
+              limit: protecting navigation is different from turning a defensive mission into a
+              regional intervention. Seeing the Red Sea as a system helps avoid two illusions at
+              once: that everything has the same cause, and that each flashpoint can be isolated.
+              The map shows connections; it does not erase local differences. Better policy combines
+              immediate protection for people at sea, transparent navigation information and patient
+              diplomacy along the shores.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            A redução temporária de ataques não resolveria por si só as guerras e rivalidades que os
-            tornaram possíveis. Resta saber se os atores externos aceitarão coordenar esforços
-            diplomáticos entre Médio Oriente e Corno de África, e se as comunidades costeiras terão
-            voz nos acordos sobre portos, segurança e reconstrução. É também incerto quanto tempo os
-            armadores manterão desvios caros depois de o risco parecer menor.
+            A temporary drop in attacks would not by itself resolve the wars and rivalries that made
+            them possible. It remains to be seen whether external actors will coordinate diplomatic
+            efforts across the Middle East and Horn of Africa, and whether coastal communities will
+            have a voice in agreements on ports, security and reconstruction. It is also uncertain
+            how long shipowners will keep making costly diversions after the risk appears lower.
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a
                 href="https://www.imo.org/en/mediacentre/hottopics/pages/red-sea.aspx"
                 rel="noopener noreferrer"
-                >Organização Marítima Internacional, segurança marítima no Mar Vermelho</a
+                >International Maritime Organization, maritime security in the Red Sea</a
               >
             </li>
             <li>
               <a href="https://www.eeas.europa.eu/eunavfor-aspides_en" rel="noopener noreferrer"
-                >EEAS, EUNAVFOR ASPIDES: missão e mandato defensivo</a
+                >EEAS, EUNAVFOR ASPIDES: mission and defensive mandate</a
               >
             </li>
             <li>
@@ -1322,167 +1325,163 @@
           </ul>
         </div>
       </article>
-      <article id="o-ultimo-tear-de-renda" class="story">
+      <article class="story" id="o-ultimo-tear-de-renda">
         <div class="article-top">
-          <span class="kicker">07 / Indústria e património</span
-          ><a class="back" href="#indice">Índice ↑</a>
+          <span class="kicker">07 / Industry &amp; heritage</span
+          ><a class="back" href="#indice">Contents ↑</a>
         </div>
-        <h2>O último tear de renda</h2>
+        <h2>The last lace loom</h2>
         <p class="deck">
-          Na Escócia, uma fábrica preserva a técnica de fazer renda Nottingham padronizada em
-          máquinas que exigem tanto mecânica como memória humana.
+          In Scotland, one factory preserves the craft of making patterned Nottingham lace on
+          machines that require mechanical skill and human memory.
         </p>
         <div class="lead">
           <p>
-            Uma renda parece um objecto delicado, quase imóvel. Mas, antes de se tornar cortina,
-            figurino ou tecido de cena, é o resultado de centenas de fios coordenados num mecanismo
-            ruidoso. Em Newmilns, no vale do Irvine, a MYB Textiles mantém em funcionamento uma
-            família de teares que produz renda e madras de padrão. A empresa apresenta-se como a
-            última produtora restante desta especialidade no vale, uma sobrevivência industrial cuja
-            matéria-prima decisiva não é apenas algodão: é conhecimento de oficina.
+            Lace looks delicate, almost still. But before it becomes a curtain, costume or stage
+            fabric, it is the result of hundreds of threads coordinated in a noisy mechanism. In
+            Newmilns, in the Irvine Valley, MYB Textiles keeps a family of looms running to produce
+            lace and patterned madras. The company describes itself as the last remaining producer
+            of this speciality in the valley, an industrial survivor whose crucial raw material is
+            not only cotton: it is workshop knowledge.
           </p>
           <p>
-            A notícia não é que uma máquina antiga ainda exista. É que ela ainda faz um produto para
-            o qual há clientes, ao mesmo tempo que depende de operadores capazes de a preparar,
-            observar e corrigir. A reportagem fotográfica publicada este mês pelo The Guardian
-            voltou a tornar visível esse trabalho. Vale a pena olhar para lá da nostalgia: a fábrica
-            ajuda a perceber porque uma tecnologia pode continuar relevante quando o seu ritmo, a
-            sua precisão e a sua linguagem material não são facilmente substituídos.
+            The story is not simply that an old machine still exists. It still makes a product with
+            customers, while depending on operators who know how to prepare, observe and correct it.
+            The photo essay published by The Guardian this month made that work visible again. It is
+            worth looking beyond nostalgia: the factory helps explain why a technology can remain
+            relevant when its pace, precision and material language are not easily replaced.
           </p>
         </div>
         <aside class="takeaway">
-          <span class="label">Porque importa</span>
+          <span class="label">Why it matters</span>
           <p>
-            A história mostra que património industrial não é só conservar edifícios ou expor uma
-            máquina parada. Quando o fabrico continua, preservam-se gestos, diagnósticos e escolhas
-            técnicas que dificilmente cabem num manual. Também esclarece porque certos sectores
-            culturais ainda procuram materiais feitos em processos lentos e especializados.
+            The story shows that industrial heritage is not only about preserving buildings or
+            displaying a motionless machine. When production continues, it preserves gestures,
+            diagnoses and technical choices that rarely fit into a manual. It also helps explain why
+            some cultural industries still seek materials made through slow, specialised processes.
           </p>
         </aside>
         <div class="story-body">
           <section class="body-section">
-            <h3>Não é renda feita à mão, mas também não é impressão</h3>
+            <h3>It is not handmade lace, but it is not a print either</h3>
             <p>
-              A renda Nottingham é produzida por máquina, o que não a torna uma simples superfície
-              impressa. Num tear de renda, conjuntos de fios formam a base e outros fios desenham o
-              motivo, cruzando-se segundo uma sequência mecânica. O resultado combina zonas abertas
-              e zonas densas, criando desenho e transparência no próprio tecido. A expressão renda
-              de Nottingham designa uma tradição técnica e comercial ligada à mecanização britânica
-              da renda, não uma garantia de que cada metro tenha sido feito em Nottingham. O que
-              importa aqui é a arquitectura do tecido: o desenho nasce da relação entre fios, tensão
-              e movimento, não de tinta aplicada depois.
+              Nottingham lace is machine-made, but that does not make it a simple printed surface.
+              On a lace loom, sets of threads form the ground while others draw the pattern,
+              crossing in a mechanical sequence. The result combines open and dense areas, creating
+              pattern and transparency in the fabric itself. “Nottingham lace” names a technical and
+              commercial tradition linked to the mechanisation of lace-making in Britain; it does
+              not guarantee that every metre was made in Nottingham. What matters here is the
+              fabric’s architecture: the design comes from the relationship between threads, tension
+              and movement, not from ink applied afterwards.
             </p>
             <p>
-              Essa diferença explica a dificuldade de reprodução. Uma fotografia pode copiar o
-              aspecto de um padrão, mas não a profundidade, a queda ou a maneira como a luz
-              atravessa os intervalos entre fios. Para cenografia, guarda-roupa e interiores, essas
-              propriedades materiais contam. A MYB descreve a sua produção como renda e madras
-              artesanais para interiores e produções de ecrã, uma utilização contemporânea que dá à
-              maquinaria uma razão económica para continuar activa.
+              That difference explains why it is hard to reproduce. A photograph can copy the look
+              of a pattern, but not its depth, drape or the way light passes through the gaps
+              between threads. Those material properties matter in set design, costume and
+              interiors. MYB describes its production as handcrafted lace and madras for interiors
+              and screen productions, a contemporary use that gives the machinery an economic reason
+              to keep running.
             </p>
             <figure class="figure photo">
               <img
-                src="assets/former-lace-mill-newmilns.jpg"
-                alt="Fachada de uma antiga fábrica de renda no vale de Irvine, na Escócia."
+                alt="Facade of a former lace mill in the Irvine Valley, Scotland."
                 loading="lazy"
+                src="assets/former-lace-mill-newmilns.jpg"
               />
               <figcaption>
-                Uma antiga fábrica de renda em Newmilns. A imagem situa a continuidade da MYB numa
-                paisagem industrial que perdeu muitas das suas fábricas de renda.
-                <span
-                  >© Gordon Brown, Geograph · CC BY-SA 2.0, verificada na página do ficheiro
-                  Wikimedia Commons</span
+                An old lace mill in Newmilns. The image places MYB’s continuity in an industrial
+                landscape that has lost many of its lace mills.<span
+                  >© Gordon Brown, Geograph · CC BY-SA 2.0, verified on the Wikimedia Commons file
+                  page</span
                 >
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Uma máquina só funciona dentro de uma rede de saber</h3>
+            <h3>A machine only works within a network of knowledge</h3>
             <p>
-              Chamar tradicional a um tear pode sugerir que ele trabalha sozinho, por inércia. É o
-              contrário. O funcionamento exige preparar urdiduras, montar e vigiar fios, interpretar
-              falhas no desenho e ajustar o conjunto quando a tensão se afasta do equilíbrio. Em
-              processos deste tipo, o operador não observa apenas um alarme: lê sinais físicos, como
-              um fio que cede, uma repetição que perde nitidez ou uma vibração fora do padrão. Parte
-              desse diagnóstico é formalizável; outra parte é aprendizagem acumulada junto da
-              máquina.
+              Calling a loom traditional can suggest that it works by itself, through inertia. It is
+              the opposite. It takes preparation of the warp, setting and watching threads,
+              interpreting flaws in the pattern and adjusting the whole system when tension drifts
+              out of balance. In processes like this, an operator does not just watch an alarm: they
+              read physical signals, such as a thread giving way, a repeat losing definition or a
+              vibration changing. Some of that diagnosis can be formalised; some is knowledge built
+              up beside the machine.
             </p>
             <p>
-              A cronologia da empresa ajuda a situar a fragilidade dessa cadeia. Segundo a sua
-              história institucional, Morton Young and Borland foi fundada em 1900 no vale do
-              Irvine. A empresa liga a tradição local a tecelões flamengos e à expansão das fábricas
-              de renda em Newmilns e Darvel. A mesma fonte descreve a redução drástica do sector a
-              partir do fim dos anos 1970, com competição internacional, investimento insuficiente e
-              falhas na formação de sucessores. É uma explicação da sobrevivência, não uma medição
-              independente de todo o mercado, mas identifica o ponto central: máquinas e pessoas
-              envelhecem em conjunto.
+              The company’s timeline helps explain the fragility of this chain. According to its own
+              institutional history, Morton Young and Borland was founded in 1900 in the Irvine
+              Valley. The company links the local tradition to Flemish weavers and the expansion of
+              lace mills in Newmilns and Darvel. The same source describes a sharp contraction in
+              the sector from the late 1970s, driven by international competition, insufficient
+              investment and gaps in training successors. This is an explanation of survival, not an
+              independent measurement of the whole market, but it identifies the central point:
+              machines and people grow old together.
             </p>
             <figure class="figure diagram">
               <img
-                src="assets/como-se-forma-a-renda.svg"
-                alt="Esquema simplificado de fios de base e fios de desenho que se cruzam para formar zonas abertas e densas numa renda tecida."
+                alt="Simplified diagram of ground and pattern threads crossing to form open and dense areas in woven lace."
                 loading="lazy"
+                src="assets/como-se-forma-a-renda.svg"
               />
               <figcaption>
-                Esquema original, não à escala: a transparência e o motivo resultam do cruzamento
-                coordenado de fios, não de uma impressão sobre tecido.
+                Original diagram, not to scale: transparency and pattern come from the coordinated
+                crossing of threads, not from printing on fabric.
               </figcaption>
             </figure>
           </section>
           <section class="body-section">
-            <h3>Porque o cinema ainda procura o irregular controlado</h3>
+            <h3>Why film still wants controlled irregularity</h3>
             <p>
-              A vantagem de uma fábrica assim não é vencer uma linha de produção de grande escala no
-              preço por metro. É oferecer pequenas séries, padrões específicos e uma textura com
-              consequências visuais reais. Sob luz lateral, uma renda tecida produz sombras
-              minúsculas e variações que uma malha sintética ou uma estampa podem não reproduzir. É
-              precisamente o tipo de pormenor que interessa a cenógrafos, figurinistas e designers
-              de interiores, mesmo quando o público não sabe nomear a técnica.
+              The advantage of a factory like this is not beating a large-scale production line on
+              price per metre. It is offering small runs, specific patterns and a texture with real
+              visual consequences. In side light, woven lace creates tiny shadows and variations
+              that synthetic mesh or a print may not reproduce. Those are exactly the details that
+              matter to set designers, costume makers and interior designers, even when the audience
+              cannot name the technique.
             </p>
             <p>
-              Há também um paradoxo útil. Quanto mais a produção cultural trabalha com imagens
-              digitais e pós-produção, mais alguns objectos físicos tornam-se valiosos como prova
-              material no enquadramento. Um tecido não é apenas um adereço: reage ao movimento, à
-              luz e à proximidade da câmara. A reportagem do Guardian regista esta continuidade
-              através de imagens da fábrica e refere que a maior parte do negócio vem de cinema,
-              teatro, televisão e entretenimento. É uma fonte jornalística, portanto deve ser lida
-              como descrição reportada do momento, mas coincide com o posicionamento comercial da
-              própria MYB.
+              There is a useful paradox here. The more cultural production works with digital images
+              and post-production, the more some physical objects become valuable as material
+              evidence in the frame. Fabric is not just a prop: it reacts to movement, light and the
+              camera’s proximity. The Guardian’s report captures this continuity through photographs
+              of the factory and says most of the business comes from film, theatre, television and
+              entertainment. It is a journalistic source, so it should be read as a reported account
+              of the moment, but it aligns with MYB’s own commercial positioning.
             </p>
           </section>
           <section class="body-section">
-            <h3>Preservar não é congelar</h3>
+            <h3>Preservation is not freezing</h3>
             <p>
-              Existe o risco de transformar qualquer oficina antiga numa fábula de resistência. A
-              continuidade da MYB não prova que todas as tecnologias históricas devam ser mantidas,
-              nem elimina os custos de energia, manutenção ou formação. Mostra, isso sim, que a
-              escolha entre automatizar e preservar raramente é binária. Uma fábrica pode usar
-              logística e comércio digital actuais enquanto mantém um núcleo de produção cuja
-              vantagem está na perícia humana.
+              There is a risk of turning every old workshop into a fable of resistance. MYB’s
+              continued operation does not prove that every historic technology should be kept, nor
+              does it remove the costs of energy, maintenance or training. It does show that the
+              choice between automation and preservation is rarely binary. A factory can use modern
+              logistics and digital commerce while keeping a production core whose advantage lies in
+              human skill.
             </p>
             <p>
-              Para quem visita uma fotografia de um tear, a pergunta mais interessante talvez seja
-              esta: que parte do objecto estamos a ver? Ferro, correias e fios são a parte visível.
-              O método de afinação, a capacidade de reconhecer uma falha e a relação com clientes
-              que sabem pedir um determinado efeito são a infraestrutura invisível. Se essa
-              transmissão parar, guardar a máquina será importante, mas não será o mesmo que manter
-              a técnica viva.
+              When looking at a photograph of a loom, the more interesting question may be: which
+              part of the object are we seeing? Iron, belts and threads are visible. The method of
+              adjustment, the ability to recognise a flaw and the relationship with customers who
+              know how to ask for a particular effect are the invisible infrastructure. If that
+              knowledge stops being passed on, saving the machine will matter, but it will not be
+              the same as keeping the craft alive.
             </p>
           </section>
         </div>
         <aside class="questions">
-          <span class="label">Em aberto</span>
+          <span class="label">Open questions</span>
           <p>
-            A designação de última deve ser tratada com cuidado: a MYB e a reportagem referem-se à
-            produção de renda Nottingham padronizada em teares tradicionais e ao contexto do vale do
-            Irvine, não a toda a produção mundial de tecidos rendados. Ficam por conhecer dados
-            independentes sobre volumes, idade dos equipamentos e plano de sucessão. A questão
-            decisiva é se haverá formação e procura suficientes para que a técnica seja transmitida,
-            em vez de apenas documentada.
+            The word “last” needs care: MYB and the report refer to patterned Nottingham lace
+            production on traditional looms in the Irvine Valley, not all lace fabric production
+            worldwide. Independent figures on output, equipment age and succession plans remain
+            unknown. The decisive question is whether there will be enough training and demand for
+            the craft to be passed on rather than merely documented.
           </p>
         </aside>
         <div class="sources">
-          <span class="label">Fontes e leitura adicional</span>
+          <span class="label">Sources and further reading</span>
           <ul>
             <li>
               <a href="https://mybtextiles.com/pages/about" rel="noopener noreferrer"
@@ -1493,7 +1492,7 @@
               <a
                 href="https://www.theguardian.com/artanddesign/gallery/2026/oct/18/the-last-lace-mill-in-pictures"
                 rel="noopener noreferrer"
-                >The Guardian, The last lace mill in pictures, 18 de Outubro de 2026</a
+                >The Guardian, The last lace mill in pictures, 18 October 2026</a
               >
             </li>
             <li>
@@ -1508,8 +1507,8 @@
       </article>
     </main>
     <footer>
-      LUME · Alfredo Editora · Feita para ler ao longo do mês. Fotografias e fontes creditadas em
-      cada artigo.
+      LUME · Alfredo Editora · Made to read throughout the month. Photographs and sources are
+      credited in each article.
     </footer>
   </body>
 </html>
