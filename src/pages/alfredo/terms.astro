@@ -1,0 +1,49 @@
+---
+import Container from '../../components/Container.astro';
+import Prose from '../../components/Prose.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { contactEmail } from '../../config/site';
+import { url } from '../../lib/paths';
+---
+
+<BaseLayout
+  title="Alfredo Calendar terms of use"
+  description="Alfredo Calendar terms of use for the private Alfredo personal assistant."
+>
+  <Container>
+    <article class="max-w-text py-section md:py-section-lg">
+      <header class="mb-12">
+        <p class="meta text-accent">Alfredo Calendar</p>
+        <h1 class="text-h1 text-ink mt-6">Alfredo Calendar terms of use</h1>
+        <p class="meta mt-6">
+          Last updated: <time datetime="2026-11-13">13 November 2026</time>
+        </p>
+      </header>
+      <Prose>
+        <p>
+          Alfredo Calendar is João Afonso&#x27;s private Google account connection for the Alfredo
+          personal assistant. There is no public registration, subscription or offer of a hosted
+          service. Only accounts I control or am authorised to connect are intended to use it.
+        </p>
+        <p>
+          The connection supports private schedule assistance and read-only email assistance.
+          Changes to calendar commitments require approval. AI-generated summaries and suggestions
+          may contain errors and should be checked before relying on them for decisions or
+          commitments.
+        </p>
+        <p>
+          Access can be revoked through Google Account settings. Google services and other providers
+          remain subject to their own terms. This connection may be changed or discontinued;
+          availability and uninterrupted access are not guaranteed.
+        </p>
+        <p>
+          See the <a href={url('/alfredo/privacy/')}> privacy policy</a> for how connected data is
+          used. Questions can be sent to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+        </p>
+        <p>
+          <a href={url('/alfredo/')}> About Alfredo</a>
+        </p>
+      </Prose>
+    </article>
+  </Container>
+</BaseLayout>

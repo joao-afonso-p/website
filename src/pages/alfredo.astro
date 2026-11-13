@@ -1,6 +1,7 @@
 ---
 import CapabilityMap from '../components/alfredo/CapabilityMap.astro';
 import Container from '../components/Container.astro';
+import Prose from '../components/Prose.astro';
 import { alfredoCopy, alfredoMeta } from '../config/alfredo';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { url } from '../lib/paths';
@@ -72,6 +73,32 @@ const { followUrl } = alfredoMeta;
           </div>
         )}
       </div>
+    </section>
+
+    <section
+      class="mt-section max-w-text border-t border-rule pt-8 md:mt-section-lg md:pt-10"
+      aria-labelledby="google-account-access"
+    >
+      <h2 class="text-h2 text-ink mb-7" id="google-account-access">
+        Google account access
+      </h2>
+      <Prose>
+        <p>
+          Alfredo Calendar is the Google account connection used by Alfredo, my private personal
+          assistant. It reads connected calendars to help me understand my schedule and prepare for
+          commitments. Calendar changes require my approval. It can also read connected Gmail
+          accounts to identify messages that need attention and prepare summaries or suggested
+          replies. Gmail access is read-only.
+        </p>
+        <p>
+          This is a personal tool, with no public registration or access to my assistant. Connecting
+          a Google account does not make its data public.
+        </p>
+        <p>
+          <a href={url('/alfredo/privacy/')}> Privacy policy</a> ·{' '}
+          <a href={url('/alfredo/terms/')}> Terms of use</a>
+        </p>
+      </Prose>
     </section>
 
     <p class="mt-14 md:mt-20">

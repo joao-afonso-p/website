@@ -1,0 +1,74 @@
+---
+import Container from '../../components/Container.astro';
+import Prose from '../../components/Prose.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { contactEmail } from '../../config/site';
+import { url } from '../../lib/paths';
+---
+
+<BaseLayout
+  title="Alfredo Calendar privacy policy"
+  description="Alfredo Calendar privacy policy for the private Alfredo personal assistant."
+>
+  <Container>
+    <article class="max-w-text py-section md:py-section-lg">
+      <header class="mb-12">
+        <p class="meta text-accent">Alfredo Calendar</p>
+        <h1 class="text-h1 text-ink mt-6">Alfredo Calendar privacy policy</h1>
+        <p class="meta mt-6">
+          Last updated: <time datetime="2026-11-13">13 November 2026</time>
+        </p>
+      </header>
+      <Prose>
+        <p>
+          Alfredo Calendar is operated by João Afonso as part of Alfredo, a private personal
+          assistant. It is used with accounts I control or am authorised to connect. It is not a
+          public service.
+        </p>
+        <h2>Google data and its use</h2>
+        <p>
+          The connection accesses account identity, calendars and events to understand my schedule,
+          prepare for commitments and carry out calendar changes I approve. For accounts with Gmail
+          enabled, read-only access supports message triage, summaries and suggested replies. It
+          does not grant permission to send mail, delete messages or change mailbox state.
+        </p>
+        <h2>Processing, storage and sharing</h2>
+        <p>
+          Data needed for an assistant request may be processed by the AI provider configured for
+          Alfredo. Requested results may appear in my private assistant interface, including
+          Telegram. Relevant, concise knowledge may be saved in my private notes according to the
+          assistant&#x27;s rules. These services process data under their respective terms and
+          privacy policies.
+        </p>
+        <p>
+          OAuth credentials stay in protected private runtime storage. Credentials and
+          non-reconstructible runtime state are included in encrypted backups. Calendar events are
+          read from Google rather than mirrored into a separate calendar. Assistant conversations
+          and explicitly retained notes may contain information derived from connected accounts.
+        </p>
+        <p>
+          Google account data is not sold, used for advertising, published on this site or made
+          available to other site visitors. Alfredo&#x27;s use and transfer of Google API data will
+          adhere to the Google API Services User Data Policy, including its Limited Use
+          requirements.
+        </p>
+        <h2>Control and retention</h2>
+        <p>
+          Access can be revoked in Google Account settings at any time. Revocation stops future
+          access; it does not by itself erase prior assistant conversations, notes or encrypted
+          backups. Retained information can be removed from the private systems where it was saved,
+          subject to their backup retention.
+        </p>
+        <h2>Contact</h2>
+        <p>
+          Questions about this connection or retained data can be sent to{' '}
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+        </p>
+        <p>
+          <a href={url('/alfredo/')}> About Alfredo</a> ·{' '}
+          <a href={url('/alfredo/terms/')}> Terms of use</a>
+        </p>
+      </Prose>
+    </article>
+  </Container>
+</BaseLayout>
